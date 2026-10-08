@@ -1058,3 +1058,287 @@ export const ifrsComplianceCards = [
   { icon: 'Shield', title: 'IFRS 9 — Financial Instruments', status: 'Review Due', statusColor: 'amber', body: 'ECL provision model requires Q2 2024 update. Trade receivables of AED 284.6M under review.', footnote: 'Due: 30 Jun 2024' },
   { icon: 'Flag', title: 'UAE Corporate Tax', status: 'Compliant', statusColor: 'green', body: '9% CT applied on taxable income above AED 375,000 threshold. AED 81.8M tax provision raised.', footnote: 'Last filed: 31 Mar 2024' },
 ];
+
+// ---- Construction Control Tower ----
+
+export interface ConstructionKpi {
+  label: string;
+  value: string;
+  sub: string;
+}
+
+export const constructionKpis: ConstructionKpi[] = [
+  { label: 'Active Sites', value: '5', sub: '2 delayed · 1 critical' },
+  { label: 'Overall Completion', value: '64.2%', sub: 'Weighted by value' },
+  { label: 'Budget Health', value: 'AED 1.98B', sub: 'Committed of AED 2.13B total' },
+  { label: 'Contractor Bills Pending', value: 'AED 42.6M', sub: '8 pending approval' },
+  { label: 'Revenue at Risk', value: 'AED 91.6M', sub: '2 projects flagged' },
+  { label: 'Days to Next RERA Deadline', value: '7 days', sub: 'QPR — Palm View' },
+];
+
+export interface ConstructionAlert {
+  id: string;
+  siteId: string;
+  siteName: string;
+  alertType: string;
+  severity: 'critical' | 'warning' | 'info';
+  title: string;
+  description: string;
+  aedImpact: string;
+  actionRequired: string;
+}
+
+export const constructionAlerts: ConstructionAlert[] = [
+  { id: 'a1', siteId: 's2', siteName: 'Palm View Residences', alertType: 'mismatch_sales_vs_build', severity: 'critical', title: 'MEP contractor claiming 18% more than certified — AED 18.2M at risk', description: 'Gulf MEP Solutions has certified progress at 34% but claimed 52%. AED 18.2M payment mismatch detected. Do not release payment pending re-certification.', aedImpact: 'AED 18.2M', actionRequired: 'Re-certify and withhold payment' },
+  { id: 'a2', siteId: 's2', siteName: 'Palm View Residences', alertType: 'revenue_at_risk', severity: 'critical', title: 'Revenue at risk — AED 24.2M IFRS 15 deferral likely', description: 'MEP delay pushing handover beyond Q2 2024. IFRS 15 revenue recognition may need to be deferred by one quarter.', aedImpact: 'AED 24.2M', actionRequired: 'Review with finance team' },
+  { id: 'a3', siteId: 's2', siteName: 'Palm View Residences', alertType: 'escrow_overdue', severity: 'critical', title: 'Escrow reconciliation overdue (32 days)', description: 'Palm View escrow: AED 67.2M unreconciled. RERA may flag on next audit.', aedImpact: 'AED 67.2M', actionRequired: 'Reconcile immediately' },
+  { id: 'a4', siteId: 's2', siteName: 'Palm View Residences', alertType: 'mismatch_sales_vs_build', severity: 'warning', title: '23 sold units below handover threshold — mismatch flag', description: '23 units sold to buyers have construction status below handover threshold. Buyer contracts reference handover dates that construction cannot meet.', aedImpact: '23 units', actionRequired: 'Send delay notices' },
+  { id: 'a5', siteId: 's3', siteName: 'Desert Oasis Villas', alertType: 'cash_pressure', severity: 'warning', title: 'Capital Call #6 AED 180M due same week as AED 45M contractor payments', description: 'Net cash requirement AED 225M week of 30 Jun 2026. Projected cash position only AED 186M. Consider staggering payments.', aedImpact: 'AED 225M', actionRequired: 'Stagger contractor payments' },
+  { id: 'a6', siteId: 's1', siteName: 'Marina Heights Towers', alertType: 'contractor_underperformance', severity: 'warning', title: 'Al Futtaim MEP claiming 7% more than certified', description: 'Al Futtaim MEP has certified progress at 64% but claimed 71%. Variance of 7% exceeds 5% threshold. Review claimed work items.', aedImpact: 'AED 8.4M', actionRequired: 'Review claim vs certified' },
+  { id: 'a7', siteId: 's2', siteName: 'Palm View Residences', alertType: 'rera_deadline', severity: 'warning', title: 'QPR deadline — Palm View RERA in 7 days', description: 'Quarterly Progress Report due to RERA by 15 May 2024. Construction progress and escrow status must be included.', aedImpact: '—', actionRequired: 'Upload QPR documents' },
+];
+
+export interface Milestone {
+  name: string;
+  type: 'foundation' | 'structure' | 'mep' | 'finishing' | 'handover';
+  status: 'completed' | 'in_progress' | 'not_started' | 'delayed' | 'critical';
+  pct: number;
+}
+
+export interface ConstructionSite {
+  id: string;
+  name: string;
+  entity: string;
+  location: string;
+  type: string;
+  overallPct: number;
+  status: 'active' | 'delayed' | 'critical' | 'completed';
+  delayDays: number;
+  unitsSold: number;
+  unitsTotal: number;
+  budgetUsed: string;
+  budgetTotal: string;
+  billsPending: string;
+  alertCount: number;
+  alertBadges: string[];
+  milestones: Milestone[];
+  startDate: string;
+  plannedCompletion: string;
+}
+
+export const constructionSites: ConstructionSite[] = [
+  {
+    id: 's1',
+    name: 'Marina Heights Towers',
+    entity: 'Marina Heights LLC',
+    location: 'Dubai Marina',
+    type: 'Residential',
+    overallPct: 72,
+    status: 'active',
+    delayDays: 0,
+    unitsSold: 287,
+    unitsTotal: 342,
+    budgetUsed: 'AED 594M',
+    budgetTotal: 'AED 823.4M',
+    billsPending: 'AED 8.4M',
+    alertCount: 1,
+    alertBadges: ['warning'],
+    startDate: '01 Jun 2022',
+    plannedCompletion: 'Q4 2025',
+    milestones: [
+      { name: 'Foundation', type: 'foundation', status: 'completed', pct: 100 },
+      { name: 'Structure', type: 'structure', status: 'completed', pct: 100 },
+      { name: 'MEP', type: 'mep', status: 'in_progress', pct: 68 },
+      { name: 'Finishing', type: 'finishing', status: 'not_started', pct: 0 },
+      { name: 'Handover', type: 'handover', status: 'not_started', pct: 0 },
+    ],
+  },
+  {
+    id: 's2',
+    name: 'Palm View Residences',
+    entity: 'Palm View Residences',
+    location: 'Palm Jumeirah',
+    type: 'Residential',
+    overallPct: 58,
+    status: 'delayed',
+    delayDays: 45,
+    unitsSold: 164,
+    unitsTotal: 218,
+    budgetUsed: 'AED 412M',
+    budgetTotal: 'AED 640.2M',
+    billsPending: 'AED 18.2M',
+    alertCount: 4,
+    alertBadges: ['critical', 'critical', 'warning', 'warning'],
+    startDate: '01 Aug 2022',
+    plannedCompletion: 'Q2 2026 (was Q4 2025)',
+    milestones: [
+      { name: 'Foundation', type: 'foundation', status: 'completed', pct: 100 },
+      { name: 'Structure', type: 'structure', status: 'completed', pct: 100 },
+      { name: 'MEP', type: 'mep', status: 'critical', pct: 34 },
+      { name: 'Finishing', type: 'finishing', status: 'not_started', pct: 0 },
+      { name: 'Handover', type: 'handover', status: 'not_started', pct: 0 },
+    ],
+  },
+  {
+    id: 's3',
+    name: 'Desert Oasis Villas',
+    entity: 'Desert Oasis Fund I',
+    location: 'Dubai Hills',
+    type: 'Residential',
+    overallPct: 61,
+    status: 'active',
+    delayDays: 0,
+    unitsSold: 98,
+    unitsTotal: 156,
+    budgetUsed: 'AED 312M',
+    budgetTotal: 'AED 512.8M',
+    billsPending: 'AED 12.4M',
+    alertCount: 1,
+    alertBadges: ['warning'],
+    startDate: '01 Mar 2023',
+    plannedCompletion: 'Q1 2026',
+    milestones: [
+      { name: 'Foundation', type: 'foundation', status: 'completed', pct: 100 },
+      { name: 'Structure', type: 'structure', status: 'in_progress', pct: 78 },
+      { name: 'MEP', type: 'mep', status: 'not_started', pct: 0 },
+      { name: 'Finishing', type: 'finishing', status: 'not_started', pct: 0 },
+      { name: 'Handover', type: 'handover', status: 'not_started', pct: 0 },
+    ],
+  },
+];
+
+export interface ContractorRow {
+  id: string;
+  contractorName: string;
+  project: string;
+  contractValue: string;
+  certifiedPct: number;
+  claimedPct: number;
+  variance: number;
+  billsSubmitted: string;
+  billsApproved: string;
+  performanceScore: number;
+  status: 'healthy' | 'flag' | 'critical';
+}
+
+export const contractorRows: ContractorRow[] = [
+  { id: 'c1', contractorName: 'Gulf MEP Solutions', project: 'Palm View Residences', contractValue: 'AED 142.0M', certifiedPct: 34, claimedPct: 52, variance: 18, billsSubmitted: 'AED 73.8M', billsApproved: 'AED 48.3M', performanceScore: 3, status: 'critical' },
+  { id: 'c2', contractorName: 'Al Futtaim MEP', project: 'Marina Heights Towers', contractValue: 'AED 120.0M', certifiedPct: 64, claimedPct: 71, variance: 7, billsSubmitted: 'AED 85.2M', billsApproved: 'AED 76.8M', performanceScore: 6, status: 'flag' },
+  { id: 'c3', contractorName: 'Arabtec Construction', project: 'Marina Heights Towers', contractValue: 'AED 420.0M', certifiedPct: 88, claimedPct: 88, variance: 0, billsSubmitted: 'AED 369.6M', billsApproved: 'AED 369.6M', performanceScore: 9, status: 'healthy' },
+  { id: 'c4', contractorName: 'UAE Steel LLC', project: 'Desert Oasis Villas', contractValue: 'AED 86.0M', certifiedPct: 78, claimedPct: 76, variance: -2, billsSubmitted: 'AED 67.1M', billsApproved: 'AED 65.4M', performanceScore: 8, status: 'healthy' },
+  { id: 'c5', contractorName: 'Gulf Elevators', project: 'Marina Heights Towers', contractValue: 'AED 48.0M', certifiedPct: 72, claimedPct: 74, variance: 2, billsSubmitted: 'AED 35.5M', billsApproved: 'AED 34.6M', performanceScore: 7, status: 'healthy' },
+  { id: 'c6', contractorName: 'Al Masaood Power', project: 'Palm View Residences', contractValue: 'AED 64.0M', certifiedPct: 48, claimedPct: 50, variance: 2, billsSubmitted: 'AED 32.0M', billsApproved: 'AED 30.7M', performanceScore: 6, status: 'healthy' },
+  { id: 'c7', contractorName: 'Transguard Security', project: 'All Projects', contractValue: 'AED 18.0M', certifiedPct: 100, claimedPct: 100, variance: 0, billsSubmitted: 'AED 18.0M', billsApproved: 'AED 18.0M', performanceScore: 8, status: 'healthy' },
+  { id: 'c8', contractorName: 'Downtown Civil Works', project: 'Desert Oasis Villas', contractValue: 'AED 94.0M', certifiedPct: 61, claimedPct: 64, variance: 3, billsSubmitted: 'AED 60.2M', billsApproved: 'AED 57.3M', performanceScore: 7, status: 'healthy' },
+];
+
+export interface BudgetRow {
+  siteId: string;
+  projectName: string;
+  category: string;
+  budgeted: string;
+  committed: string;
+  actualSpent: string;
+  forecastFinal: string;
+  variance: string;
+  status: 'green' | 'amber' | 'red';
+}
+
+export const budgetRows: BudgetRow[] = [
+  { siteId: 's1', projectName: 'Marina Heights', category: 'Land', budgeted: '180.0', committed: '180.0', actualSpent: '180.0', forecastFinal: '180.0', variance: '0.0', status: 'green' },
+  { siteId: 's1', projectName: 'Marina Heights', category: 'Civil', budgeted: '380.0', committed: '380.0', actualSpent: '372.0', forecastFinal: '378.0', variance: '-2.0', status: 'green' },
+  { siteId: 's1', projectName: 'Marina Heights', category: 'MEP', budgeted: '210.0', committed: '210.0', actualSpent: '198.0', forecastFinal: '208.0', variance: '-2.0', status: 'green' },
+  { siteId: 's1', projectName: 'Marina Heights', category: 'Finishing', budgeted: '180.0', committed: '165.0', actualSpent: '0.0', forecastFinal: '185.0', variance: '+5.0', status: 'amber' },
+  { siteId: 's1', projectName: 'Marina Heights', category: 'Professional Fees', budgeted: '73.4', committed: '73.4', actualSpent: '44.0', forecastFinal: '73.4', variance: '0.0', status: 'green' },
+  { siteId: 's2', projectName: 'Palm View', category: 'Land', budgeted: '160.0', committed: '160.0', actualSpent: '160.0', forecastFinal: '160.0', variance: '0.0', status: 'green' },
+  { siteId: 's2', projectName: 'Palm View', category: 'Civil', budgeted: '290.0', committed: '290.0', actualSpent: '285.0', forecastFinal: '295.0', variance: '+5.0', status: 'amber' },
+  { siteId: 's2', projectName: 'Palm View', category: 'MEP', budgeted: '160.0', committed: '160.0', actualSpent: '145.0', forecastFinal: '188.0', variance: '+28.0', status: 'red' },
+  { siteId: 's2', projectName: 'Palm View', category: 'Finishing', budgeted: '30.2', committed: '0.0', actualSpent: '0.0', forecastFinal: '35.0', variance: '+4.8', status: 'amber' },
+  { siteId: 's3', projectName: 'Desert Oasis', category: 'Land', budgeted: '120.0', committed: '120.0', actualSpent: '120.0', forecastFinal: '120.0', variance: '0.0', status: 'green' },
+  { siteId: 's3', projectName: 'Desert Oasis', category: 'Civil', budgeted: '220.0', committed: '220.0', actualSpent: '172.0', forecastFinal: '225.0', variance: '+5.0', status: 'amber' },
+  { siteId: 's3', projectName: 'Desert Oasis', category: 'MEP', budgeted: '98.0', committed: '0.0', actualSpent: '0.0', forecastFinal: '98.0', variance: '0.0', status: 'green' },
+  { siteId: 's3', projectName: 'Desert Oasis', category: 'Contingency', budgeted: '50.0', committed: '20.0', actualSpent: '20.0', forecastFinal: '65.0', variance: '+15.0', status: 'red' },
+  { siteId: 's3', projectName: 'Desert Oasis', category: 'Professional Fees', budgeted: '24.8', committed: '24.8', actualSpent: '0.0', forecastFinal: '24.8', variance: '0.0', status: 'green' },
+];
+
+export interface MismatchRow {
+  id: string;
+  unitNo: string;
+  floor: string;
+  project: string;
+  soldDate: string;
+  buyer: string;
+  constructionStatus: string;
+  handoverDue: string;
+  handoverForecast: string;
+  delayDays: number;
+}
+
+export const mismatchRows: MismatchRow[] = [
+  { id: 'm1', unitNo: 'Villa 42', floor: 'N/A', project: 'Palm View Residences', soldDate: '12 Jan 2024', buyer: 'Al Maktoum Family Trust', constructionStatus: 'MEP not started', handoverDue: 'Q4 2025', handoverForecast: 'Q1 2027', delayDays: 180 },
+  { id: 'm2', unitNo: 'Unit 1402', floor: '14', project: 'Palm View Residences', soldDate: '03 Feb 2024', buyer: 'Gulf Capital Partners', constructionStatus: 'MEP 12%', handoverDue: 'Q4 2025', handoverForecast: 'Q1 2027', delayDays: 165 },
+  { id: 'm3', unitNo: 'Unit 0804', floor: '8', project: 'Palm View Residences', soldDate: '18 Feb 2024', buyer: 'Emirates NBD Private', constructionStatus: 'MEP 18%', handoverDue: 'Q4 2025', handoverForecast: 'Q4 2026', delayDays: 120 },
+  { id: 'm4', unitNo: 'Unit 1201', floor: '12', project: 'Palm View Residences', soldDate: '25 Feb 2024', buyer: 'Al Habtoor Family Office', constructionStatus: 'MEP 22%', handoverDue: 'Q4 2025', handoverForecast: 'Q4 2026', delayDays: 110 },
+  { id: 'm5', unitNo: 'Villa 15', floor: 'N/A', project: 'Palm View Residences', soldDate: '01 Mar 2024', buyer: 'Majid Al Futtaim Ventures', constructionStatus: 'Structure 90%', handoverDue: 'Q4 2025', handoverForecast: 'Q1 2027', delayDays: 95 },
+  { id: 'm6', unitNo: 'Unit 0502', floor: '5', project: 'Palm View Residences', soldDate: '10 Mar 2024', buyer: 'Riyadh Wealth Partners', constructionStatus: 'MEP 28%', handoverDue: 'Q4 2025', handoverForecast: 'Q1 2027', delayDays: 90 },
+  { id: 'm7', unitNo: 'Unit 1803', floor: '18', project: 'Palm View Residences', soldDate: '15 Mar 2024', buyer: 'Mubadala Real Estate', constructionStatus: 'MEP 30%', handoverDue: 'Q4 2025', handoverForecast: 'Q4 2026', delayDays: 75 },
+  { id: 'm8', unitNo: 'Villa 08', floor: 'N/A', project: 'Palm View Residences', soldDate: '20 Mar 2024', buyer: 'Al Futtaim Family Office', constructionStatus: 'Structure 95%', handoverDue: 'Q4 2025', handoverForecast: 'Q1 2027', delayDays: 70 },
+];
+
+export interface ConstructionComplianceItem {
+  date: string;
+  label: string;
+  project: string;
+  color: 'red' | 'amber' | 'grey';
+}
+
+export const constructionCompliance: ConstructionComplianceItem[] = [
+  { date: 'TODAY', label: 'Escrow reconciliation overdue (32 days)', project: 'Palm View', color: 'red' },
+  { date: '15 May', label: 'QPR deadline — Palm View RERA', project: 'Palm View', color: 'amber' },
+  { date: '22 May', label: 'Escrow Account Reconciliation', project: 'Palm View', color: 'amber' },
+  { date: '28 May', label: 'DLD construction progress submission', project: 'Marina Heights', color: 'amber' },
+  { date: '10 Jun', label: 'DLD construction progress submission', project: 'Desert Oasis', color: 'grey' },
+  { date: '30 Jun', label: 'Handover notice — Marina Heights Q4 2025', project: 'Marina Heights', color: 'grey' },
+  { date: '15 Aug', label: 'QPR deadline — Palm View RERA', project: 'Palm View', color: 'grey' },
+  { date: '15 Aug', label: 'IFRS 15 Q2 filing (construction-linked)', project: 'All Projects', color: 'grey' },
+];
+
+export interface ConstructionAiInsight {
+  level: 'critical' | 'warning' | 'opportunity';
+  icon: string;
+  title: string;
+  body: string;
+  buttonText: string;
+}
+
+export const constructionAiInsights: ConstructionAiInsight[] = [
+  {
+    level: 'critical',
+    icon: '🚨',
+    title: 'Palm View MEP Payment Mismatch — AED 18.2M',
+    body: 'Gulf MEP Solutions has certified 34% but claimed 52% — AED 18.2M payment mismatch detected. Do not release payment pending re-certification. Overbilling pattern detected across 3 invoices.',
+    buttonText: 'Review Now →',
+  },
+  {
+    level: 'warning',
+    icon: '⚠️',
+    title: 'Desert Oasis Cash Pressure — Week of 30 Jun 2026',
+    body: 'Capital Call of AED 180M coincides with AED 45M contractor payments. Net cash requirement AED 225M vs projected position AED 186M. Recommend staggering non-critical contractor payments by 2 weeks.',
+    buttonText: 'View Cash Flow →',
+  },
+  {
+    level: 'opportunity',
+    icon: '💡',
+    title: 'Marina Heights 4% Ahead of Schedule',
+    body: 'MEP completion could finish 3 weeks early. Early MEP completion could unlock IFRS 15 revenue recognition of AED 86M in Q3 2026 — coordinate with finance team to align POB milestone.',
+    buttonText: 'View Project →',
+  },
+];
+
+export const budgetTotals = {
+  budgeted: '2,130.2',
+  committed: '1,980.0',
+  actualSpent: '1,436.0',
+  forecastFinal: '2,188.2',
+  variance: '+58.0',
+};

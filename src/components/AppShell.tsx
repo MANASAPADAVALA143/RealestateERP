@@ -5,6 +5,7 @@ import {
   Zap,
   BarChart2,
   Building2,
+  HardHat,
   TrendingUp,
   Layers,
   FileText,
@@ -22,6 +23,7 @@ const navItems = [
   { label: 'Command Center', icon: Zap, route: '/command-center' },
   { label: 'Financial Overview', icon: BarChart2, route: '/financial-overview' },
   { label: 'Projects', icon: Building2, route: '/projects' },
+  { label: 'Construction Control Tower', icon: HardHat, route: '/construction' },
   { label: 'Cash Flow', icon: TrendingUp, route: null },
   { label: 'Assets', icon: Layers, route: null },
   { label: 'Liabilities', icon: FileText, route: null },
@@ -35,6 +37,7 @@ const pageTitles: Record<string, string> = {
   '/command-center': 'Command Center',
   '/financial-overview': 'Financial Overview',
   '/projects': 'Projects',
+  '/construction': 'Construction Control Tower',
   '/fund-management': 'Fund Management',
   '/ifrs': 'IFRS Hub',
 };

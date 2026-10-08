@@ -7,6 +7,7 @@ import { IfrsHubPage } from '@/pages/IfrsHubPage';
 import { ProjectsPage } from '@/pages/ProjectsPage';
 import { CommandCenterPage } from '@/pages/CommandCenterPage';
 import { FinancialOverviewPage } from '@/pages/FinancialOverviewPage';
+import { ConstructionControlTowerPage } from '@/pages/ConstructionControlTowerPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/command-center" element={<CommandCenterPage />} />
         <Route path="/financial-overview" element={<FinancialOverviewPage />} />
+        <Route path="/construction" element={<ConstructionControlTowerPage />} />
         <Route path="/fund-management" element={<FundManagementPage />} />
         <Route path="/ifrs" element={<IfrsHubPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
