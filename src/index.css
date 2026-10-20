@@ -1,45 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-  font-family: 'Inter', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  margin: 0;
-  background: #FAF7F0;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer base {
+  html {
+    scroll-behavior: smooth;
   }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+
+  body {
+    @apply bg-ivory font-sans text-navy antialiased;
+    background-image: radial-gradient(rgba(11, 29, 51, 0.045) 0.7px, transparent 0.7px);
+    background-size: 18px 18px;
   }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+
+  ::selection {
+    background: #c79a2b;
+    color: #0b1d33;
+  }
+}
+
+@layer components {
+  .data-table {
+    @apply w-full border-collapse text-left text-sm;
+  }
+
+  .data-table thead {
+    @apply bg-navy text-[11px] uppercase tracking-[0.14em] text-ivory/75;
+  }
+
+  .data-table th {
+    @apply whitespace-nowrap px-4 py-3 font-medium;
+  }
+
+  .data-table td {
+    @apply px-4 py-3 align-middle text-navy;
+  }
+
+  .data-table tbody tr {
+    @apply border-b border-navy/5 transition-colors hover:bg-ivory;
+  }
+
+  .data-table tfoot td {
+    @apply bg-ivory font-semibold;
   }
 }

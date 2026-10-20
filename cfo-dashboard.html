@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gnanova Group CFO</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy:#0B1D33;
+    --navy2:#112340;
+    --navy3:#1C3352;
+    --gold:#C79A2B;
+    --gold-lt:#E8B84B;
+    --gold-dim:#8A6A1A;
+    --ivory:#F8F6F0;
+    --mist:#EAE8E1;
+    --bg:#F4F2EC;
+    --surface:#FFFFFF;
+    --border:#DDD9CE;
+    --fg:#0B1D33;
+    --fg-soft:#5A6478;
+    --fg-muted:#8A92A3;
+    --green:#1A6B44;
+    --green-lt:#E8F5EE;
+    --red:#C0392B;
+    --red-lt:#FDECEA;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --navy:#07111E;
+      --navy2:#0C1A2C;
+      --navy3:#1A3050;
+      --gold:#E0B04A;
+      --gold-lt:#F0CC74;
+      --gold-dim:#C79A2B;
+      --ivory:#E7E2D6;
+      --mist:#1A2838;
+      --bg:#070E18;
+      --surface:#101C2E;
+      --border:#2A3C54;
+      --fg:#F3F0E8;
+      --fg-soft:#B7C2D0;
+      --fg-muted:#8E9AAB;
+      --green:#3DDC97;
+      --green-lt:#102E24;
+      --red:#F07167;
+      --red-lt:#3A1A18;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --navy:#07111E;
+    --navy2:#0C1A2C;
+    --navy3:#1A3050;
+    --gold:#E0B04A;
+    --gold-lt:#F0CC74;
+    --gold-dim:#C79A2B;
+    --ivory:#E7E2D6;
+    --mist:#1A2838;
+    --bg:#070E18;
+    --surface:#101C2E;
+    --border:#2A3C54;
+    --fg:#F3F0E8;
+    --fg-soft:#B7C2D0;
+    --fg-muted:#8E9AAB;
+    --green:#3DDC97;
+    --green-lt:#102E24;
+    --red:#F07167;
+    --red-lt:#3A1A18;
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    display: flex;
+    overflow: hidden;
+    height: 100vh;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  button, select { font-family: inherit; }
+  ::selection { background: var(--gold); color: var(--navy); }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  .sidebar {
+    width: 220px;
+    flex: 0 0 220px;
+    background: var(--navy);
+    color: var(--ivory);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 16px 8px;
+  }
+  .bolt {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--gold);
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+  }
+  .brand-name {
+    font-family: "Playfair Display", serif;
+    font-weight: 900;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--ivory);
+  }
+  .brand-sub {
+    margin-top: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .side-nav { flex: 1; overflow-y: auto; padding: 8px 0 20px; }
+  .nav-section {
+    margin: 16px 20px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-lt);
+    opacity: 0.8;
+  }
+  .nav-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: calc(100% - 16px);
+    margin: 2px 8px;
+    padding: 9px 12px;
+    border: 0;
+    border-left: 3px solid transparent;
+    background: transparent;
+    color: var(--ivory);
+    font-size: 13.5px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+  }
+  .nav-btn svg { flex: 0 0 auto; opacity: 0.9; }
+  .nav-btn:hover:not(.active) { background: rgba(255,255,255,0.05); }
+  .nav-btn.active {
+    color: var(--gold-lt);
+    border-left-color: var(--gold);
+    background: color-mix(in srgb, var(--gold) 18%, transparent);
+    font-weight: 600;
+  }
+  .badge {
+    margin-left: auto;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+    min-height: 0;
+  }
+  .topbar {
+    height: 56px;
+    flex: 0 0 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 0 28px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .titles { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    line-height: 1.2;
+  }
+  h1 {
+    margin: 0;
+    font-family: "Playfair Display", serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .top-actions { display: flex; align-items: center; gap: 12px; }
+  .pills {
+    display: flex;
+    background: var(--mist);
+    border-radius: 999px;
+    padding: 3px;
+  }
+  .pills button {
+    border: 0;
+    background: transparent;
+    color: var(--fg-soft);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .pills button.active { background: var(--gold); color: var(--navy); }
+  select.year {
+    height: 34px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--fg);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 0 12px;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--navy);
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex: 0 0 36px;
+  }
+
+  .content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .section { display: none; }
+  .section.visible { display: contents; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  h2 {
+    margin: 0 0 14px;
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .kpi-grid, .ratio-grid, .cards-3, .cards-2 { display: grid; gap: 16px; }
+  .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  .kpi-grid.cols-4, .ratio-grid { grid-template-columns: repeat(4, 1fr); }
+  .cards-3 { grid-template-columns: repeat(3, 1fr); }
+  .cards-2 { grid-template-columns: repeat(2, 1fr); }
+  .split { display: grid; grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr); gap: 16px; }
+  .split.even { grid-template-columns: 1fr 1fr; }
+
+  .kpi, .ratio {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--gold);
+    border-radius: 12px;
+    padding: 16px 16px 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: 132px;
+  }
+  .kpi.tone-navy { border-top-color: var(--navy3); }
+  .kpi.tone-red { border-top-color: var(--red); }
+  .kpi-label, .ratio-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .kpi-value, .ratio strong {
+    margin-top: 8px;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .ratio strong { font-size: 22px; color: var(--fg); }
+  .ratio strong.good { color: var(--green); }
+  .ratio strong.bad { color: var(--red); }
+  .kpi-sub, .ratio-note { margin-top: 6px; font-size: 12px; color: var(--fg-soft); }
+  .kpi-sub:empty, .ratio-note:empty { display: none; }
+  .kpi-delta { margin-top: auto; padding-top: 10px; font-size: 12px; font-weight: 700; }
+  .kpi-delta.good { color: var(--green); }
+  .kpi-delta.bad { color: var(--red); }
+
+  .chart-box { position: relative; height: 260px; }
+  .legend { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .leg {
+    display: grid;
+    grid-template-columns: 10px 1fr auto auto;
+    gap: 8px;
+    align-items: center;
+    font-size: 12.5px;
+  }
+  .leg i { width: 10px; height: 10px; border-radius: 2px; border: 1px solid var(--border); }
+  .leg b { font-variant-numeric: tabular-nums; }
+  .leg span.amt { color: var(--fg-soft); font-variant-numeric: tabular-nums; }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+  th {
+    text-align: right;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    font-weight: 600;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td { padding: 11px 12px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  td small { display: block; color: var(--fg-muted); font-weight: 500; font-size: 11px; white-space: normal; }
+  tr.group td {
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 11px;
+    border-bottom: none;
+    padding-top: 18px;
+    background: transparent;
+  }
+  tr.indent td { color: var(--fg-soft); }
+  tr.indent td:first-child { padding-left: 28px; }
+  tr.indent td.neg { color: var(--red); }
+  tr.indent td.pos { color: var(--green); }
+  tr.subtotal td {
+    background: color-mix(in srgb, var(--gold) 14%, var(--surface));
+    font-weight: 700;
+    color: var(--fg);
+  }
+  tr.subtotal td.neg { color: var(--red); }
+  tr.subtotal td.pos { color: var(--green); }
+  tr.total td { background: var(--navy); color: var(--ivory); font-weight: 700; }
+  tr.total td.neg { color: #F6B2AC; }
+  tr.total td.pos { color: #9BE7C4; }
+  td.neg { color: var(--red); font-weight: 700; }
+  td.pos { color: var(--green); font-weight: 700; }
+  table.year-table { min-width: 760px; }
+  table.wide { min-width: 920px; }
+  table.year-table td.is-year,
+  table.year-table th.is-year { background: color-mix(in srgb, var(--gold) 16%, var(--surface)); }
+  table.year-table tr.subtotal td.is-year { background: color-mix(in srgb, var(--gold) 28%, var(--surface)); }
+  table.year-table tr.total td.is-year { background: color-mix(in srgb, var(--gold) 32%, var(--navy)); }
+  table.summary-table tbody tr.is-year td { background: color-mix(in srgb, var(--gold) 16%, var(--surface)); }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--navy);
+    color: var(--ivory);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .tag.ok { background: var(--green-lt); color: var(--green); }
+  .tag.gold { background: color-mix(in srgb, var(--gold) 24%, var(--surface)); color: var(--gold-dim); }
+  .tag.watch { background: var(--red); color: #fff; }
+
+  .entity-card, .loan-card, .prop-card { display: flex; flex-direction: column; gap: 12px; }
+  .card-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .card-head h3 { margin: 0; font-size: 16px; font-weight: 700; }
+  .card-head p, .muted { margin: 4px 0 0; color: var(--fg-soft); font-size: 13px; }
+  .lender { color: var(--fg-soft); font-size: 12.5px; font-weight: 600; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 10px; }
+  .stats span {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .stats b { display: block; margin-top: 3px; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stats b.good { color: var(--green); }
+  .meter { height: 8px; background: var(--mist); border-radius: 99px; overflow: hidden; }
+  .meter > span { display: block; height: 100%; width: 0; background: var(--fg); border-radius: 99px; }
+  .meter.occ > span { background: var(--green); }
+  .meter.occ > span.gold { background: var(--gold); }
+  .meter-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--fg-soft); font-weight: 600; }
+
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); }
+  .tab {
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: var(--fg-soft);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 16px;
+    cursor: pointer;
+    margin-bottom: -1px;
+  }
+  .tab.active { color: var(--gold-dim); border-bottom-color: var(--gold); }
+  .fs-panel { display: none; }
+  .fs-panel.active { display: block; }
+  .unit { margin: 0 0 8px; color: var(--fg-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .alert-list { display: flex; flex-direction: column; gap: 12px; }
+  .alert {
+    display: flex;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .alert.warn {
+    background: color-mix(in srgb, var(--gold) 16%, var(--surface));
+    border-color: color-mix(in srgb, var(--gold) 48%, var(--border));
+  }
+  .alert.ok {
+    background: var(--green-lt);
+    border-color: color-mix(in srgb, var(--green) 35%, var(--border));
+  }
+  .alert h3 { margin: 0 0 4px; font-size: 15px; font-weight: 700; }
+  .alert p { margin: 0; color: var(--fg-soft); font-size: 13.5px; }
+  .alert-ico { font-size: 18px; line-height: 1.3; }
+  .appr-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 4px; }
+  .appr-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .appr-actions button {
+    border: 0;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .appr-actions .yes { background: var(--green); color: #fff; }
+  .appr-actions .no { background: var(--red); color: #fff; }
+  .appr-actions button:disabled { opacity: 0.4; cursor: default; }
+  .appr[data-state="approved"] { box-shadow: inset 3px 0 0 var(--green); }
+  .appr[data-state="rejected"] { box-shadow: inset 3px 0 0 var(--red); }
+  .queue-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .queue-filters button {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--fg-soft);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .queue-filters button.active { background: var(--navy); color: var(--ivory); border-color: var(--navy); }
+
+  @media (max-width: 1100px) {
+    .kpi-grid, .kpi-grid.cols-4, .ratio-grid, .cards-3 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .sidebar { width: 60px; flex-basis: 60px; }
+    .brand { justify-content: center; padding: 16px 8px; }
+    .brand-text, .nav-label, .nav-section { display: none; }
+    .nav-btn { justify-content: center; margin: 4px 6px; padding: 10px 0; }
+    .badge {
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      width: 8px;
+      min-width: 8px;
+      height: 8px;
+      padding: 0;
+      font-size: 0;
+    }
+    .split, .split.even { grid-template-columns: 1fr; }
+    .topbar { padding: 0 16px; }
+    .content { padding: 16px; }
+  }
+  @media (max-width: 720px) {
+    .cards-2, .cards-3 { grid-template-columns: 1fr; }
+    .topbar { height: auto; flex-basis: auto; min-height: 56px; flex-wrap: wrap; padding: 10px 16px; }
+    .pills button { padding: 6px 8px; }
+  }
+  @media (max-width: 640px) {
+    .kpi-grid, .kpi-grid.cols-4, .ratio-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="bolt" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#0B1D33" d="M13 2 4 14h7l-1 8 10-14h-7V2z"/></svg>
+    </div>
+    <div class="brand-text">
+      <div class="brand-name">Gnanova</div>
+      <div class="brand-sub">Group CFO</div>
+    </div>
+  </div>
+  <nav class="side-nav" aria-label="Primary">
+    <div class="nav-section">Command</div>
+    <button type="button" class="nav-btn active" data-nav="org" aria-current="page" aria-label="Org Dashboard" onclick="nav('org')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg>
+      <span class="nav-label">Org Dashboard</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="companies" aria-label="Companies" onclick="nav('companies')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M6 21V5h7v16M13 21V9h5v12"/><path d="M8.5 8h2M8.5 12h2M8.5 16h2M15.5 12h2M15.5 16h2"/></svg>
+      <span class="nav-label">Companies</span>
+    </button>
+    <div class="nav-section">Manage</div>
+    <button type="button" class="nav-btn" data-nav="ownership" aria-label="Ownership" onclick="nav('ownership')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="8" r="2.2"/><circle cx="18" cy="8" r="2.2"/><circle cx="12" cy="16" r="2.2"/><path d="M8 9.2 10.6 14M16 9.2 13.4 14"/></svg>
+      <span class="nav-label">Ownership</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="loans" aria-label="Loans and Notes" onclick="nav('loans')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10 12 4l9 6M5 10v8h14v-8"/><path d="M3 18h18M10 18v-4h4v4"/></svg>
+      <span class="nav-label">Loans &amp; Notes</span>
+    </button>
+    <div class="nav-section">Finance</div>
+    <button type="button" class="nav-btn" data-nav="statements" aria-label="Financial Statements" onclick="nav('statements')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M8 13h8M8 17h6"/></svg>
+      <span class="nav-label">Financial Statements</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="snapshot" aria-label="Financial Snapshot" onclick="nav('snapshot')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19h16M7 16v-4M12 16V8M17 16v-6"/></svg>
+      <span class="nav-label">Financial Snapshot</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="assets" aria-label="Assets" onclick="nav('assets')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10l8-6 8 6v10"/><path d="M9 20v-6h6v6"/></svg>
+      <span class="nav-label">Assets</span>
+    </button>
+    <div class="nav-section">Feature OS</div>
+    <button type="button" class="nav-btn" data-nav="sales" aria-label="Sales Pipeline" onclick="nav('sales')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16l-4 6v5l-4 2v-7L4 4z"/></svg>
+      <span class="nav-label">Sales Pipeline</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="procurement" aria-label="Procurement" onclick="nav('procurement')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h15l-1.5 9h-12L5 4H3"/><circle cx="9" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/></svg>
+      <span class="nav-label">Procurement</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="inventory" aria-label="Inventory" onclick="nav('inventory')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg>
+      <span class="nav-label">Inventory</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="hr" aria-label="HR and Payroll" onclick="nav('hr')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="2.4"/><circle cx="16" cy="9" r="2"/><path d="M4 19c.6-3 2.6-4.5 5-4.5S13.4 16 14 19"/><path d="M14 14.6c1.4-.4 2.8-.2 4 .7.8 1.4 1.2 2.6 1.4 3.7"/></svg>
+      <span class="nav-label">HR &amp; Payroll</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="capex" aria-label="Projects and Capex" onclick="nav('capex')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h16M6 20V10l6-4 6 4v10"/><path d="M9 20v-4h6v4M12 6V3"/></svg>
+      <span class="nav-label">Projects &amp; Capex</span>
+    </button>
+    <button type="button" class="nav-btn" data-nav="approvals" aria-label="Approvals Queue, 7 pending" onclick="nav('approvals')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+      <span class="nav-label">Approvals Queue</span>
+      <span class="badge" id="apprBadge">7</span>
+    </button>
+    <div class="nav-section">System</div>
+    <button type="button" class="nav-btn" data-nav="alerts" aria-label="Alerts, 3 open" onclick="nav('alerts')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 16V10a6 6 0 1 1 12 0v6l1.5 2H4.5L6 16z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>
+      <span class="nav-label">Alerts</span>
+      <span class="badge">3</span>
+    </button>
+  </nav>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="titles">
+      <div class="eyebrow" id="eyebrow">Command</div>
+      <h1 id="pageTitle">Org Dashboard</h1>
+    </div>
+    <div class="top-actions">
+      <div class="pills" role="group" aria-label="Period">
+        <button type="button" class="active" onclick="setPeriod('Y', this)">Yearly</button>
+        <button type="button" onclick="setPeriod('Q', this)">Quarterly</button>
+        <button type="button" onclick="setPeriod('M', this)">Monthly</button>
+      </div>
+      <label class="sr-only" for="yearSel">Fiscal year</label>
+      <select id="yearSel" class="year" onchange="setYear(this.value)">
+        <option value="FY2026">FY2026</option>
+        <option value="FY2025">FY2025</option>
+        <option value="FY2024">FY2024</option>
+      </select>
+      <div class="avatar" title="Agarwal Group">AG</div>
+    </div>
+  </header>
+
+  <div class="content">
+    <div id="sec-org" class="section visible">
+      <div class="kpi-grid">
+        <article class="kpi" id="kpi-rev">
+          <div class="kpi-label">Total Revenue</div>
+          <div class="kpi-value">₹234.00 Cr</div>
+          <div class="kpi-sub">FY26 across 6 entities</div>
+          <div class="kpi-delta bad">▼ 8.6% vs FY25</div>
+        </article>
+        <article class="kpi" id="kpi-ebitda">
+          <div class="kpi-label">EBITDA Margin</div>
+          <div class="kpi-value">31.7%</div>
+          <div class="kpi-sub">₹74.18 Cr consolidated</div>
+          <div class="kpi-delta good">▲ 2.1 pp</div>
+        </article>
+        <article class="kpi tone-navy" id="kpi-assets">
+          <div class="kpi-label">Total Assets</div>
+          <div class="kpi-value">₹893.00 Cr</div>
+          <div class="kpi-sub"></div>
+          <div class="kpi-delta good">▲ 4.2%</div>
+        </article>
+        <article class="kpi tone-red" id="kpi-debt">
+          <div class="kpi-label">Total Debt</div>
+          <div class="kpi-value">₹533.00 Cr</div>
+          <div class="kpi-sub"></div>
+          <div class="kpi-delta bad">▲ 3.1%</div>
+        </article>
+        <article class="kpi" id="kpi-networth">
+          <div class="kpi-label">Net Worth</div>
+          <div class="kpi-value">₹360.00 Cr</div>
+          <div class="kpi-sub"></div>
+          <div class="kpi-delta good">▲ 6.8%</div>
+        </article>
+        <article class="kpi" id="kpi-cash">
+          <div class="kpi-label">Cash</div>
+          <div class="kpi-value">₹43.90 Cr</div>
+          <div class="kpi-sub"></div>
+          <div class="kpi-delta good">▲ ₹3.2 Cr</div>
+        </article>
+      </div>
+
+      <div class="split">
+        <section class="card">
+          <h2 id="qrevTitle">Quarterly Revenue</h2>
+          <div class="chart-box"><canvas id="chartQRev"></canvas></div>
+        </section>
+        <section class="card">
+          <h2>Revenue Mix</h2>
+          <div class="chart-box"><canvas id="chartDonut"></canvas></div>
+          <div class="legend" id="donutLegend">
+            <div class="leg"><i style="background:#0B1D33"></i><b>ARL</b><span class="amt">₹68.4 Cr</span><b>29.2%</b></div>
+            <div class="leg"><i style="background:#1C3352"></i><b>PCS</b><span class="amt">₹52.1 Cr</span><b>22.3%</b></div>
+            <div class="leg"><i style="background:#C79A2B"></i><b>LBH</b><span class="amt">₹41.8 Cr</span><b>17.9%</b></div>
+            <div class="leg"><i style="background:#E8B84B"></i><b>AHS</b><span class="amt">₹38.9 Cr</span><b>16.6%</b></div>
+            <div class="leg"><i style="background:#4A7B9D"></i><b>RHC</b><span class="amt">₹21.4 Cr</span><b>9.1%</b></div>
+            <div class="leg"><i style="background:#8A9AB8"></i><b>IDT</b><span class="amt">₹11.4 Cr</span><b>4.9%</b></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card">
+        <h2>Company Performance</h2>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead>
+              <tr>
+                <th>Entity</th><th>Ticker</th><th>Revenue</th><th>EBITDA</th><th>EBITDA%</th><th>Total Debt</th><th>D/E</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>ARL<small>Agarwal Realty Ltd</small></td><td><span class="tag">ARL</span></td><td>₹68.4 Cr</td><td>₹23.1 Cr</td><td>33.8%</td><td>₹142 Cr</td><td>1.8x</td><td><span class="tag ok">Healthy</span></td></tr>
+              <tr><td>PCS<small>Prime Commercial SPV</small></td><td><span class="tag">PCS</span></td><td>₹52.1 Cr</td><td>₹16.4 Cr</td><td>31.5%</td><td>₹98 Cr</td><td>2.1x</td><td><span class="tag ok">Healthy</span></td></tr>
+              <tr><td>LBH<small>Land Bank Holdco</small></td><td><span class="tag">LBH</span></td><td>₹41.8 Cr</td><td>₹11.2 Cr</td><td>26.8%</td><td>₹121 Cr</td><td>3.4x</td><td><span class="tag gold">Watch</span></td></tr>
+              <tr><td>AHS<small>Affordable Housing SPV</small></td><td><span class="tag">AHS</span></td><td>₹38.9 Cr</td><td>₹12.8 Cr</td><td>32.9%</td><td>₹86 Cr</td><td>2.6x</td><td><span class="tag ok">Healthy</span></td></tr>
+              <tr><td>RHC<small>Retail &amp; Hospitality Co</small></td><td><span class="tag">RHC</span></td><td>₹21.4 Cr</td><td>₹5.9 Cr</td><td>27.6%</td><td>₹55 Cr</td><td>4.1x</td><td><span class="tag gold">Watch</span></td></tr>
+              <tr><td>IDT<small>Infrastructure Dev Trust</small></td><td><span class="tag">IDT</span></td><td>₹11.4 Cr</td><td>₹4.8 Cr</td><td>42.1%</td><td>₹31 Cr</td><td>1.4x</td><td><span class="tag ok">Healthy</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="sec-companies" class="section">
+      <div class="cards-3">
+        <article class="card entity-card">
+          <div class="card-head"><div><h3>Agarwal Realty Ltd</h3><p>Commercial real estate, Grade A office &amp; retail</p></div><span class="tag">ARL</span></div>
+          <div class="stats">
+            <div><span>Revenue</span><b>₹68.4 Cr</b></div><div><span>EBITDA</span><b>₹23.1 Cr</b></div><div><span>Debt</span><b>₹142 Cr</b></div>
+            <div><span>Assets</span><b>₹310 Cr</b></div><div><span>Equity</span><b>₹79 Cr</b></div><div><span>ROE</span><b>29.2%</b></div>
+          </div>
+        </article>
+        <article class="card entity-card">
+          <div class="card-head"><div><h3>Prime Commercial SPV</h3><p>IT park &amp; tech corridor</p></div><span class="tag">PCS</span></div>
+          <div class="stats">
+            <div><span>Revenue</span><b>₹52.1 Cr</b></div><div><span>EBITDA</span><b>₹16.4 Cr</b></div><div><span>Debt</span><b>₹98 Cr</b></div>
+            <div><span>Assets</span><b>₹224 Cr</b></div><div><span>Equity</span><b>₹47 Cr</b></div><div><span>ROE</span><b>34.9%</b></div>
+          </div>
+        </article>
+        <article class="card entity-card">
+          <div class="card-head"><div><h3>Land Bank Holdco</h3><p>Strategic land parcels, Tier 1 &amp; 2 cities</p></div><span class="tag watch">WATCH</span></div>
+          <div class="stats">
+            <div><span>Revenue</span><b>₹41.8 Cr</b></div><div><span>EBITDA</span><b>₹11.2 Cr</b></div><div><span>Debt</span><b>₹121 Cr</b></div>
+            <div><span>Assets</span><b>₹157 Cr</b></div><div><span>Equity</span><b>₹36 Cr</b></div><div><span>ROE</span><b>31.1%</b></div>
+          </div>
+        </article>
+        <article class="card entity-card">
+          <div class="card-head"><div><h3>Affordable Housing SPV</h3><p>PMAY-linked residential, 3 cities</p></div><span class="tag">AHS</span></div>
+          <div class="stats">
+            <div><span>Revenue</span><b>₹38.9 Cr</b></div><div><span>EBITDA</span><b>₹12.8 Cr</b></div><div><span>Debt</span><b>₹86 Cr</b></div>
+            <div><span>Assets</span><b>₹118 Cr</b></div><div><span>Equity</span><b>₹32 Cr</b></div><div><span>ROE</span><b>40.0%</b></div>
+          </div>
+        </article>
+        <article class="card entity-card">
+          <div class="card-head"><div><h3>Retail &amp; Hospitality Co</h3><p>Retail malls, food courts, boutique hotels</p></div><span class="tag watch">WATCH</span></div>
+          <div class="stats">
+            <div><span>Revenue</span><b>₹21.4 Cr</b></div><div><span>EBITDA</span><b>₹5.9 Cr</b></div><div><span>Debt</span><b>₹55 Cr</b></div>
+            <div><span>Assets</span><b>₹72 Cr</b></div><div><span>Equity</span><b>₹14 Cr</b></div><div><span>ROE</span><b>42.1%</b></div>
+          </div>
+        </article>
+        <article class="card entity-card">
+          <div class="card-head"><div><h3>Infrastructure Dev Trust</h3><p>InvIT road &amp; utilities assets</p></div><span class="tag">IDT</span></div>
+          <div class="stats">
+            <div><span>Revenue</span><b>₹11.4 Cr</b></div><div><span>EBITDA</span><b>₹4.8 Cr</b></div><div><span>Debt</span><b>₹31 Cr</b></div>
+            <div><span>Assets</span><b>₹12 Cr</b></div><div><span>Equity</span><b>₹22 Cr</b></div><div><span>ROE</span><b>21.8%</b></div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div id="sec-ownership" class="section">
+      <section class="card">
+        <h2>Ownership Detail</h2>
+        <p class="unit">RP &amp; SK Investments – II LP</p>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead>
+              <tr>
+                <th>Partner</th><th>Property</th><th>Entity</th><th>Own%</th><th>Capital In</th><th>Cost Basis</th><th>Market Value</th><th>Unrealised G/L</th><th>ROI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>RP &amp; SK Investments – II LP</td><td>King Plaza Bldg 4</td><td><span class="tag">ARL</span></td><td>100%</td><td>₹11.1 Cr</td><td>₹11.1 Cr</td><td>₹15.8 Cr</td><td class="pos">+₹4.7 Cr</td><td>42.4%</td></tr>
+              <tr><td>RP &amp; SK Investments – II LP</td><td>26875 US380 Suite 112</td><td><span class="tag">ARL</span></td><td>100%</td><td>₹3.5 Cr</td><td>₹3.5 Cr</td><td>₹6.3 Cr</td><td class="pos">+₹2.8 Cr</td><td>78.6%</td></tr>
+              <tr><td>RP &amp; SK Investments – II LP</td><td>Aubrey Mobile Home</td><td><span class="tag">ARL</span></td><td>100%</td><td>₹0.32 Cr</td><td>₹0.32 Cr</td><td>₹0.33 Cr</td><td class="pos">+₹0.02 Cr</td><td>5.3%</td></tr>
+              <tr><td>RP &amp; SK Investments – II LP</td><td>248 Howard Rd Valley View</td><td><span class="tag">ARL</span></td><td>100%</td><td>₹14.6 Cr</td><td>₹14.6 Cr</td><td>₹18.3 Cr</td><td class="pos">+₹3.8 Cr</td><td>25.8%</td></tr>
+              <tr><td>RP &amp; SK Investments – II LP</td><td>4433 Punjabway Way</td><td><span class="tag">ARL</span></td><td>100%</td><td>₹4.1 Cr</td><td>₹4.1 Cr</td><td>₹6.7 Cr</td><td class="pos">+₹2.6 Cr</td><td>64.1%</td></tr>
+              <tr class="total"><td colspan="4">Portfolio Total</td><td>₹33.6 Cr</td><td>₹33.6 Cr</td><td>₹47.4 Cr</td><td class="pos">+₹13.9 Cr</td><td>41.3%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <div class="split even">
+        <section class="card">
+          <h2>Market Value vs Cost Basis</h2>
+          <div class="chart-box"><canvas id="chartOwnership"></canvas></div>
+        </section>
+        <section class="card">
+          <h2>ROI by Property</h2>
+          <div class="chart-box"><canvas id="chartROI"></canvas></div>
+        </section>
+      </div>
+    </div>
+
+    <div id="sec-loans" class="section">
+      <div class="cards-2">
+        <article class="card loan-card">
+          <div class="card-head">
+            <div><h3>King Plaza Bldg 4</h3><div class="lender">SBI Home Loans #0162</div></div>
+            <span class="tag ok">Active</span>
+          </div>
+          <div class="meter-row"><span>₹10.5 Cr of ₹14.0 Cr</span><b>75%</b></div>
+          <div class="meter" aria-hidden="true"><span style="width:75%"></span></div>
+          <div class="stats">
+            <div><span>EMI/Month</span><b>₹9.6L</b></div><div><span>Rate</span><b>8.65%</b></div><div><span>LTV</span><b>66.5%</b></div>
+            <div><span>Maturity</span><b>Mar 2031</b></div><div><span>Int Paid YTD</span><b>₹54L</b></div><div><span>Type</span><b>Term Loan</b></div>
+          </div>
+        </article>
+        <article class="card loan-card">
+          <div class="card-head">
+            <div><h3>248 Howard Ranch</h3><div class="lender">HDFC Bank #2196</div></div>
+            <span class="tag ok">Active</span>
+          </div>
+          <div class="meter-row"><span>₹10.0 Cr of ₹13.5 Cr</span><b>74%</b></div>
+          <div class="meter" aria-hidden="true"><span style="width:74%"></span></div>
+          <div class="stats">
+            <div><span>EMI/Month</span><b>₹9.2L</b></div><div><span>Rate</span><b>8.40%</b></div><div><span>LTV</span><b>54.6%</b></div>
+            <div><span>Maturity</span><b>Jun 2032</b></div><div><span>Int Paid YTD</span><b>₹50L</b></div><div><span>Type</span><b>Term Loan</b></div>
+          </div>
+        </article>
+        <article class="card loan-card">
+          <div class="card-head">
+            <div><h3>4433 Punjabway</h3><div class="lender">Axis Bank #3759</div></div>
+            <span class="tag ok">Active</span>
+          </div>
+          <div class="meter-row"><span>₹3.4 Cr of ₹5.5 Cr</span><b>62%</b></div>
+          <div class="meter" aria-hidden="true"><span style="width:62%"></span></div>
+          <div class="stats">
+            <div><span>EMI/Month</span><b>₹3.2L</b></div><div><span>Rate</span><b>9.10%</b></div><div><span>LTV</span><b>42.0%</b></div>
+            <div><span>Maturity</span><b>Sep 2029</b></div><div><span>Int Paid YTD</span><b>₹18L</b></div><div><span>Type</span><b>Term Loan</b></div>
+          </div>
+        </article>
+        <article class="card loan-card">
+          <div class="card-head">
+            <div><h3>26875 Suite 112</h3><div class="lender">Great Plains #5999</div></div>
+            <span class="tag ok">Active</span>
+          </div>
+          <div class="meter-row"><span>₹3.3 Cr of ₹4.8 Cr</span><b>69%</b></div>
+          <div class="meter" aria-hidden="true"><span style="width:69%"></span></div>
+          <div class="stats">
+            <div><span>EMI/Month</span><b>₹2.9L</b></div><div><span>Rate</span><b>8.80%</b></div><div><span>LTV</span><b>52.5%</b></div>
+            <div><span>Maturity</span><b>Dec 2030</b></div><div><span>Int Paid YTD</span><b>₹17L</b></div><div><span>Type</span><b>Term Loan</b></div>
+          </div>
+        </article>
+      </div>
+      <section class="card">
+        <h2>Outstanding by Property</h2>
+        <div class="chart-box"><canvas id="chartLoans"></canvas></div>
+      </section>
+    </div>
+
+    <div id="sec-statements" class="section">
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab active" role="tab" aria-selected="true" onclick="fsTab('pl', this)">Profit &amp; Loss</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" onclick="fsTab('bs', this)">Balance Sheet</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" onclick="fsTab('cf', this)">Cash Flow</button>
+      </div>
+
+      <section class="card fs-panel active" id="fs-pl">
+        <h2>Profit &amp; Loss</h2>
+        <p class="unit">₹ Cr</p>
+        <div class="table-wrap">
+          <table class="year-table">
+            <thead>
+              <tr><th>Line</th><th>FY22</th><th>FY23</th><th>FY24</th><th>FY25</th><th>FY26</th></tr>
+            </thead>
+            <tbody>
+              <tr class="group"><td>Income</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr class="indent"><td>Rental Income</td><td>₹4.8 Cr</td><td>₹4.0 Cr</td><td>₹4.3 Cr</td><td>₹3.5 Cr</td><td>₹1.8 Cr</td></tr>
+              <tr class="indent"><td>Other Income</td><td>₹0.8 Cr</td><td>₹0.4 Cr</td><td>₹0.1 Cr</td><td>₹0.6 Cr</td><td>₹0.1 Cr</td></tr>
+              <tr class="indent"><td>Profit on Investments</td><td>—</td><td>₹2.1 Cr</td><td>—</td><td>₹0.7 Cr</td><td>—</td></tr>
+              <tr class="subtotal"><td>Total Revenue</td><td>₹5.7 Cr</td><td>₹6.5 Cr</td><td>₹4.4 Cr</td><td>₹4.8 Cr</td><td>₹1.9 Cr</td></tr>
+              <tr class="group"><td>Expenses</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr class="indent"><td>Interest</td><td>₹1.8 Cr</td><td>₹1.9 Cr</td><td>₹1.8 Cr</td><td>₹1.7 Cr</td><td>₹1.1 Cr</td></tr>
+              <tr class="indent"><td>Tax</td><td>₹0.9 Cr</td><td>₹0.5 Cr</td><td>₹0.6 Cr</td><td>₹0.5 Cr</td><td>₹0.4 Cr</td></tr>
+              <tr class="indent"><td>Repairs</td><td>₹0.2 Cr</td><td>₹0.1 Cr</td><td>₹0.3 Cr</td><td>₹0.3 Cr</td><td>₹0.1 Cr</td></tr>
+              <tr class="indent"><td>HOA</td><td>₹0.3 Cr</td><td>₹0.2 Cr</td><td>₹0.2 Cr</td><td>₹0.4 Cr</td><td>₹0.1 Cr</td></tr>
+              <tr class="subtotal"><td>Total Expenses</td><td>₹7.5 Cr</td><td>₹5.6 Cr</td><td>₹7.8 Cr</td><td>₹4.7 Cr</td><td>₹1.8 Cr</td></tr>
+              <tr class="total"><td>Net Income / (Loss)</td><td class="neg">(₹3.4 Cr)</td><td class="neg">(₹6.9 Cr)</td><td class="neg">(₹11.8 Cr)</td><td class="neg">(₹0.6 Cr)</td><td class="pos">+₹0.9 Cr</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card fs-panel" id="fs-bs">
+        <h2>Balance Sheet</h2>
+        <p class="unit">₹ Cr</p>
+        <div class="table-wrap">
+          <table class="year-table">
+            <thead>
+              <tr><th>Line</th><th>FY22</th><th>FY23</th><th>FY24</th><th>FY25</th><th>FY26</th></tr>
+            </thead>
+            <tbody>
+              <tr class="group"><td>Assets</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr class="indent"><td>Bank Accounts</td><td>₹0.4 Cr</td><td>₹0.3 Cr</td><td>₹0.6 Cr</td><td>₹0.2 Cr</td><td>₹0.1 Cr</td></tr>
+              <tr class="indent"><td>Accounts Receivable</td><td>₹0.2 Cr</td><td>₹0.1 Cr</td><td>₹0.1 Cr</td><td>₹0.2 Cr</td><td>₹0.2 Cr</td></tr>
+              <tr class="indent"><td>Property</td><td>₹38.4 Cr</td><td>₹38.6 Cr</td><td>₹37.8 Cr</td><td>₹37.6 Cr</td><td>₹37.2 Cr</td></tr>
+              <tr class="indent"><td>Investments</td><td>₹24.8 Cr</td><td>₹22.6 Cr</td><td>₹12.8 Cr</td><td>₹11.9 Cr</td><td>₹11.6 Cr</td></tr>
+              <tr class="total"><td>Total Assets</td><td>₹63.0 Cr</td><td>₹59.9 Cr</td><td>₹50.2 Cr</td><td>₹49.4 Cr</td><td>₹49.4 Cr</td></tr>
+              <tr class="group"><td>Liabilities &amp; Equity</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr class="indent"><td>Bank Loans</td><td>₹28.1 Cr</td><td>₹29.7 Cr</td><td>₹26.4 Cr</td><td>₹27.2 Cr</td><td>₹27.2 Cr</td></tr>
+              <tr class="indent"><td>Other Liabilities</td><td>₹16.8 Cr</td><td>₹14.2 Cr</td><td>₹7.9 Cr</td><td>₹18.9 Cr</td><td>₹18.1 Cr</td></tr>
+              <tr class="indent"><td>Equity</td><td>₹18.1 Cr</td><td>₹16.0 Cr</td><td>₹15.9 Cr</td><td>₹3.3 Cr</td><td>₹4.0 Cr</td></tr>
+              <tr class="total"><td>Total Liabilities &amp; Equity</td><td>₹63.0 Cr</td><td>₹59.9 Cr</td><td>₹50.2 Cr</td><td>₹49.4 Cr</td><td>₹49.4 Cr</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card fs-panel" id="fs-cf">
+        <h2>Cash Flow</h2>
+        <p class="unit">₹ Cr</p>
+        <div class="table-wrap">
+          <table class="year-table">
+            <thead>
+              <tr><th>Line</th><th>FY22</th><th>FY23</th><th>FY24</th><th>FY25</th><th>FY26</th></tr>
+            </thead>
+            <tbody>
+              <tr class="group"><td>Operating</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr class="indent"><td>Net Income</td><td class="neg">(₹3.4 Cr)</td><td class="neg">(₹6.9 Cr)</td><td class="neg">(₹11.8 Cr)</td><td class="neg">(₹0.6 Cr)</td><td class="pos">+₹0.9 Cr</td></tr>
+              <tr class="indent"><td>Depreciation</td><td>₹0.7 Cr</td><td>₹4.9 Cr</td><td>₹5.7 Cr</td><td>₹0.7 Cr</td><td>₹1.1 Cr</td></tr>
+              <tr class="indent"><td>WC Changes</td><td class="neg">(₹1.0 Cr)</td><td class="pos">+₹3.4 Cr</td><td class="neg">(₹13.8 Cr)</td><td class="neg">(₹13.1 Cr)</td><td class="neg">(₹2.4 Cr)</td></tr>
+              <tr class="subtotal"><td>Operating CF</td><td class="neg">(₹3.7 Cr)</td><td class="neg">(₹23.2 Cr)</td><td class="neg">(₹19.9 Cr)</td><td class="pos">+₹11.8 Cr</td><td class="neg">(₹0.4 Cr)</td></tr>
+              <tr class="group"><td>Investing</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr class="indent"><td>Property</td><td>—</td><td>—</td><td class="neg">(₹0.3 Cr)</td><td class="pos">+₹4.1 Cr</td><td class="pos">+₹0.5 Cr</td></tr>
+              <tr class="indent"><td>Investments</td><td class="pos">+₹0.5 Cr</td><td class="pos">+₹0.9 Cr</td><td class="pos">+₹9.1 Cr</td><td class="neg">(₹4.5 Cr)</td><td class="pos">+₹0.5 Cr</td></tr>
+              <tr class="subtotal"><td>Investing CF</td><td class="pos">+₹0.5 Cr</td><td class="pos">+₹0.9 Cr</td><td class="pos">+₹9.1 Cr</td><td class="neg">(₹4.5 Cr)</td><td class="pos">+₹0.5 Cr</td></tr>
+              <tr class="group"><td>Financing</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr class="indent"><td>Bank Loan</td><td class="neg">(₹1.0 Cr)</td><td class="neg">(₹0.9 Cr)</td><td class="neg">(₹0.9 Cr)</td><td class="pos">+₹0.7 Cr</td><td class="neg">(₹0.4 Cr)</td></tr>
+              <tr class="indent"><td>Owner</td><td class="pos">+₹3.8 Cr</td><td class="neg">(₹8.3 Cr)</td><td class="neg">(₹16.7 Cr)</td><td class="pos">+₹13.2 Cr</td><td>—</td></tr>
+              <tr class="subtotal"><td>Financing CF</td><td class="pos">+₹2.8 Cr</td><td class="neg">(₹9.2 Cr)</td><td class="neg">(₹17.6 Cr)</td><td class="pos">+₹13.9 Cr</td><td class="neg">(₹0.4 Cr)</td></tr>
+              <tr class="total"><td>Net Change in Cash</td><td class="neg">(₹0.4 Cr)</td><td class="neg">(₹31.5 Cr)</td><td class="neg">(₹28.4 Cr)</td><td class="pos">+₹21.2 Cr</td><td class="neg">(₹0.3 Cr)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="sec-snapshot" class="section">
+      <div class="ratio-grid">
+        <article class="ratio">
+          <span class="ratio-label" id="snap-ni-label">Net Income FY26</span>
+          <strong id="snap-ni" class="good">+₹0.9 Cr</strong>
+          <span class="ratio-note" id="snap-ni-note">41% net margin</span>
+        </article>
+        <article class="ratio">
+          <span class="ratio-label">Debt/Assets</span>
+          <strong id="snap-da">91.9%</strong>
+          <span class="ratio-note" id="snap-da-note">High leverage</span>
+        </article>
+        <article class="ratio">
+          <span class="ratio-label">LTV</span>
+          <strong id="snap-ltv">38.9%</strong>
+          <span class="ratio-note">Portfolio debt ÷ FMV</span>
+        </article>
+        <article class="ratio">
+          <span class="ratio-label">Debt Yield</span>
+          <strong id="snap-dy">2.7%</strong>
+          <span class="ratio-note">NOI ÷ debt</span>
+        </article>
+        <article class="ratio">
+          <span class="ratio-label">Current Ratio</span>
+          <strong id="snap-cr">0.08x</strong>
+          <span class="ratio-note" id="snap-cr-note"></span>
+        </article>
+        <article class="ratio">
+          <span class="ratio-label">D/E</span>
+          <strong id="snap-de">6.75x</strong>
+          <span class="ratio-note" id="snap-de-note"></span>
+        </article>
+        <article class="ratio">
+          <span class="ratio-label">Cap Rate</span>
+          <strong id="snap-cap">1.1%</strong>
+          <span class="ratio-note"></span>
+        </article>
+        <article class="ratio">
+          <span class="ratio-label">Book Equity</span>
+          <strong id="snap-eq" class="good">+₹4.0 Cr</strong>
+          <span class="ratio-note" id="snap-eq-note"></span>
+        </article>
+      </div>
+      <div class="split even">
+        <section class="card">
+          <h2>Revenue vs Operating Expenses</h2>
+          <div class="chart-box"><canvas id="chartRevExp"></canvas></div>
+        </section>
+        <section class="card">
+          <h2>Net Income Trend</h2>
+          <div class="chart-box"><canvas id="chartNI"></canvas></div>
+        </section>
+      </div>
+      <section class="card">
+        <h2>Multi-year Summary</h2>
+        <div class="table-wrap">
+          <table class="summary-table year-table">
+            <thead>
+              <tr><th>Year</th><th>Revenue</th><th>Net Income</th><th>Total Assets</th><th>Liabilities</th><th>Equity</th><th>Operating CF</th></tr>
+            </thead>
+            <tbody>
+              <tr data-year="FY2022"><td>FY22</td><td>₹5.7 Cr</td><td class="neg">(₹3.4 Cr)</td><td>₹63.0 Cr</td><td>₹44.9 Cr</td><td>₹18.1 Cr</td><td class="neg">(₹3.7 Cr)</td></tr>
+              <tr data-year="FY2023"><td>FY23</td><td>₹6.5 Cr</td><td class="neg">(₹6.9 Cr)</td><td>₹59.9 Cr</td><td>₹43.9 Cr</td><td>₹16.0 Cr</td><td class="neg">(₹23.2 Cr)</td></tr>
+              <tr data-year="FY2024"><td>FY24</td><td>₹4.4 Cr</td><td class="neg">(₹11.8 Cr)</td><td>₹50.2 Cr</td><td>₹34.3 Cr</td><td>₹15.9 Cr</td><td class="neg">(₹19.9 Cr)</td></tr>
+              <tr data-year="FY2025"><td>FY25</td><td>₹4.8 Cr</td><td class="neg">(₹0.6 Cr)</td><td>₹49.4 Cr</td><td>₹46.1 Cr</td><td>₹3.3 Cr</td><td class="pos">+₹11.8 Cr</td></tr>
+              <tr data-year="FY2026"><td>FY26</td><td>₹1.9 Cr</td><td class="pos">+₹0.9 Cr</td><td>₹49.4 Cr</td><td>₹45.3 Cr</td><td>₹4.0 Cr</td><td class="neg">(₹0.4 Cr)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="sec-assets" class="section">
+      <div class="kpi-grid cols-4">
+        <article class="kpi"><div class="kpi-label">Total Value</div><div class="kpi-value">₹49.4 Cr</div></article>
+        <article class="kpi tone-navy"><div class="kpi-label">Non-Current</div><div class="kpi-value">₹47.9 Cr</div></article>
+        <article class="kpi"><div class="kpi-label">Current</div><div class="kpi-value">₹1.5 Cr</div></article>
+        <article class="kpi"><div class="kpi-label">Portfolio ROI</div><div class="kpi-value">41.3%</div></article>
+      </div>
+      <div class="cards-2">
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>King Plaza Bldg 4</h3><p>Frisco, TX 75036</p></div><span class="tag">ARL</span></div>
+          <div class="stats">
+            <div><span>Cost Basis</span><b>₹11.1 Cr</b></div><div><span>Market Value</span><b>₹15.8 Cr</b></div><div><span>G/L</span><b class="good">+₹4.7 Cr</b></div>
+            <div><span>Monthly Rent</span><b>₹2.2L</b></div><div><span>Occupancy%</span><b>100%</b></div><div><span>ROI</span><b>42.4%</b></div>
+          </div>
+          <div class="meter occ" aria-label="Occupancy 100 percent"><span style="width:100%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>26875 US380 Suite 112</h3><p>Aubrey, TX 76227</p></div><span class="tag">ARL</span></div>
+          <div class="stats">
+            <div><span>Cost Basis</span><b>₹3.5 Cr</b></div><div><span>Market Value</span><b>₹6.3 Cr</b></div><div><span>G/L</span><b class="good">+₹2.8 Cr</b></div>
+            <div><span>Monthly Rent</span><b>₹0.45L</b></div><div><span>Occupancy%</span><b>60%</b></div><div><span>ROI</span><b>78.6%</b></div>
+          </div>
+          <div class="meter occ" aria-label="Occupancy 60 percent"><span class="gold" style="width:60%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>248 Howard Rd</h3><p>Valley View, TX 76272</p></div><span class="tag">ARL</span></div>
+          <div class="stats">
+            <div><span>Cost Basis</span><b>₹14.6 Cr</b></div><div><span>Market Value</span><b>₹18.3 Cr</b></div><div><span>G/L</span><b class="good">+₹3.8 Cr</b></div>
+            <div><span>Monthly Rent</span><b>₹0.92L</b></div><div><span>Occupancy%</span><b>100%</b></div><div><span>ROI</span><b>25.8%</b></div>
+          </div>
+          <div class="meter occ" aria-label="Occupancy 100 percent"><span style="width:100%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>4433 Punjabway Way</h3><p>Frisco, TX 75033</p></div><span class="tag">ARL</span></div>
+          <div class="stats">
+            <div><span>Cost Basis</span><b>₹4.1 Cr</b></div><div><span>Market Value</span><b>₹6.7 Cr</b></div><div><span>G/L</span><b class="good">+₹2.6 Cr</b></div>
+            <div><span>Monthly Rent</span><b>₹0.51L</b></div><div><span>Occupancy%</span><b>100%</b></div><div><span>ROI</span><b>64.1%</b></div>
+          </div>
+          <div class="meter occ" aria-label="Occupancy 100 percent"><span style="width:100%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>Aubrey Mobile Home</h3><p>Aubrey, TX 76227</p></div><span class="tag">ARL</span></div>
+          <div class="stats">
+            <div><span>Cost Basis</span><b>₹0.32 Cr</b></div><div><span>Market Value</span><b>₹0.33 Cr</b></div><div><span>G/L</span><b class="good">+₹0.02 Cr</b></div>
+            <div><span>Monthly Rent</span><b>₹0.20L</b></div><div><span>Occupancy%</span><b>100%</b></div><div><span>ROI</span><b>5.3%</b></div>
+          </div>
+          <div class="meter occ" aria-label="Occupancy 100 percent"><span style="width:100%"></span></div>
+        </article>
+      </div>
+    </div>
+
+    <div id="sec-sales" class="section">
+      <div class="kpi-grid">
+        <article class="kpi"><div class="kpi-label">Open Pipeline</div><div class="kpi-value">₹141.4 Cr</div><div class="kpi-sub">36 live deals</div></article>
+        <article class="kpi"><div class="kpi-label">Weighted</div><div class="kpi-value">₹48.3 Cr</div><div class="kpi-sub">Stage probability</div></article>
+        <article class="kpi"><div class="kpi-label">Win Rate</div><div class="kpi-value" data-ops="pipeWin">28.4%</div><div class="kpi-sub" data-ops="pipeWinSub">FY26 closed-won ÷ closed</div></article>
+        <article class="kpi tone-navy"><div class="kpi-label">Avg Cycle</div><div class="kpi-value">74 days</div><div class="kpi-sub">Lead to close</div></article>
+        <article class="kpi"><div class="kpi-label">Open Deals</div><div class="kpi-value">36</div><div class="kpi-sub">Across 6 entities</div></article>
+        <article class="kpi"><div class="kpi-label">Won Bookings</div><div class="kpi-value" data-ops="pipeWon">₹54.8 Cr</div><div class="kpi-sub" data-ops="pipeWonSub">FY26 bookings, not the ₹234 Cr recognised</div></article>
+      </div>
+      <div class="split even">
+        <section class="card">
+          <h2>Pipeline by Stage</h2>
+          <div class="chart-box"><canvas id="chartPipe"></canvas></div>
+        </section>
+        <section class="card">
+          <h2>Open Pipeline by Entity</h2>
+          <div class="chart-box"><canvas id="chartPipeEnt"></canvas></div>
+        </section>
+      </div>
+      <section class="card">
+        <h2>Live Opportunities</h2>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>Deal</th><th>Entity</th><th>Stage</th><th>Value</th><th>Probability</th><th>Owner</th><th>Close</th></tr></thead>
+            <tbody>
+              <tr><td>Frisco Tower lease</td><td><span class="tag">ARL</span></td><td>Negotiation</td><td>₹8.4 Cr</td><td>70%</td><td>Priya Shah</td><td>18 Dec 2026</td></tr>
+              <tr><td>Hyderabad IT park phase 2</td><td><span class="tag">PCS</span></td><td>Proposal</td><td>₹14.2 Cr</td><td>45%</td><td>Arjun Mehta</td><td>31 Jan 2027</td></tr>
+              <tr><td>Warangal land JV</td><td><span class="tag">LBH</span></td><td>Qualified</td><td>₹11.6 Cr</td><td>25%</td><td>S. Reddy</td><td>30 Mar 2027</td></tr>
+              <tr><td>PMAY block C bookings</td><td><span class="tag">AHS</span></td><td>Verbal</td><td>₹6.8 Cr</td><td>90%</td><td>Neha Iyer</td><td>15 Nov 2026</td></tr>
+              <tr><td>Mall food court</td><td><span class="tag">RHC</span></td><td>Negotiation</td><td>₹3.4 Cr</td><td>70%</td><td>Kabir Das</td><td>20 Dec 2026</td></tr>
+              <tr><td>NH-44 toll package</td><td><span class="tag">IDT</span></td><td>Proposal</td><td>₹5.2 Cr</td><td>45%</td><td>M. Rao</td><td>28 Feb 2027</td></tr>
+              <tr><td>King Plaza suite renewals</td><td><span class="tag">ARL</span></td><td>Lead</td><td>₹2.1 Cr</td><td>10%</td><td>RP desk</td><td>30 Jun 2027</td></tr>
+              <tr><td>Affordable phase 4</td><td><span class="tag">AHS</span></td><td>Qualified</td><td>₹9.4 Cr</td><td>25%</td><td>Neha Iyer</td><td>15 Apr 2027</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="sec-procurement" class="section">
+      <div class="kpi-grid cols-4">
+        <article class="kpi"><div class="kpi-label">Spend</div><div class="kpi-value" data-ops="procSpend">₹86.4 Cr</div><div class="kpi-sub" data-ops="procSpendSub">FY26 purchase book</div></article>
+        <article class="kpi tone-red"><div class="kpi-label">Open POs</div><div class="kpi-value">₹14.6 Cr</div><div class="kpi-sub">Not yet received</div></article>
+        <article class="kpi tone-navy"><div class="kpi-label">Active Vendors</div><div class="kpi-value">86</div><div class="kpi-sub">3-way match 94%</div></article>
+        <article class="kpi"><div class="kpi-label">Savings</div><div class="kpi-value" data-ops="procSave">₹3.2 Cr</div><div class="kpi-sub" data-ops="procSaveSub">FY26 vs budget, 3.7%</div></article>
+      </div>
+      <section class="card">
+        <h2>Spend by Category</h2>
+        <div class="chart-box"><canvas id="chartProc"></canvas></div>
+      </section>
+      <section class="card">
+        <h2>Priority Purchase Orders</h2>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>PO</th><th>Vendor</th><th>Entity</th><th>Value</th><th>Received</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>PO-1842</td><td>UltraTech Cement</td><td><span class="tag">LBH</span></td><td>₹4.6 Cr</td><td>62%</td><td><span class="tag gold">Open</span></td></tr>
+              <tr><td>PO-1908</td><td>Schneider MEP</td><td><span class="tag">PCS</span></td><td>₹3.2 Cr</td><td>40%</td><td><span class="tag gold">Open</span></td></tr>
+              <tr><td>PO-1766</td><td>Studio Line Interiors</td><td><span class="tag">ARL</span></td><td>₹2.4 Cr</td><td>80%</td><td><span class="tag gold">Partial</span></td></tr>
+              <tr><td>PO-2011</td><td>Design &amp; counsel</td><td><span class="tag">AHS</span></td><td>₹1.1 Cr</td><td>15%</td><td><span class="tag gold">Open</span></td></tr>
+              <tr><td>PO-1680</td><td>Mall HVAC Co</td><td><span class="tag">RHC</span></td><td>₹1.8 Cr</td><td>100%</td><td><span class="tag ok">Closed</span></td></tr>
+              <tr><td>PO-2104</td><td>Toll systems</td><td><span class="tag">IDT</span></td><td>₹1.5 Cr</td><td>25%</td><td><span class="tag gold">Open</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="sec-inventory" class="section">
+      <div class="kpi-grid cols-4">
+        <article class="kpi"><div class="kpi-label">Total Inventory</div><div class="kpi-value">₹186.2 Cr</div><div class="kpi-sub">Stock, WIP, land, stores</div></article>
+        <article class="kpi tone-navy"><div class="kpi-label">Under Construction</div><div class="kpi-value">₹96.4 Cr</div><div class="kpi-sub">WIP</div></article>
+        <article class="kpi"><div class="kpi-label">Finished Stock</div><div class="kpi-value">₹42.8 Cr</div><div class="kpi-sub">Ready units</div></article>
+        <article class="kpi tone-red"><div class="kpi-label">Days on Hand</div><div class="kpi-value">214</div><div class="kpi-sub">Finished stock</div></article>
+      </div>
+      <div class="split even">
+        <section class="card">
+          <h2>Inventory Classes</h2>
+          <div class="chart-box"><canvas id="chartInv"></canvas></div>
+        </section>
+        <section class="card">
+          <h2>By Entity</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Entity</th><th>Value</th><th>Share</th></tr></thead>
+              <tbody>
+                <tr><td>ARL</td><td>₹22.4 Cr</td><td>12.0%</td></tr>
+                <tr><td>PCS</td><td>₹18.6 Cr</td><td>9.9%</td></tr>
+                <tr><td>LBH</td><td>₹61.2 Cr</td><td>32.9%</td></tr>
+                <tr><td>AHS</td><td>₹58.4 Cr</td><td>31.4%</td></tr>
+                <tr><td>RHC</td><td>₹9.8 Cr</td><td>5.3%</td></tr>
+                <tr><td>IDT</td><td>₹15.8 Cr</td><td>8.5%</td></tr>
+                <tr class="subtotal"><td>Total</td><td>₹186.2 Cr</td><td>100%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+      <section class="card">
+        <h2>Stock Lines</h2>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>Line</th><th>Entity</th><th>Qty</th><th>Value</th><th>Age</th></tr></thead>
+            <tbody>
+              <tr><td>Unsold residential units</td><td><span class="tag">AHS</span></td><td>186 units</td><td>₹41.2 Cr</td><td>240 days</td></tr>
+              <tr><td>Land parcels held</td><td><span class="tag">LBH</span></td><td>14 parcels</td><td>₹52.6 Cr</td><td>Strategic</td></tr>
+              <tr><td>IT park fit-out materials</td><td><span class="tag">PCS</span></td><td>1 yard</td><td>₹6.4 Cr</td><td>90 days</td></tr>
+              <tr><td>Commercial spares</td><td><span class="tag">ARL</span></td><td>—</td><td>₹1.8 Cr</td><td>60 days</td></tr>
+              <tr><td>Toll spares</td><td><span class="tag">IDT</span></td><td>—</td><td>₹4.6 Cr</td><td>120 days</td></tr>
+              <tr><td>F&amp;B stores</td><td><span class="tag">RHC</span></td><td>—</td><td>₹0.9 Cr</td><td>28 days</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="sec-hr" class="section">
+      <div class="kpi-grid cols-4">
+        <article class="kpi"><div class="kpi-label">Headcount</div><div class="kpi-value">1,248</div><div class="kpi-sub">Plus 214 contractors</div></article>
+        <article class="kpi"><div class="kpi-label">Payroll</div><div class="kpi-value" data-ops="hrPay">₹58.2 Cr</div><div class="kpi-sub" data-ops="hrPaySub">FY26 run-rate, 24.9% of revenue</div></article>
+        <article class="kpi tone-red"><div class="kpi-label">Attrition</div><div class="kpi-value">9.4%</div><div class="kpi-sub">Group, trailing twelve months</div></article>
+        <article class="kpi tone-navy"><div class="kpi-label">Open Roles</div><div class="kpi-value">37</div><div class="kpi-sub">16 of them on AHS sites</div></article>
+      </div>
+      <section class="card">
+        <h2>Monthly Payroll by Entity</h2>
+        <div class="chart-box"><canvas id="chartHr"></canvas></div>
+      </section>
+      <section class="card">
+        <h2>Workforce</h2>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>Entity</th><th>Headcount</th><th>Monthly Payroll</th><th>Attrition</th><th>Open Roles</th></tr></thead>
+            <tbody>
+              <tr><td>ARL</td><td>186</td><td>₹0.92 Cr</td><td>6.2%</td><td>6</td></tr>
+              <tr><td>PCS</td><td>142</td><td>₹0.74 Cr</td><td>8.1%</td><td>4</td></tr>
+              <tr><td>LBH</td><td>96</td><td>₹0.41 Cr</td><td>7.4%</td><td>2</td></tr>
+              <tr><td>AHS</td><td>520</td><td>₹1.68 Cr</td><td>11.2%</td><td>16</td></tr>
+              <tr><td>RHC</td><td>214</td><td>₹0.72 Cr</td><td>11.4%</td><td>7</td></tr>
+              <tr><td>IDT</td><td>90</td><td>₹0.38 Cr</td><td>5.1%</td><td>2</td></tr>
+              <tr class="subtotal"><td>Group</td><td>1,248</td><td>₹4.85 Cr</td><td>9.4%</td><td>37</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="sec-capex" class="section">
+      <div class="kpi-grid cols-4">
+        <article class="kpi"><div class="kpi-label">FY26 Budget</div><div class="kpi-value">₹120.0 Cr</div><div class="kpi-sub">8 active projects</div></article>
+        <article class="kpi"><div class="kpi-label">Spent</div><div class="kpi-value">₹74.6 Cr</div><div class="kpi-sub">62.2% utilised</div></article>
+        <article class="kpi tone-navy"><div class="kpi-label">Committed</div><div class="kpi-value">₹21.4 Cr</div><div class="kpi-sub">POs and contracts</div></article>
+        <article class="kpi"><div class="kpi-label">Available</div><div class="kpi-value">₹24.0 Cr</div><div class="kpi-sub">Uncommitted budget</div></article>
+      </div>
+      <section class="card">
+        <h2>Budget vs Spent</h2>
+        <div class="chart-box"><canvas id="chartCapex"></canvas></div>
+      </section>
+      <div class="cards-2">
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>PCS IT Park Phase 2</h3><p>PCS · Hyderabad · Dec 2027</p></div><span class="tag ok">On track</span></div>
+          <div class="stats"><div><span>Budget</span><b>₹36.0 Cr</b></div><div><span>Spent</span><b>₹22.4 Cr</b></div><div><span>Left</span><b>₹13.6 Cr</b></div></div>
+          <div class="meter" aria-label="62 percent of budget"><span style="width:62%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>AHS PMAY Phase 3</h3><p>AHS · 3 cities · Sep 2027</p></div><span class="tag ok">On track</span></div>
+          <div class="stats"><div><span>Budget</span><b>₹28.0 Cr</b></div><div><span>Spent</span><b>₹19.6 Cr</b></div><div><span>Left</span><b>₹8.4 Cr</b></div></div>
+          <div class="meter" aria-label="70 percent of budget"><span style="width:70%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>LBH Warangal Land</h3><p>LBH · Warangal · Jun 2027</p></div><span class="tag gold">Watch</span></div>
+          <div class="stats"><div><span>Budget</span><b>₹18.5 Cr</b></div><div><span>Spent</span><b>₹14.2 Cr</b></div><div><span>Left</span><b>₹4.3 Cr</b></div></div>
+          <div class="meter" aria-label="77 percent of budget"><span style="width:77%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>IDT Toll Plaza Package</h3><p>IDT · NH-44 · Jan 2027</p></div><span class="tag ok">On track</span></div>
+          <div class="stats"><div><span>Budget</span><b>₹12.4 Cr</b></div><div><span>Spent</span><b>₹7.8 Cr</b></div><div><span>Left</span><b>₹4.6 Cr</b></div></div>
+          <div class="meter" aria-label="63 percent of budget"><span style="width:63%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>King Plaza Lobby</h3><p>ARL · Frisco · Mar 2027</p></div><span class="tag ok">On track</span></div>
+          <div class="stats"><div><span>Budget</span><b>₹8.4 Cr</b></div><div><span>Spent</span><b>₹6.1 Cr</b></div><div><span>Left</span><b>₹2.3 Cr</b></div></div>
+          <div class="meter" aria-label="73 percent of budget"><span style="width:73%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>Howard Rd Infrastructure</h3><p>ARL · Valley View · Nov 2027</p></div><span class="tag ok">On track</span></div>
+          <div class="stats"><div><span>Budget</span><b>₹6.8 Cr</b></div><div><span>Spent</span><b>₹1.6 Cr</b></div><div><span>Left</span><b>₹5.2 Cr</b></div></div>
+          <div class="meter" aria-label="24 percent of budget"><span style="width:24%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>RHC Mall Refresh</h3><p>RHC · Aug 2026</p></div><span class="tag watch">Delayed</span></div>
+          <div class="stats"><div><span>Budget</span><b>₹6.2 Cr</b></div><div><span>Spent</span><b>₹2.1 Cr</b></div><div><span>Left</span><b>₹4.1 Cr</b></div></div>
+          <div class="meter" aria-label="34 percent of budget"><span style="width:34%"></span></div>
+        </article>
+        <article class="card prop-card">
+          <div class="card-head"><div><h3>Punjabway Fit-out</h3><p>ARL · Frisco · May 2027</p></div><span class="tag gold">Watch</span></div>
+          <div class="stats"><div><span>Budget</span><b>₹3.7 Cr</b></div><div><span>Spent</span><b>₹0.8 Cr</b></div><div><span>Left</span><b>₹2.9 Cr</b></div></div>
+          <div class="meter" aria-label="22 percent of budget"><span style="width:22%"></span></div>
+        </article>
+      </div>
+    </div>
+
+    <div id="sec-approvals" class="section">
+      <div class="kpi-grid cols-4">
+        <article class="kpi"><div class="kpi-label">Pending</div><div class="kpi-value" id="apprCount">7</div><div class="kpi-sub">Awaiting a decision</div></article>
+        <article class="kpi tone-navy"><div class="kpi-label">Pending Value</div><div class="kpi-value" id="apprValue">₹13.49 Cr</div><div class="kpi-sub">Open requests</div></article>
+        <article class="kpi"><div class="kpi-label">Approved</div><div class="kpi-value" id="apprOk">0</div><div class="kpi-sub">This session</div></article>
+        <article class="kpi tone-red"><div class="kpi-label">Rejected</div><div class="kpi-value" id="apprNo">0</div><div class="kpi-sub">This session</div></article>
+      </div>
+      <div class="queue-filters" id="queueFilters">
+        <button type="button" class="active" onclick="filterQueue('all', this)">All</button>
+        <button type="button" onclick="filterQueue('pending', this)">Pending</button>
+        <button type="button" onclick="filterQueue('approved', this)">Approved</button>
+        <button type="button" onclick="filterQueue('rejected', this)">Rejected</button>
+      </div>
+      <p id="apprEmpty" class="unit" hidden>Queue clear. Nothing is waiting on a decision.</p>
+      <div class="alert-list" id="apprList">
+        <article class="card appr" data-state="pending" data-amt="1.40">
+          <div class="card-head"><div><h3>King Plaza lobby draw</h3><p>AP-2401 · Capex · ARL · Priya Shah</p></div><span class="tag gold state-tag">Pending</span></div>
+          <div class="appr-foot"><b>₹1.40 Cr</b><div class="appr-actions"><button type="button" class="yes" onclick="decide(this,'approved')">Approve</button><button type="button" class="no" onclick="decide(this,'rejected')">Reject</button></div></div>
+        </article>
+        <article class="card appr" data-state="pending" data-amt="4.60">
+          <div class="card-head"><div><h3>UltraTech cement PO-1842</h3><p>AP-2402 · Procurement · LBH · S. Reddy</p></div><span class="tag gold state-tag">Pending</span></div>
+          <div class="appr-foot"><b>₹4.60 Cr</b><div class="appr-actions"><button type="button" class="yes" onclick="decide(this,'approved')">Approve</button><button type="button" class="no" onclick="decide(this,'rejected')">Reject</button></div></div>
+        </article>
+        <article class="card appr" data-state="pending" data-amt="0.67">
+          <div class="card-head"><div><h3>Frisco Tower lease concession 8%</h3><p>AP-2403 · Sales · ARL · Arjun Mehta</p></div><span class="tag gold state-tag">Pending</span></div>
+          <div class="appr-foot"><b>₹0.67 Cr</b><div class="appr-actions"><button type="button" class="yes" onclick="decide(this,'approved')">Approve</button><button type="button" class="no" onclick="decide(this,'rejected')">Reject</button></div></div>
+        </article>
+        <article class="card appr" data-state="pending" data-amt="0.42">
+          <div class="card-head"><div><h3>Group FP&amp;A lead hire</h3><p>AP-2404 · HR · Corporate · Neha Iyer</p></div><span class="tag gold state-tag">Pending</span></div>
+          <div class="appr-foot"><b>₹0.42 Cr</b><div class="appr-actions"><button type="button" class="yes" onclick="decide(this,'approved')">Approve</button><button type="button" class="no" onclick="decide(this,'rejected')">Reject</button></div></div>
+        </article>
+        <article class="card appr" data-state="pending" data-amt="1.00">
+          <div class="card-head"><div><h3>Howard Ranch partial prepay</h3><p>AP-2405 · Treasury · ARL · RP desk</p></div><span class="tag gold state-tag">Pending</span></div>
+          <div class="appr-foot"><b>₹1.00 Cr</b><div class="appr-actions"><button type="button" class="yes" onclick="decide(this,'approved')">Approve</button><button type="button" class="no" onclick="decide(this,'rejected')">Reject</button></div></div>
+        </article>
+        <article class="card appr" data-state="pending" data-amt="2.20">
+          <div class="card-head"><div><h3>AHS unit price release</h3><p>AP-2406 · Sales · AHS · Neha Iyer</p></div><span class="tag gold state-tag">Pending</span></div>
+          <div class="appr-foot"><b>₹2.20 Cr</b><div class="appr-actions"><button type="button" class="yes" onclick="decide(this,'approved')">Approve</button><button type="button" class="no" onclick="decide(this,'rejected')">Reject</button></div></div>
+        </article>
+        <article class="card appr" data-state="pending" data-amt="3.20">
+          <div class="card-head"><div><h3>Schneider MEP vendor onboard</h3><p>AP-2407 · Procurement · PCS · Kabir Das</p></div><span class="tag gold state-tag">Pending</span></div>
+          <div class="appr-foot"><b>₹3.20 Cr</b><div class="appr-actions"><button type="button" class="yes" onclick="decide(this,'approved')">Approve</button><button type="button" class="no" onclick="decide(this,'rejected')">Reject</button></div></div>
+        </article>
+      </div>
+    </div>
+
+    <div id="sec-alerts" class="section">
+      <div class="alert-list">
+        <article class="alert warn">
+          <div class="alert-ico" aria-hidden="true">⚠️</div>
+          <div><h3>Low Cash Ratio</h3><p>Cash ₹0.09 Cr is 0.2% of assets, need 2-month buffer ₹0.5 Cr</p></div>
+        </article>
+        <article class="alert warn">
+          <div class="alert-ico" aria-hidden="true">⚠️</div>
+          <div><h3>High D/E — Land Bank Holdco</h3><p>3.4x exceeds 3.0x threshold, review refinancing</p></div>
+        </article>
+        <article class="alert warn">
+          <div class="alert-ico" aria-hidden="true">⚠️</div>
+          <div><h3>26875 Suite 112 — Occupancy 60%</h3><p>2 units vacant since Q2 FY26, ₹0.37L/month loss</p></div>
+        </article>
+        <article class="alert ok">
+          <div class="alert-ico" aria-hidden="true">✓</div>
+          <div><h3>Portfolio ROI 41.3%</h3><p>All 5 properties show positive unrealised gains</p></div>
+        </article>
+        <article class="alert ok">
+          <div class="alert-ico" aria-hidden="true">✓</div>
+          <div><h3>FY26 First Profitable Year</h3><p>+₹0.9 Cr net income YTD</p></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+var period = "Y";
+var year = "FY2026";
+var YEAR_COL = { FY2022: 1, FY2023: 2, FY2024: 3, FY2025: 4, FY2026: 5 };
+var TITLES = {
+  org: ["Command", "Org Dashboard"],
+  companies: ["Command", "Companies"],
+  ownership: ["Manage", "Ownership"],
+  loans: ["Manage", "Loans & Notes"],
+  statements: ["Finance", "Financial Statements"],
+  snapshot: ["Finance", "Financial Snapshot"],
+  assets: ["Finance", "Assets"],
+  sales: ["Feature OS", "Sales Pipeline"],
+  procurement: ["Feature OS", "Procurement"],
+  inventory: ["Feature OS", "Inventory"],
+  hr: ["Feature OS", "HR & Payroll"],
+  capex: ["Feature OS", "Projects & Capex"],
+  approvals: ["Feature OS", "Approvals Queue"],
+  alerts: ["System", "Alerts"]
+};
+
+var OPS = {
+  Y: {
+    pipeWin: "28.4%", pipeWinSub: "FY26 closed-won ÷ closed",
+    pipeWon: "₹54.8 Cr", pipeWonSub: "FY26 bookings, not the ₹234 Cr recognised",
+    procSpend: "₹86.4 Cr", procSpendSub: "FY26 purchase book",
+    procSave: "₹3.2 Cr", procSaveSub: "FY26 vs budget, 3.7%",
+    hrPay: "₹58.2 Cr", hrPaySub: "FY26 run-rate, 24.9% of revenue"
+  },
+  Q: {
+    pipeWin: "31.2%", pipeWinSub: "Q4 closed-won ÷ closed",
+    pipeWon: "₹16.4 Cr", pipeWonSub: "Q4 bookings, not recognised revenue",
+    procSpend: "₹24.8 Cr", procSpendSub: "Q4 purchase book",
+    procSave: "₹0.9 Cr", procSaveSub: "Q4 vs budget",
+    hrPay: "₹14.55 Cr", hrPaySub: "Q4 payroll"
+  },
+  M: {
+    pipeWin: "26.0%", pipeWinSub: "March closed-won ÷ closed",
+    pipeWon: "₹5.1 Cr", pipeWonSub: "March bookings, not recognised revenue",
+    procSpend: "₹8.1 Cr", procSpendSub: "March purchase book",
+    procSave: "₹0.3 Cr", procSaveSub: "March vs budget",
+    hrPay: "₹4.85 Cr", hrPaySub: "March payroll"
+  }
+};
+
+var DATA = {
+  Y: {
+    chartTitle: "Quarterly Revenue",
+    qLbls: ["Q1", "Q2", "Q3", "Q4"],
+    qRev: [48.6, 55.2, 62.4, 67.8],
+    kpi: {
+      rev: { value: "₹234.00 Cr", sub: "FY26 across 6 entities", delta: "▼ 8.6% vs FY25", tone: "bad" },
+      ebitda: { value: "31.7%", sub: "₹74.18 Cr consolidated", delta: "▲ 2.1 pp", tone: "good" },
+      assets: { value: "₹893.00 Cr", sub: "", delta: "▲ 4.2%", tone: "good" },
+      debt: { value: "₹533.00 Cr", sub: "", delta: "▲ 3.1%", tone: "bad" },
+      networth: { value: "₹360.00 Cr", sub: "", delta: "▲ 6.8%", tone: "good" },
+      cash: { value: "₹43.90 Cr", sub: "", delta: "▲ ₹3.2 Cr", tone: "good" }
+    }
+  },
+  Q: {
+    chartTitle: "Quarterly Revenue",
+    qLbls: ["Q1", "Q2", "Q3", "Q4"],
+    qRev: [48.6, 55.2, 62.4, 67.8],
+    kpi: {
+      rev: { value: "₹67.80 Cr", sub: "Q4 FY26 across 6 entities", delta: "▲ 8.7% vs Q3", tone: "good" },
+      ebitda: { value: "33.4%", sub: "₹22.65 Cr in Q4", delta: "▲ 1.6 pp", tone: "good" },
+      assets: { value: "₹893.00 Cr", sub: "Q4 close", delta: "▲ 1.1%", tone: "good" },
+      debt: { value: "₹521.00 Cr", sub: "Q4 close", delta: "▼ 2.3% vs Q3", tone: "good" },
+      networth: { value: "₹372.00 Cr", sub: "Q4 close", delta: "▲ 3.3%", tone: "good" },
+      cash: { value: "₹45.45 Cr", sub: "Quarter-end cash", delta: "▲ ₹1.55 Cr", tone: "good" }
+    }
+  },
+  M: {
+    chartTitle: "Monthly Revenue",
+    qLbls: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"],
+    qRev: [15.4, 16.2, 17.0, 17.6, 18.4, 19.2, 19.8, 20.8, 21.8, 21.8, 23.4, 22.6],
+    kpi: {
+      rev: { value: "₹22.60 Cr", sub: "March FY26", delta: "▼ 3.4% vs Feb", tone: "bad" },
+      ebitda: { value: "30.2%", sub: "March consolidated", delta: "▼ 1.4 pp", tone: "bad" },
+      assets: { value: "₹893.00 Cr", sub: "March close", delta: "▲ 0.2%", tone: "good" },
+      debt: { value: "₹528.00 Cr", sub: "March close", delta: "▼ 0.9%", tone: "good" },
+      networth: { value: "₹365.00 Cr", sub: "March close", delta: "▲ 1.4%", tone: "good" },
+      cash: { value: "₹44.20 Cr", sub: "Month-end cash", delta: "▲ ₹0.30 Cr", tone: "good" }
+    }
+  }
+};
+
+var SNAP = {
+  FY2026: {
+    label: "Net Income FY26", ni: "+₹0.9 Cr", niTone: "good", niNote: "41% net margin",
+    da: "91.9%", daNote: "High leverage", de: "6.75x", deNote: "",
+    eq: "+₹4.0 Cr", eqTone: "good", eqNote: ""
+  },
+  FY2025: {
+    label: "Net Income FY25", ni: "(₹0.6 Cr)", niTone: "bad", niNote: "Loss year",
+    da: "93.3%", daNote: "Liabilities ÷ assets", de: "8.24x", deNote: "Bank loans ÷ equity",
+    eq: "+₹3.3 Cr", eqTone: "good", eqNote: "Partnership book"
+  },
+  FY2024: {
+    label: "Net Income FY24", ni: "(₹11.8 Cr)", niTone: "bad", niNote: "Loss year",
+    da: "68.3%", daNote: "Liabilities ÷ assets", de: "1.66x", deNote: "Bank loans ÷ equity",
+    eq: "+₹15.9 Cr", eqTone: "good", eqNote: "Partnership book"
+  }
+};
+
+function nav(id) {
+  document.querySelectorAll(".section").forEach(function (s) { s.classList.remove("visible"); });
+  document.getElementById("sec-" + id).classList.add("visible");
+  document.querySelectorAll(".nav-btn").forEach(function (b) {
+    var on = b.getAttribute("data-nav") === id;
+    b.classList.toggle("active", on);
+    if (on) b.setAttribute("aria-current", "page");
+    else b.removeAttribute("aria-current");
+  });
+  document.getElementById("eyebrow").textContent = TITLES[id][0];
+  document.getElementById("pageTitle").textContent = TITLES[id][1];
+  setTimeout(initCharts, 50);
+}
+
+function setPeriod(p, el) {
+  period = p;
+  document.querySelectorAll(".pills button").forEach(function (b) { b.classList.toggle("active", b === el); });
+  var pack = DATA[p].kpi;
+  Object.keys(pack).forEach(function (key) {
+    var card = document.getElementById("kpi-" + key);
+    card.querySelector(".kpi-value").textContent = pack[key].value;
+    card.querySelector(".kpi-sub").textContent = pack[key].sub;
+    var delta = card.querySelector(".kpi-delta");
+    delta.textContent = pack[key].delta;
+    delta.classList.toggle("good", pack[key].tone === "good");
+    delta.classList.toggle("bad", pack[key].tone === "bad");
+  });
+  var title = document.getElementById("qrevTitle");
+  if (title) title.textContent = DATA[p].chartTitle;
+  var ops = OPS[p] || {};
+  document.querySelectorAll("[data-ops]").forEach(function (node) {
+    var key = node.getAttribute("data-ops");
+    if (ops[key] != null) node.textContent = ops[key];
+  });
+  initCharts();
+}
+
+function decide(btn, state) {
+  var card = btn.closest(".appr");
+  if (!card || card.getAttribute("data-state") !== "pending") return;
+  card.setAttribute("data-state", state);
+  var tag = card.querySelector(".state-tag");
+  tag.textContent = state === "approved" ? "Approved" : "Rejected";
+  tag.className = "tag state-tag " + (state === "approved" ? "ok" : "watch");
+  card.querySelectorAll("button").forEach(function (b) { b.disabled = true; });
+  refreshQueue();
+}
+
+function filterQueue(mode, el) {
+  document.querySelectorAll("#queueFilters button").forEach(function (b) { b.classList.toggle("active", b === el); });
+  document.querySelectorAll(".appr").forEach(function (card) {
+    var st = card.getAttribute("data-state");
+    card.hidden = mode !== "all" && st !== mode;
+  });
+}
+
+function refreshQueue() {
+  var pending = 0, approved = 0, rejected = 0, value = 0;
+  document.querySelectorAll(".appr").forEach(function (card) {
+    var st = card.getAttribute("data-state");
+    if (st === "pending") {
+      pending += 1;
+      value += parseFloat(card.getAttribute("data-amt")) || 0;
+    } else if (st === "approved") approved += 1;
+    else if (st === "rejected") rejected += 1;
+  });
+  document.getElementById("apprCount").textContent = String(pending);
+  document.getElementById("apprOk").textContent = String(approved);
+  document.getElementById("apprNo").textContent = String(rejected);
+  document.getElementById("apprValue").textContent = "₹" + value.toFixed(2) + " Cr";
+  var badge = document.getElementById("apprBadge");
+  badge.textContent = String(pending);
+  var navBtn = document.querySelector('[data-nav="approvals"]');
+  if (navBtn) navBtn.setAttribute("aria-label", "Approvals Queue, " + pending + " pending");
+  document.getElementById("apprEmpty").hidden = pending !== 0;
+  var active = document.querySelector("#queueFilters button.active");
+  var mode = active ? active.textContent.trim().toLowerCase() : "all";
+  document.querySelectorAll(".appr").forEach(function (card) {
+    card.hidden = mode !== "all" && card.getAttribute("data-state") !== mode;
+  });
+}
+
+function fsTab(id, el) {
+  document.querySelectorAll(".fs-panel").forEach(function (p) { p.classList.remove("active"); });
+  document.getElementById("fs-" + id).classList.add("active");
+  document.querySelectorAll(".tab").forEach(function (t) {
+    t.classList.remove("active");
+    t.setAttribute("aria-selected", "false");
+  });
+  el.classList.add("active");
+  el.setAttribute("aria-selected", "true");
+}
+
+function applySnapshot(v) {
+  var s = SNAP[v];
+  if (!s) return;
+  document.getElementById("snap-ni-label").textContent = s.label;
+  var ni = document.getElementById("snap-ni");
+  ni.textContent = s.ni;
+  ni.className = s.niTone;
+  document.getElementById("snap-ni-note").textContent = s.niNote;
+  document.getElementById("snap-da").textContent = s.da;
+  document.getElementById("snap-da-note").textContent = s.daNote;
+  document.getElementById("snap-de").textContent = s.de;
+  document.getElementById("snap-de-note").textContent = s.deNote;
+  var eq = document.getElementById("snap-eq");
+  eq.textContent = s.eq;
+  eq.className = s.eqTone;
+  document.getElementById("snap-eq-note").textContent = s.eqNote;
+}
+
+function setYear(v) {
+  year = v;
+  document.querySelectorAll("table.year-table").forEach(function (table) {
+    if (table.classList.contains("summary-table")) return;
+    table.querySelectorAll("tr").forEach(function (tr) {
+      Array.prototype.forEach.call(tr.children, function (cell, i) {
+        cell.classList.toggle("is-year", i === YEAR_COL[v]);
+      });
+    });
+  });
+  document.querySelectorAll("table.summary-table tbody tr").forEach(function (tr) {
+    tr.classList.toggle("is-year", tr.getAttribute("data-year") === v);
+  });
+  applySnapshot(v);
+}
+
+function getThemeColors() {
+  var s = getComputedStyle(document.documentElement);
+  var g = function (n) { return s.getPropertyValue(n).trim(); };
+  var bg = g("--bg");
+  var r = parseInt(bg.slice(1, 3), 16);
+  var dark = r < 80;
+  return {
+    navy: g("--navy"),
+    gold: g("--gold"),
+    ivory: g("--ivory"),
+    fg: g("--fg"),
+    muted: g("--fg-muted"),
+    border: g("--border"),
+    green: g("--green"),
+    red: g("--red"),
+    surface: g("--surface"),
+    series: dark ? g("--ivory") : g("--navy"),
+    dark: dark
+  };
+}
+
+function shown(id) {
+  var node = document.getElementById(id);
+  var sec = node && node.closest(".section");
+  return !!(sec && sec.classList.contains("visible"));
+}
+
+function destroyChart(id) {
+  var node = document.getElementById(id);
+  if (!node || typeof Chart === "undefined") return;
+  var live = Chart.getChart(node);
+  if (live) live.destroy();
+}
+
+function tipStyle(c) {
+  return {
+    backgroundColor: c.navy,
+    titleColor: c.ivory,
+    bodyColor: c.ivory,
+    borderColor: c.gold,
+    borderWidth: 1,
+    padding: 10,
+    cornerRadius: 8,
+    displayColors: false
+  };
+}
+
+function moneyScale(c, horizontal) {
+  var ticks = {
+    color: c.muted,
+    font: { size: 11, family: "Inter, sans-serif" },
+    callback: function (v) { return v + "Cr"; }
+  };
+  var grid = { color: c.border, drawBorder: false };
+  if (horizontal) {
+    return {
+      x: { beginAtZero: true, ticks: ticks, grid: grid },
+      y: { ticks: { color: c.muted, font: { size: 11, family: "Inter, sans-serif" } }, grid: { display: false } }
+    };
+  }
+  return {
+    x: { ticks: { color: c.muted, font: { size: 11, family: "Inter, sans-serif" } }, grid: { display: false } },
+    y: { beginAtZero: true, ticks: ticks, grid: grid }
+  };
+}
+
+function initCharts() {
+  if (typeof Chart === "undefined") return;
+  ["chartQRev", "chartDonut", "chartOwnership", "chartROI", "chartLoans", "chartRevExp", "chartNI", "chartPipe", "chartPipeEnt", "chartProc", "chartInv", "chartHr", "chartCapex"].forEach(destroyChart);
+  var c = getThemeColors();
+  Chart.defaults.font.family = "Inter, sans-serif";
+  Chart.defaults.color = c.muted;
+  if (shown("chartQRev")) buildQRev(c);
+  if (shown("chartDonut")) buildDonut(c);
+  if (shown("chartOwnership")) buildOwnership(c);
+  if (shown("chartROI")) buildROI(c);
+  if (shown("chartLoans")) buildLoans(c);
+  if (shown("chartRevExp")) buildRevExp(c);
+  if (shown("chartNI")) buildNI(c);
+  if (shown("chartPipe")) buildPipe(c);
+  if (shown("chartPipeEnt")) buildPipeEnt(c);
+  if (shown("chartProc")) buildProc(c);
+  if (shown("chartInv")) buildInv(c);
+  if (shown("chartHr")) buildHr(c);
+  if (shown("chartCapex")) buildCapex(c);
+}
+
+function buildQRev(c) {
+  var pack = DATA[period];
+  var colors = pack.qRev.map(function (_, i) {
+    return i === pack.qRev.length - 1 ? c.gold : c.series;
+  });
+  new Chart(document.getElementById("chartQRev"), {
+    type: "bar",
+    data: { labels: pack.qLbls, datasets: [{ data: pack.qRev, backgroundColor: colors, borderRadius: 6, maxBarThickness: 48 }] },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return "₹" + ctx.parsed.y + " Cr"; } } })
+      },
+      scales: moneyScale(c, false)
+    }
+  });
+}
+
+function buildDonut(c) {
+  new Chart(document.getElementById("chartDonut"), {
+    type: "doughnut",
+    data: {
+      labels: ["ARL", "PCS", "LBH", "AHS", "RHC", "IDT"],
+      datasets: [{
+        data: [68.4, 52.1, 41.8, 38.9, 21.4, 11.4],
+        backgroundColor: ["#0B1D33", "#1C3352", "#C79A2B", "#E8B84B", "#4A7B9D", "#8A9AB8"],
+        borderColor: c.surface,
+        borderWidth: 2,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "68%",
+      plugins: {
+        legend: { display: false },
+        tooltip: Object.assign(tipStyle(c), {
+          callbacks: {
+            label: function (ctx) {
+              var v = ctx.parsed;
+              return "₹" + v + " Cr (" + (v / 234 * 100).toFixed(1) + "%)";
+            }
+          }
+        })
+      }
+    }
+  });
+}
+
+function buildOwnership(c) {
+  new Chart(document.getElementById("chartOwnership"), {
+    type: "bar",
+    data: {
+      labels: ["King Plaza", "Suite 112", "Aubrey MH", "Howard Rd", "Punjabway"],
+      datasets: [
+        { label: "Cost Basis", data: [11.1, 3.5, 0.32, 14.6, 4.1], backgroundColor: c.series, borderRadius: 4, maxBarThickness: 28 },
+        { label: "Market Value", data: [15.8, 6.3, 0.33, 18.3, 6.7], backgroundColor: c.gold, borderRadius: 4, maxBarThickness: 28 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: c.fg, boxWidth: 12, usePointStyle: true } },
+        tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return ctx.dataset.label + ": ₹" + ctx.parsed.y + " Cr"; } } })
+      },
+      scales: moneyScale(c, false)
+    }
+  });
+}
+
+function buildROI(c) {
+  var vals = [42.4, 78.6, 5.3, 25.8, 64.1];
+  new Chart(document.getElementById("chartROI"), {
+    type: "bar",
+    data: {
+      labels: ["King Plaza", "Suite 112", "Aubrey MH", "Howard Rd", "Punjabway"],
+      datasets: [{
+        data: vals,
+        backgroundColor: vals.map(function (v) { return v > 50 ? c.green : c.gold; }),
+        borderRadius: 6,
+        maxBarThickness: 22
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return ctx.parsed.x + "%"; } } })
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          max: 100,
+          ticks: { color: c.muted, callback: function (v) { return v + "%"; } },
+          grid: { color: c.border }
+        },
+        y: { ticks: { color: c.muted }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+function buildLoans(c) {
+  var shades = c.dark ? ["#E7E2D6", "#C5D0DE", "#8FB0CC", "#6E8EAE"] : ["#0B1D33", "#1C3352", "#4A7B9D", "#8A9AB8"];
+  new Chart(document.getElementById("chartLoans"), {
+    type: "bar",
+    data: {
+      labels: ["King Plaza", "Howard Ranch", "Punjabway", "Suite 112"],
+      datasets: [{ data: [10.5, 10.0, 3.4, 3.3], backgroundColor: shades, borderRadius: 6, maxBarThickness: 22 }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return "₹" + ctx.parsed.x + " Cr"; } } })
+      },
+      scales: moneyScale(c, true)
+    }
+  });
+}
+
+function buildRevExp(c) {
+  new Chart(document.getElementById("chartRevExp"), {
+    type: "bar",
+    data: {
+      labels: ["FY22", "FY23", "FY24", "FY25", "FY26"],
+      datasets: [
+        { label: "Revenue", data: [5.7, 6.5, 4.4, 4.8, 1.9], backgroundColor: c.gold, borderRadius: 4, maxBarThickness: 28 },
+        { label: "Operating Expenses", data: [7.5, 5.6, 7.8, 4.7, 1.8], backgroundColor: c.series, borderRadius: 4, maxBarThickness: 28 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: c.fg, boxWidth: 12, usePointStyle: true } },
+        tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return ctx.dataset.label + ": ₹" + ctx.parsed.y + " Cr"; } } })
+      },
+      scales: moneyScale(c, false)
+    }
+  });
+}
+
+function buildNI(c) {
+  var vals = [-3.4, -6.9, -11.8, -0.6, 0.9];
+  new Chart(document.getElementById("chartNI"), {
+    type: "bar",
+    data: {
+      labels: ["FY22", "FY23", "FY24", "FY25", "FY26"],
+      datasets: [{
+        data: vals,
+        backgroundColor: vals.map(function (v) { return v < 0 ? c.red : c.green; }),
+        borderRadius: 6,
+        maxBarThickness: 36
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: Object.assign(tipStyle(c), {
+          callbacks: { label: function (ctx) { var v = ctx.parsed.y; return (v < 0 ? "(₹" + Math.abs(v) : "+₹" + v) + " Cr" + (v < 0 ? ")" : ""); } }
+        })
+      },
+      scales: {
+        x: { ticks: { color: c.muted }, grid: { display: false } },
+        y: {
+          ticks: { color: c.muted, callback: function (v) { return v + "Cr"; } },
+          grid: { color: c.border }
+        }
+      }
+    }
+  });
+}
+
+function buildPipe(c) {
+  new Chart(document.getElementById("chartPipe"), {
+    type: "bar",
+    data: {
+      labels: ["Lead", "Qualified", "Proposal", "Negotiation", "Verbal"],
+      datasets: [{ data: [48.6, 36.2, 28.4, 18.8, 9.4], backgroundColor: [c.series, c.series, c.series, c.gold, c.green], borderRadius: 6, maxBarThickness: 28 }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return "₹" + ctx.parsed.x + " Cr"; } } }) },
+      scales: moneyScale(c, true)
+    }
+  });
+}
+
+function buildPipeEnt(c) {
+  new Chart(document.getElementById("chartPipeEnt"), {
+    type: "bar",
+    data: {
+      labels: ["ARL", "PCS", "LBH", "AHS", "RHC", "IDT"],
+      datasets: [{ data: [42.6, 31.4, 22.8, 24.1, 12.6, 7.9], backgroundColor: c.dark ? ["#E7E2D6", "#C5D0DE", "#E0B04A", "#F0CC74", "#8FB0CC", "#6E8EAE"] : ["#0B1D33", "#1C3352", "#C79A2B", "#E8B84B", "#4A7B9D", "#8A9AB8"], borderRadius: 6, maxBarThickness: 36 }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return "₹" + ctx.parsed.y + " Cr"; } } }) },
+      scales: moneyScale(c, false)
+    }
+  });
+}
+
+function buildProc(c) {
+  var shades = c.dark ? ["#E7E2D6", "#C5D0DE", "#E0B04A", "#8FB0CC", "#6E8EAE", "#F0CC74"] : ["#0B1D33", "#1C3352", "#C79A2B", "#4A7B9D", "#8A9AB8", "#E8B84B"];
+  new Chart(document.getElementById("chartProc"), {
+    type: "bar",
+    data: {
+      labels: ["Cement & steel", "MEP", "Interiors", "Professional", "Utilities", "IT & other"],
+      datasets: [{ data: [28.4, 18.6, 12.2, 9.8, 8.4, 9.0], backgroundColor: shades, borderRadius: 6, maxBarThickness: 22 }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return "₹" + ctx.parsed.x + " Cr"; } } }) },
+      scales: moneyScale(c, true)
+    }
+  });
+}
+
+function buildInv(c) {
+  new Chart(document.getElementById("chartInv"), {
+    type: "bar",
+    data: {
+      labels: ["Finished", "WIP", "Land", "Materials"],
+      datasets: [{ data: [42.8, 96.4, 38.6, 8.4], backgroundColor: [c.gold, c.series, "#4A7B9D", c.green], borderRadius: 6, maxBarThickness: 42 }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return "₹" + ctx.parsed.y + " Cr"; } } }) },
+      scales: moneyScale(c, false)
+    }
+  });
+}
+
+function buildHr(c) {
+  new Chart(document.getElementById("chartHr"), {
+    type: "bar",
+    data: {
+      labels: ["ARL", "PCS", "LBH", "AHS", "RHC", "IDT"],
+      datasets: [{ label: "Monthly payroll", data: [0.92, 0.74, 0.41, 1.68, 0.72, 0.38], backgroundColor: c.gold, borderRadius: 6, maxBarThickness: 36 }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return "₹" + ctx.parsed.y + " Cr"; } } }) },
+      scales: moneyScale(c, false)
+    }
+  });
+}
+
+function buildCapex(c) {
+  new Chart(document.getElementById("chartCapex"), {
+    type: "bar",
+    data: {
+      labels: ["PCS Ph2", "AHS PMAY", "Warangal", "Toll", "King Plaza", "Howard", "Mall", "Punjabway"],
+      datasets: [
+        { label: "Budget", data: [36, 28, 18.5, 12.4, 8.4, 6.8, 6.2, 3.7], backgroundColor: c.series, borderRadius: 4, maxBarThickness: 22 },
+        { label: "Spent", data: [22.4, 19.6, 14.2, 7.8, 6.1, 1.6, 2.1, 0.8], backgroundColor: c.gold, borderRadius: 4, maxBarThickness: 22 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: c.fg, boxWidth: 12, usePointStyle: true } },
+        tooltip: Object.assign(tipStyle(c), { callbacks: { label: function (ctx) { return ctx.dataset.label + ": ₹" + ctx.parsed.y + " Cr"; } } })
+      },
+      scales: moneyScale(c, false)
+    }
+  });
+}
+
+setYear("FY2026");
+refreshQueue();
+window.addEventListener("DOMContentLoaded", function () { setTimeout(initCharts, 100); });
+if (window.matchMedia) {
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+  if (mq.addEventListener) mq.addEventListener("change", function () { initCharts(); });
+}
+</script>
+</body>
+</html>
