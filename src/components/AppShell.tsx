@@ -69,6 +69,19 @@ const groups: { label: string; items: { to: string; label: string; icon: Compone
     ],
   },
   {
+    label: "Real Estate ERP",
+    items: [
+      { to: "/estate/dashboard", label: "Estate Dashboard", icon: LayoutDashboard },
+      { to: "/estate/command-center", label: "Estate Command Center", icon: Zap },
+      { to: "/estate/financial-overview", label: "Financial Overview", icon: TrendingUp },
+      { to: "/estate/projects", label: "Projects", icon: Building2 },
+      { to: "/estate/construction", label: "Construction Control Tower", icon: HardHat },
+      { to: "/estate/fund-management", label: "Fund Management", icon: Landmark },
+      { to: "/estate/ifrs", label: "IFRS 15 & 16 Hub", icon: ClipboardCheck },
+      { to: "/estate", label: "EstateCFO Home & Login", icon: House },
+    ],
+  },
+  {
     label: "System",
     items: [{ to: "/alerts", label: "Alerts", icon: Bell }],
   },
@@ -125,6 +138,16 @@ const sections: Record<string, string> = {
 };
 
 function resolveChrome(pathname: string): { title: string; section: string } {
+  const estate: Record<string, string> = {
+    "/estate/dashboard": "Estate Dashboard",
+    "/estate/command-center": "Estate Command Center",
+    "/estate/financial-overview": "Financial Overview",
+    "/estate/projects": "Projects",
+    "/estate/construction": "Construction Control Tower",
+    "/estate/fund-management": "Fund Management",
+    "/estate/ifrs": "IFRS 15 & 16 Hub",
+  };
+  if (estate[pathname]) return { title: estate[pathname], section: "Real Estate ERP" };
   if (pathname === "/rentals") return { title: "Rentals", section: "Command Center" };
   if (pathname.startsWith("/rentals/")) return { title: "Unit register", section: "Command Center" };
   const loanParts = pathname.split("/").filter(Boolean);
@@ -236,7 +259,7 @@ export function AppShell() {
                   <NavLink
                     key={item.to}
                     to={item.to}
-                    end={item.to === "/"}
+                    end={item.to === "/" || item.to === "/estate"}
                     title={item.label}
                     className={({ isActive }) =>
                       `relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium outline-none transition focus-visible:ring-2 focus-visible:ring-gold ${

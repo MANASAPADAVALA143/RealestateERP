@@ -32,6 +32,15 @@ import { ProjectsCapexPage } from "@/pages/ProjectsCapexPage";
 import { SalesPipelinePage } from "@/pages/SalesPipelinePage";
 import { SnapshotPage } from "@/pages/SnapshotPage";
 import { StatementsPage } from "@/pages/StatementsPage";
+import { CommandCenterPage as EstateCommandCenterPage } from "@/estate/pages/CommandCenterPage";
+import { ConstructionControlTowerPage } from "@/estate/pages/ConstructionControlTowerPage";
+import { DashboardPage as EstateDashboardPage } from "@/estate/pages/DashboardPage";
+import { FinancialOverviewPage } from "@/estate/pages/FinancialOverviewPage";
+import { FundManagementPage } from "@/estate/pages/FundManagementPage";
+import { IfrsHubPage } from "@/estate/pages/IfrsHubPage";
+import { LandingPage as EstateLandingPage } from "@/estate/pages/LandingPage";
+import { LoginPage as EstateLoginPage } from "@/estate/pages/LoginPage";
+import { ProjectsPage as EstateProjectsPage } from "@/estate/pages/ProjectsPage";
 
 export default function App() {
   return (
@@ -71,7 +80,16 @@ export default function App() {
           <Route path="/capex" element={<ProjectsCapexPage />} />
           <Route path="/approvals" element={<ApprovalsPage />} />
           <Route path="/alerts" element={<AlertsPage />} />
+          <Route path="/estate/dashboard" element={<EstateDashboardPage />} />
+          <Route path="/estate/command-center" element={<EstateCommandCenterPage />} />
+          <Route path="/estate/financial-overview" element={<FinancialOverviewPage />} />
+          <Route path="/estate/projects" element={<EstateProjectsPage />} />
+          <Route path="/estate/construction" element={<ConstructionControlTowerPage />} />
+          <Route path="/estate/fund-management" element={<FundManagementPage />} />
+          <Route path="/estate/ifrs" element={<IfrsHubPage />} />
         </Route>
+        <Route path="/estate" element={<EstateLandingPage />} />
+        <Route path="/estate/login" element={<EstateLoginPage />} />
       </Routes>
     </BrowserRouter>
   );
