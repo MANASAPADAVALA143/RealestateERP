@@ -1,6 +1,13 @@
 import { useEffect, useState, useSyncExternalStore, type ComponentType } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
+  ArrowDown,
+  ArrowUp,
+  Briefcase,
+  ChartColumn,
+  CreditCard,
+  File,
+  LayoutGrid,
   Banknote,
   Bell,
   Boxes,
@@ -82,6 +89,23 @@ const groups: { label: string; items: { to: string; label: string; icon: Compone
     ],
   },
   {
+    label: "Real Estate Portfolio",
+    items: [
+      { to: "/gnanova/realestate/dashboard", label: "Company Dashboard", icon: House },
+      { to: "/gnanova/realestate/properties", label: "Properties", icon: LayoutGrid },
+      { to: "/gnanova/realestate/loans", label: "Loans & Notes", icon: FileText },
+      { to: "/gnanova/realestate/assets", label: "Assets Detail", icon: Briefcase },
+      { to: "/gnanova/realestate/insurance", label: "Insurance", icon: Shield },
+      { to: "/gnanova/realestate/ownership", label: "Ownership Detail", icon: Users },
+      { to: "/gnanova/realestate/capital-calls", label: "Capital Calls", icon: CreditCard },
+      { to: "/gnanova/realestate/financial-snapshot", label: "Financial Snapshot", icon: ChartColumn },
+      { to: "/gnanova/realestate/accounts-payable", label: "Accounts Payable", icon: ArrowDown },
+      { to: "/gnanova/realestate/accounts-receivable", label: "Accounts Receivable", icon: ArrowUp },
+      { to: "/gnanova/realestate/treasury", label: "Treasury", icon: Landmark },
+      { to: "/gnanova/realestate/statements", label: "Statements", icon: File },
+    ],
+  },
+  {
     label: "System",
     items: [{ to: "/alerts", label: "Alerts", icon: Bell }],
   },
@@ -148,6 +172,25 @@ function resolveChrome(pathname: string): { title: string; section: string } {
     "/estate/ifrs": "IFRS 15 & 16 Hub",
   };
   if (estate[pathname]) return { title: estate[pathname], section: "Real Estate ERP" };
+  const portfolioTitles: Record<string, string> = {
+    dashboard: "Company Dashboard",
+    properties: "Properties",
+    loans: "Loans & Notes",
+    assets: "Assets Detail",
+    insurance: "Insurance",
+    ownership: "Ownership Detail",
+    "capital-calls": "Capital Calls",
+    "financial-snapshot": "Financial Snapshot",
+    "accounts-payable": "Accounts Payable",
+    "accounts-receivable": "Accounts Receivable",
+    treasury: "Treasury",
+    statements: "Statements",
+  };
+  const portfolioMatch = pathname.match(/^\/gnanova\/realestate\/([^/]+)$/);
+  if (portfolioMatch && portfolioTitles[portfolioMatch[1]]) {
+    return { title: portfolioTitles[portfolioMatch[1]], section: "Real Estate Portfolio" };
+  }
+  if (pathname === "/gnanova/integrations") return { title: "Integrations", section: "Real Estate Portfolio" };
   if (pathname === "/rentals") return { title: "Rentals", section: "Command Center" };
   if (pathname.startsWith("/rentals/")) return { title: "Unit register", section: "Command Center" };
   const loanParts = pathname.split("/").filter(Boolean);
@@ -330,7 +373,11 @@ export function AppShell() {
           <div className="mx-auto max-w-[1440px] space-y-6">
             <Outlet />
             <p className="pt-2 text-center text-[11px] tracking-wide text-navy/40">
-              Unaudited management accounts in ₹ Crore · Demonstration data for Agarwal Group, Hyderabad
+              {location.pathname.startsWith("/gnanova/")
+                ? "Illustrative demo data · US dollars · Meridian Holdings LP, Meridian Ventures Group"
+                : location.pathname.startsWith("/estate/")
+                  ? "Illustrative demo data · AED · Dubai Holdings real estate book"
+                  : "Unaudited management accounts in ₹ Crore · Demonstration data for Agarwal Group, Hyderabad"}
             </p>
           </div>
         </main>

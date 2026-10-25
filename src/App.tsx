@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AppShell } from "@/components/AppShell";
 import { AlertsPage } from "@/pages/AlertsPage";
 import { ApprovalsPage } from "@/pages/ApprovalsPage";
@@ -41,6 +41,15 @@ import { IfrsHubPage } from "@/estate/pages/IfrsHubPage";
 import { LandingPage as EstateLandingPage } from "@/estate/pages/LandingPage";
 import { LoginPage as EstateLoginPage } from "@/estate/pages/LoginPage";
 import { ProjectsPage as EstateProjectsPage } from "@/estate/pages/ProjectsPage";
+import { ReAssetsPage } from "@/realestate/pages/ReAssetsPage";
+import { ReCapitalCallsPage } from "@/realestate/pages/ReCapitalCallsPage";
+import { ReDashboardPage } from "@/realestate/pages/ReDashboardPage";
+import { ReInsurancePage } from "@/realestate/pages/ReInsurancePage";
+import { ReLoansPage } from "@/realestate/pages/ReLoansPage";
+import { ReOwnershipPage } from "@/realestate/pages/ReOwnershipPage";
+import { RePropertiesPage } from "@/realestate/pages/RePropertiesPage";
+import { ReSnapshotPage } from "@/realestate/pages/ReSnapshotPage";
+import { ReIntegrationsPage, ReStubPage } from "@/realestate/pages/ReStubPage";
 
 export default function App() {
   return (
@@ -87,6 +96,20 @@ export default function App() {
           <Route path="/estate/construction" element={<ConstructionControlTowerPage />} />
           <Route path="/estate/fund-management" element={<FundManagementPage />} />
           <Route path="/estate/ifrs" element={<IfrsHubPage />} />
+          <Route path="/gnanova/realestate" element={<Navigate to="/gnanova/realestate/dashboard" replace />} />
+          <Route path="/gnanova/realestate/dashboard" element={<ReDashboardPage />} />
+          <Route path="/gnanova/realestate/properties" element={<RePropertiesPage />} />
+          <Route path="/gnanova/realestate/loans" element={<ReLoansPage />} />
+          <Route path="/gnanova/realestate/assets" element={<ReAssetsPage />} />
+          <Route path="/gnanova/realestate/insurance" element={<ReInsurancePage />} />
+          <Route path="/gnanova/realestate/ownership" element={<ReOwnershipPage />} />
+          <Route path="/gnanova/realestate/capital-calls" element={<ReCapitalCallsPage />} />
+          <Route path="/gnanova/realestate/financial-snapshot" element={<ReSnapshotPage />} />
+          <Route path="/gnanova/realestate/accounts-payable" element={<ReStubPage title="Accounts Payable" />} />
+          <Route path="/gnanova/realestate/accounts-receivable" element={<ReStubPage title="Accounts Receivable" />} />
+          <Route path="/gnanova/realestate/treasury" element={<ReStubPage title="Treasury" />} />
+          <Route path="/gnanova/realestate/statements" element={<ReStubPage title="Statements" />} />
+          <Route path="/gnanova/integrations" element={<ReIntegrationsPage />} />
         </Route>
         <Route path="/estate" element={<EstateLandingPage />} />
         <Route path="/estate/login" element={<EstateLoginPage />} />
