@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { Crumb } from "@/components/drill";
-import { company, companyOptions } from "@/realestate/data";
+import { balance, company, companyOptions, usd } from "@/realestate/data";
 
 export function RePage({
   page,
@@ -253,13 +253,13 @@ export function BalanceTrend() {
             <tr>
               <td>2026</td>
               <td className="text-right tabular-nums">$4,792,100</td>
-              <td className="text-right tabular-nums text-red-700">$1,434,572</td>
-              <td className="text-right tabular-nums">$3,357,528</td>
+              <td className="text-right tabular-nums !text-red-700">{usd(balance.liabilities)}</td>
+              <td className="text-right tabular-nums">{usd(balance.equity)}</td>
               <td className="text-right">—</td>
               <td className="text-right tabular-nums">$14,100</td>
               <td className="text-right">—</td>
               <td className="text-right">—</td>
-              <td className="text-right tabular-nums">0.47x</td>
+              <td className="text-right tabular-nums">{balance.deRatio.toFixed(2)}x</td>
             </tr>
           </tbody>
         </table>

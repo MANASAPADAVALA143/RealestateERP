@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Card, Kpi, Progress, RePage, StatusPill } from "@/realestate/ui";
-import { amortSummary, amortization, balance, loanBook, loans, usd } from "@/realestate/data";
+import { balance, loanBook, loans, usd, type RealLoan } from "@/realestate/data";
 
 export function ReLoansPage() {
   const [open, setOpen] = useState<string | null>("OSB-2947");
-  const rows = amortization(36);
 
   return (
     <RePage page="Loans & Notes" title="Loans & Notes">
@@ -24,7 +23,7 @@ export function ReLoansPage() {
         <Kpi label="Monthly obligation" value={usd(loanBook.monthly)} />
         <Kpi label="Total interest paid" value="$0" />
         <Kpi label="Interest receivable" value="$0" />
-        <Kpi label="Debt / equity" value={`${balance.deRatio}×`} />
+        <Kpi label="Debt / equity" value={`${balance.deRatio.toFixed(2)}×`} />
       </section>
       <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
         <Kpi label="Owed to us" value="$0" />
@@ -34,7 +33,7 @@ export function ReLoansPage() {
       </section>
 
       <section className="grid gap-3 lg:grid-cols-2">
-        <Kpi label="Business loans" value={usd(loanBook.outstanding)} hint="2 active loans · $13,000/month · Avg rate: 7.1%" />
+        <Kpi label="Business loans" value={usd(loanBook.outstanding)} hint={`2 active loans · ${usd(loanBook.monthly)}/month · Avg rate: ${loanBook.avgRate}%`} />
         <Kpi label="Personal loans" value="$0" hint="0 active loans" />
       </section>
 
@@ -53,6 +52,7 @@ export function ReLoansPage() {
                   <span>Balance <b className="tabular-nums">{usd(loan.balance)}</b></span>
                   <span>Rate <b>{loan.rate}%</b></span>
                   <span>Monthly <b className="tabular-nums">{usd(loan.monthly)}</b></span>
+                  <span>Term <b>{loan.termMonths} mo</b></span>
                   <StatusPill text={loan.status} tone="green" />
                   <ChevronDown className={`h-4 w-4 transition ${expanded ? "rotate-180" : ""}`} aria-hidden="true" />
                 </span>
@@ -64,7 +64,7 @@ export function ReLoansPage() {
                     <div><dt className="text-navy/50">Payment day</dt><dd className="font-semibold">{loan.dueDay}</dd></div>
                     <div><dt className="text-navy/50">Linked property</dt><dd className="font-semibold">{loan.property ?? "—"}</dd></div>
                   </dl>
-                  {loan.id === "OSB-2947" ? <Schedule rows={rows} /> : <p className="text-sm text-navy/60">No amortization schedule has been loaded for this loan.</p>}
+                  <Schedule loan={loan} />
                 </div>
               ) : null}
             </article>
@@ -98,17 +98,29 @@ export function ReLoansPage() {
   );
 }
 
-function Schedule({ rows }: { rows: ReturnType<typeof amortization> }) {
+function Schedule({ loan }: { loan: RealLoan }) {
+  const rows = loan.rows.slice(0, 36);
   return (
     <div>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h4 className="font-serif text-lg text-navy">Amortization schedule · OSB-2947</h4>
-        <span className="text-xs text-navy/50">Showing first {rows.length} rows</span>
+        <h4 className="font-serif text-lg text-navy">Amortization schedule · {loan.code}</h4>
+        <span className="text-xs text-navy/50">
+          Showing first {rows.length} of {loan.termMonths} months · {loan.rate}% annual
+        </span>
       </div>
       <div className="mb-4 grid gap-3 sm:grid-cols-3">
-        <Kpi label="EMI / month" value={usd(amortSummary.emi)} />
-        <Kpi label="Total interest" value={usd(amortSummary.totalInterest)} tone="red" />
-        <Kpi label="Total cost" value={usd(amortSummary.totalCost)} />
+        <article className="rounded-2xl border-t-4 border-gold bg-navy p-4 text-ivory shadow-card">
+          <p className="text-[11px] uppercase tracking-[0.14em] text-ivory/60">EMI / month</p>
+          <p className="mt-2 font-serif text-2xl">{usd(loan.monthly)}</p>
+        </article>
+        <article className="rounded-2xl border-t-4 border-gold bg-navy p-4 text-ivory shadow-card">
+          <p className="text-[11px] uppercase tracking-[0.14em] text-ivory/60">Total interest</p>
+          <p className="mt-2 font-serif text-2xl text-gold">{usd(loan.totalInterest)}</p>
+        </article>
+        <article className="rounded-2xl border-t-4 border-gold bg-navy p-4 text-ivory shadow-card">
+          <p className="text-[11px] uppercase tracking-[0.14em] text-ivory/60">Total cost</p>
+          <p className="mt-2 font-serif text-2xl">{usd(loan.totalCost)}</p>
+        </article>
       </div>
       <div className="max-h-96 overflow-auto rounded-xl border border-navy/10">
         <table className="data-table min-w-[640px]">
@@ -123,12 +135,12 @@ function Schedule({ rows }: { rows: ReturnType<typeof amortization> }) {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.month}>
+              <tr key={row.month} className="even:bg-ivory">
                 <td>{row.month}</td>
                 <td className="text-right tabular-nums">{usd(row.payment)}</td>
-                <td className="text-right tabular-nums text-blue-700">{usd(row.principal)}</td>
-                <td className="text-right tabular-nums text-red-700">{usd(row.interest)}</td>
-                <td className="text-right tabular-nums">{usd(row.balance)}</td>
+                <td className="text-right tabular-nums !text-blue-700">{usd(row.principal)}</td>
+                <td className="text-right tabular-nums !text-red-700">{usd(row.interest)}</td>
+                <td className="text-right font-semibold tabular-nums !text-gold">{usd(row.balance)}</td>
               </tr>
             ))}
           </tbody>

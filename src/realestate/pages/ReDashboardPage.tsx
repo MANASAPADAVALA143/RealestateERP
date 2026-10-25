@@ -14,7 +14,22 @@ import {
   Toggle,
   YearSelect,
 } from "@/realestate/ui";
-import { balance, capital, company, loans, obligations, partners, pnl, portfolio, properties, usd, usdSigned } from "@/realestate/data";
+import {
+  balance,
+  capital,
+  cashGap30,
+  company,
+  loanBook,
+  loans,
+  monthlyDebtService,
+  obligations,
+  partners,
+  pnl,
+  portfolio,
+  properties,
+  usd,
+  usdSigned,
+} from "@/realestate/data";
 
 export function ReDashboardPage() {
   const equityPct = (balance.equity / balance.assets) * 100;
@@ -35,20 +50,26 @@ export function ReDashboardPage() {
       <section className="grid gap-3 lg:grid-cols-3">
         <Kpi label="Total assets" value={usd(balance.assets)} hint="2 properties" />
         <Kpi label="Total liabilities" value={usd(balance.liabilities)} tone="blue" hint={<Link to="/gnanova/realestate/loans" className="font-semibold text-blue-700 hover:underline">2 loans</Link>} />
-        <Kpi label="Net worth" value={usd(balance.equity)} tone="blue" hint={<>D/E ratio <b>0.47x</b> · Working cap <b>—</b></>} />
+        <Kpi label="Net worth" value={usd(balance.equity)} tone="blue" hint={<>D/E ratio <b>{balance.deRatio.toFixed(2)}x</b> · Working cap <b>—</b></>} />
       </section>
       <Card>
         <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
           <span className="font-semibold">{equityPct.toFixed(1)}% equity</span>
-          <span className="text-navy/60">$3.36M of $4.79M total assets</span>
+          <span className="text-navy/60">${(balance.equity / 1e6).toFixed(2)}M of ${(balance.assets / 1e6).toFixed(2)}M total assets</span>
         </div>
         <Progress pct={equityPct} />
       </Card>
 
-      <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+      <section className="grid grid-cols-2 gap-3 xl:grid-cols-5">
         <Kpi label="Cash" value={usd(balance.cash)} />
-        <Kpi label="Loan balance" value="$1,593,171" tone="blue" hint="2 active loans" />
-        <Kpi label="30-day cash gap" value="+$7,300" tone="green" hint="$14K cash vs $7K due" />
+        <Kpi label="Loan balance" value={usd(loanBook.outstanding)} tone="blue" hint="2 active loans" />
+        <Kpi label="Monthly debt service" value={usd(monthlyDebtService)} tone="blue" hint={loans.map((loan) => `${loan.code} ${usd(loan.monthly)}`).join(" · ")} />
+        <Kpi
+          label="30-day cash gap"
+          value={usdSigned(cashGap30)}
+          tone={cashGap30 >= 0 ? "green" : "red"}
+          hint={`$${Math.round(balance.cash / 1000)}K cash vs $${Math.round(monthlyDebtService / 1000)}K due`}
+        />
         <Kpi label="Capital calls" value={usd(capital.dashboardPending)} hint="69% funded · $164K of $236K called" />
       </section>
 
@@ -93,11 +114,11 @@ export function ReDashboardPage() {
       <section className="grid gap-4 xl:grid-cols-3">
         <Card title="Assets vs liabilities">
           <DonutChart
-            center="$4,792,100"
+            center={usd(balance.assets)}
             centerSub="Total"
             slices={[
-              { name: "Assets", value: 77, color: "#2563EB", label: "77%" },
-              { name: "Liabilities", value: 23, color: "#0B1D33", label: "23%" },
+              { name: "Assets", value: balance.assets, color: "#2563EB", label: `${Math.round((balance.assets / (balance.assets + balance.liabilities)) * 100)}%` },
+              { name: "Liabilities", value: balance.liabilities, color: "#0B1D33", label: `${Math.round((balance.liabilities / (balance.assets + balance.liabilities)) * 100)}%` },
             ]}
           />
         </Card>
@@ -147,7 +168,7 @@ export function ReDashboardPage() {
                   <td className="text-right tabular-nums">{row.share.toFixed(1)}%</td>
                   <td className="text-right tabular-nums">{usd(row.invested)}</td>
                   <td className="text-right tabular-nums">{usd(row.value)}</td>
-                  <td className="text-right tabular-nums text-emerald-700">{usdSigned(row.gain)}</td>
+                  <td className="text-right tabular-nums !text-emerald-700">{usdSigned(row.gain)}</td>
                   <td className="text-right tabular-nums">{row.roi.toFixed(1)}%</td>
                   <td><StatusPill text="Active" tone="green" /></td>
                 </tr>
@@ -176,8 +197,8 @@ export function ReDashboardPage() {
                     <td className="font-medium">{row.shortName}</td>
                     <td className="text-right tabular-nums">{usd(row.cost)}</td>
                     <td className="text-right tabular-nums">{usd(row.market)}</td>
-                    <td className="text-right tabular-nums text-emerald-700">{usdSigned(row.gain)}</td>
-                    <td className="text-right tabular-nums text-emerald-700">+{row.roi.toFixed(1)}%</td>
+                    <td className="text-right tabular-nums !text-emerald-700">{usdSigned(row.gain)}</td>
+                    <td className="text-right tabular-nums !text-emerald-700">+{row.roi.toFixed(1)}%</td>
                   </tr>
                 ))}
               </tbody>

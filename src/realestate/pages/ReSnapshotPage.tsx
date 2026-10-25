@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowUp, PlusCircle } from "lucide-react";
+import { ArrowDown, ArrowUp, PlusCircle } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import {
   AllocationCard,
@@ -128,34 +128,38 @@ function PnlTab() {
         <Card title="Revenue & NOI trend">
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={[{ name: "2026", Revenue: 0, NOI: 0 }]}>
+              <BarChart data={[{ name: "2026", Revenue: pnl.revenue, NOI: pnl.noi }]}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
                 <XAxis dataKey="name" />
-                <YAxis domain={[0, 1]} tickFormatter={() => "$0"} />
+                <YAxis tickFormatter={(value: number) => `$${Math.round(value / 1000)}K`} />
                 <Bar dataKey="Revenue" fill="#2563EB" />
-                <Bar dataKey="NOI" fill="#16A34A" />
+                <Bar dataKey="NOI" fill="#DC2626" />
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-xs text-navy/50">Revenue $0 · NOI $0</p>
+          <p className="text-xs text-navy/50">Revenue {usd(pnl.revenue)} · NOI {usd(pnl.noi)}</p>
         </Card>
         <Card title="Profitability">
           <dl className="space-y-2 text-sm">
-            <Line label="Revenue ↓" value="$0" blue />
-            <Line label="Operating exp ↓" value="-$213.8K" />
-            <Line label="NOI" value="-$213.8K" red />
-            <Line label="Net income" value="-$104.6K" red bold />
+            <Line label="Revenue" value={usd(pnl.revenue)} blue />
+            <Line label="Operating exp" value={usd(-pnl.opex)} />
+            <Line label="NOI" value={usd(pnl.noi)} red />
+            <Line label="Net income" value={usd(pnl.net)} red bold />
           </dl>
         </Card>
         <Card title="Cash movement">
           <ul className="space-y-3 text-sm">
-            <li className="flex items-center justify-between"><span className="flex items-center gap-2"><ArrowUp className="h-4 w-4 text-emerald-700" /> Operating cash flow</span><b>+$0</b></li>
-            <li className="flex items-center justify-between"><span className="flex items-center gap-2"><ArrowUp className="h-4 w-4 text-emerald-700" /> Financing cash flow</span><b>+$0</b></li>
-            <li className="flex items-center justify-between border-t border-navy/10 pt-3"><span className="flex items-center gap-2"><PlusCircle className="h-4 w-4 text-navy" /> Net cash change</span><b>+$0</b></li>
+            <CashLine label="Operating cash flow" value={cashFlow.operating} />
+            <CashLine label="Investing cash flow" value={cashFlow.investing} />
+            <CashLine label="Financing cash flow" value={cashFlow.financing} />
+            <li className="flex items-center justify-between border-t border-navy/10 pt-3">
+              <span className="flex items-center gap-2"><PlusCircle className="h-4 w-4 text-navy" /> Net cash change</span>
+              <b className="text-red-700">{usd(cashFlow.net)}</b>
+            </li>
           </ul>
         </Card>
         <Card title="Expense mix">
-          <DonutChart center="$213.8K" centerSub="Total" slices={[{ name: "Operating expenses", value: 213_832, color: "#1E3A8A", label: "$213.8K · 100%" }]} />
+          <DonutChart center={usd(pnl.opex)} centerSub="Total" slices={[{ name: "Operating expenses", value: pnl.opex, color: "#1E3A8A", label: `${usd(pnl.opex)} · 100%` }]} />
         </Card>
       </section>
 
@@ -177,10 +181,10 @@ function PnlTab() {
               <tr>
                 <td>2026 (YTD)</td>
                 <td className="text-right tabular-nums">{usd(pnl.revenue)}</td>
-                <td className="text-right tabular-nums text-red-700">{usd(pnl.net)}</td>
+                <td className="text-right tabular-nums !text-red-700">{usd(pnl.net)}</td>
                 <td className="text-right tabular-nums">{usd(balance.assets)}</td>
                 <td className="text-right tabular-nums">{usd(balance.liabilities)}</td>
-                <td className="text-right tabular-nums text-blue-700">{usdSigned(balance.equity)}</td>
+                <td className="text-right tabular-nums !text-blue-700">{usdSigned(balance.equity)}</td>
                 <td className="text-right tabular-nums">{usd(cashFlow.operating)}</td>
               </tr>
             </tbody>
@@ -238,6 +242,19 @@ function CashTab() {
       </dl>
       <p className="mt-3 text-xs text-navy/50">From uploaded CF statement</p>
     </Card>
+  );
+}
+
+function CashLine({ label, value }: { label: string; value: number }) {
+  const Icon = value < 0 ? ArrowDown : ArrowUp;
+  return (
+    <li className="flex items-center justify-between">
+      <span className="flex items-center gap-2">
+        <Icon className={`h-4 w-4 ${value < 0 ? "text-red-700" : "text-emerald-700"}`} aria-hidden="true" />
+        {label}
+      </span>
+      <b className={value < 0 ? "text-red-700" : "text-emerald-700"}>{usdSigned(value)}</b>
+    </li>
   );
 }
 

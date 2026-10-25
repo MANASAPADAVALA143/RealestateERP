@@ -20,16 +20,30 @@ export const companyOptions = [
   { value: "Summit Land Holdings LLC", label: "└── Summit Land Holdings LLC" },
 ];
 
+const assetsTotal = 4_792_100;
+const liabilitiesTotal = 1_593_171;
+const equityTotal = assetsTotal - liabilitiesTotal;
+
 export const balance = {
-  assets: 4_792_100,
-  liabilities: 1_434_572,
-  equity: 3_357_528,
+  assets: assetsTotal,
+  liabilities: liabilitiesTotal,
+  equity: equityTotal,
   currentAssets: 14_100,
   nonCurrentAssets: 4_778_000,
   cash: 14_100,
-  deRatio: 0.47,
-  debtToAssets: 29.9,
+  deRatio: Math.round((liabilitiesTotal / equityTotal) * 100) / 100,
+  debtToAssets: Math.round((liabilitiesTotal / assetsTotal) * 1000) / 10,
 };
+
+const osbTerms = { balance: 773_112, rate: 6.5, termMonths: 240 };
+const sfgTerms = { balance: 820_059, rate: 7.7, termMonths: 180 };
+const osbRows = schedule(osbTerms.balance, osbTerms.rate, osbTerms.termMonths);
+const osbEmi = Math.round(annuityPayment(osbTerms.balance, osbTerms.rate, osbTerms.termMonths));
+const sfgEmi = Math.round(annuityPayment(sfgTerms.balance, sfgTerms.rate, sfgTerms.termMonths));
+const osbFirstYearInterest = osbRows.slice(0, 12).reduce((sum, row) => sum + row.interest, 0);
+
+export const monthlyDebtService = osbEmi + sfgEmi;
+export const cashGap30 = balance.cash - monthlyDebtService;
 
 export const portfolio = {
   landCost: 19_885_189,
@@ -90,10 +104,10 @@ export const properties: PropertyRow[] = [
     market: 850_000,
     gain: 661_167,
     roi: 350.1,
-    debt: 773_112,
-    emi: 6_200,
+    debt: osbTerms.balance,
+    emi: osbEmi,
     lender: "Oakwood Savings Bank",
-    interest: "$4,653/$55,840",
+    interest: `${usd(osbRows[0].interest)}/${usd(osbFirstYearInterest)}`,
   },
 ];
 
@@ -103,11 +117,11 @@ export const partners = [
 ];
 
 export const debt = {
-  entity: 1_434_572,
-  propertyAllocated: 773_112,
-  unallocated: 661_460,
-  monthlyEmi: 6_200,
-  annualService: 74_400,
+  entity: balance.liabilities,
+  propertyAllocated: osbTerms.balance,
+  unallocated: balance.liabilities - osbTerms.balance,
+  monthlyEmi: osbEmi,
+  annualService: osbEmi * 12,
   propertyRepaid: 26_888,
   propertyOriginal: 800_000,
   propertyRepaidPct: 3.4,
@@ -121,29 +135,9 @@ export const loanBook = {
   lent: 0,
   principalPaid: 56_829,
   repaidPct: 3,
-  monthly: 13_000,
-  avgRate: 7.1,
+  monthly: monthlyDebtService,
+  avgRate: Math.round(((osbTerms.balance * osbTerms.rate + sfgTerms.balance * sfgTerms.rate) / (osbTerms.balance + sfgTerms.balance)) * 10) / 10,
 };
-
-export interface RealLoan {
-  id: string;
-  lender: string;
-  code: string;
-  balance: number;
-  rate: number;
-  monthly: number;
-  maturity: string;
-  dueDay: string;
-  status: "Active";
-  property: string | null;
-}
-
-export const loans: RealLoan[] = [
-  { id: "OSB-2947", lender: "Oakwood Savings Bank", code: "OSB-2947", balance: 773_112, rate: 6.5, monthly: 6_200, maturity: "Apr 25, 2027", dueDay: "25th", status: "Active", property: "1790 Meridian Blvd" },
-  { id: "SFG-0920", lender: "Summit Financial Group", code: "SFG-0920", balance: 820_059, rate: 7.7, monthly: 6_800, maturity: "Nov 23, 2026", dueDay: "16th", status: "Active", property: null },
-];
-
-export const amortSummary = { emi: 8_969, totalInterest: 303_168, totalCost: 1_076_280 };
 
 export interface AmortRow {
   month: number;
@@ -153,29 +147,66 @@ export interface AmortRow {
   balance: number;
 }
 
-const printedRows: AmortRow[] = [
-  { month: 1, payment: 8_969, principal: 4_472, interest: 4_497, balance: 768_640 },
-  { month: 2, payment: 8_969, principal: 4_498, interest: 4_471, balance: 764_142 },
-  { month: 3, payment: 8_969, principal: 4_524, interest: 4_445, balance: 759_618 },
-  { month: 4, payment: 8_969, principal: 4_551, interest: 4_418, balance: 755_067 },
-  { month: 5, payment: 8_969, principal: 4_577, interest: 4_392, balance: 750_490 },
-  { month: 6, payment: 8_969, principal: 4_604, interest: 4_365, balance: 745_886 },
-];
-
-export function amortization(rows = 36): AmortRow[] {
-  const monthlyRate = 4_497 / 773_112;
-  const out: AmortRow[] = printedRows.slice(0, rows);
-  let balanceLeft = printedRows[printedRows.length - 1].balance;
-  for (let month = printedRows.length + 1; month <= rows; month += 1) {
-    const interest = Math.round(balanceLeft * monthlyRate);
-    const principal = amortSummary.emi - interest;
-    balanceLeft -= principal;
-    out.push({ month, payment: amortSummary.emi, principal, interest, balance: balanceLeft });
-  }
-  return out;
+export function annuityPayment(principal: number, annualRate: number, months: number): number {
+  const r = annualRate / 100 / 12;
+  if (r === 0) return principal / months;
+  return (principal * r) / (1 - (1 + r) ** -months);
 }
 
-export const obligations = { d30: 6_800, d60: 6_800, d90: 6_800, net: -6_800 };
+export function schedule(principal: number, annualRate: number, months: number): AmortRow[] {
+  const r = annualRate / 100 / 12;
+  const payment = annuityPayment(principal, annualRate, months);
+  const rows: AmortRow[] = [];
+  let balanceLeft = principal;
+  for (let month = 1; month <= months; month += 1) {
+    const interest = balanceLeft * r;
+    const principalPart = month === months ? balanceLeft : payment - interest;
+    balanceLeft = Math.max(balanceLeft - principalPart, 0);
+    rows.push({ month, payment: principalPart + interest, principal: principalPart, interest, balance: balanceLeft });
+  }
+  return rows;
+}
+
+export interface RealLoan {
+  id: string;
+  lender: string;
+  code: string;
+  balance: number;
+  rate: number;
+  termMonths: number;
+  monthly: number;
+  totalInterest: number;
+  totalCost: number;
+  rows: AmortRow[];
+  maturity: string;
+  dueDay: string;
+  status: "Active";
+  property: string | null;
+}
+
+function buildLoan(seed: Omit<RealLoan, "monthly" | "totalInterest" | "totalCost" | "rows">): RealLoan {
+  const rows = schedule(seed.balance, seed.rate, seed.termMonths);
+  const totalCost = rows.reduce((sum, row) => sum + row.payment, 0);
+  return {
+    ...seed,
+    monthly: annuityPayment(seed.balance, seed.rate, seed.termMonths),
+    totalInterest: totalCost - seed.balance,
+    totalCost,
+    rows,
+  };
+}
+
+export const loans: RealLoan[] = [
+  buildLoan({ id: "OSB-2947", lender: "Oakwood Savings Bank", code: "OSB-2947", ...osbTerms, maturity: "Apr 25, 2027", dueDay: "25th", status: "Active", property: "1790 Meridian Blvd" }),
+  buildLoan({ id: "SFG-0920", lender: "Summit Financial Group", code: "SFG-0920", ...sfgTerms, maturity: "Nov 23, 2026", dueDay: "16th", status: "Active", property: null }),
+];
+
+export const obligations = {
+  d30: monthlyDebtService,
+  d60: monthlyDebtService * 2,
+  d90: monthlyDebtService * 3,
+  net: -monthlyDebtService,
+};
 
 export const capital = {
   called: 236_000,

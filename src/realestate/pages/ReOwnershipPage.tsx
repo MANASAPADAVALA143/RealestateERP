@@ -33,7 +33,7 @@ export function ReOwnershipPage() {
                   <td className="text-right tabular-nums">{row.share.toFixed(1)}%</td>
                   <td className="text-right tabular-nums">{usd(row.invested)}</td>
                   <td className="text-right tabular-nums">{usd(row.value)}</td>
-                  <td className="text-right tabular-nums text-blue-700">{usdSigned(row.gain)}</td>
+                  <td className="text-right tabular-nums !text-blue-700">{usdSigned(row.gain)}</td>
                   <td className="text-right tabular-nums">{row.roi.toFixed(1)}%</td>
                   <td><StatusPill text="Active" tone="green" /></td>
                 </tr>

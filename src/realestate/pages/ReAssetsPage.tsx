@@ -74,7 +74,7 @@ export function ReAssetsPage() {
                 <tr key={row.id}>
                   <td className="font-medium">{row.name}</td>
                   <td className="text-right tabular-nums">{usd(row.cost)}</td>
-                  <td className="text-right tabular-nums text-blue-700">{usd(row.market)}</td>
+                  <td className="text-right tabular-nums !text-blue-700">{usd(row.market)}</td>
                   <td className="text-right tabular-nums">{usd(row.book)}</td>
                   <td className="text-right tabular-nums">
                     {row.debt ? (
@@ -85,7 +85,7 @@ export function ReAssetsPage() {
                     ) : "—"}
                   </td>
                   <td className="text-right tabular-nums">{row.interest ?? "—"}</td>
-                  <td className="text-right tabular-nums text-blue-700">{usdSigned(row.gain)}</td>
+                  <td className="text-right tabular-nums !text-blue-700">{usdSigned(row.gain)}</td>
                   <td><DemoButton>Edit</DemoButton></td>
                 </tr>
               ))}

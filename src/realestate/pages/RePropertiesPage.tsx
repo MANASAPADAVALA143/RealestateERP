@@ -135,7 +135,7 @@ export function RePropertiesPage() {
                   <td className="text-right tabular-nums">{usd(row.cost)}</td>
                   <td className="text-right tabular-nums">{usd(row.book)}</td>
                   <td className="text-right tabular-nums">{usd(row.market)}</td>
-                  <td className="text-right tabular-nums text-emerald-700">{usdSigned(row.gain)}</td>
+                  <td className="text-right tabular-nums !text-emerald-700">{usdSigned(row.gain)}</td>
                   <td className="text-right tabular-nums">{row.roi.toFixed(1)}%</td>
                   <td className="text-right tabular-nums">{row.debt ? usd(row.debt) : "—"}</td>
                   <td className="text-right tabular-nums">{row.emi ? `${usd(row.emi)}/mo` : "—"}</td>
