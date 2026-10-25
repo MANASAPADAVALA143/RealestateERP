@@ -60,7 +60,7 @@ function Overview({ onOpen }: { onOpen: (tab: Tab) => void }) {
         <article className="rounded-2xl border border-navy/10 bg-white p-5 shadow-card">
           <p className="text-[11px] uppercase tracking-[0.14em] text-navy/50">Net income — FY2026 (YTD)</p>
           <p className="mt-2 font-serif text-4xl text-red-700">{usd(pnl.net)}</p>
-          <p className="mt-2 text-sm text-navy/60">After $109,150 interest expense · -95.8% net margin</p>
+          <p className="mt-2 text-sm text-navy/60">After {usd(pnl.interest)} interest expense · {pnl.margin}% net margin</p>
         </article>
         <article className="rounded-2xl border border-navy/10 bg-white p-5 shadow-card">
           <p className="text-[11px] uppercase tracking-[0.14em] text-navy/50">Equity position</p>
@@ -144,6 +144,7 @@ function PnlTab() {
             <Line label="Revenue" value={usd(pnl.revenue)} blue />
             <Line label="Operating exp" value={usd(-pnl.opex)} />
             <Line label="NOI" value={usd(pnl.noi)} red />
+            <Line label="Interest expense" value={usd(-pnl.interest)} />
             <Line label="Net income" value={usd(pnl.net)} red bold />
           </dl>
         </Card>
@@ -211,7 +212,7 @@ function BalanceTab() {
             <Line label="Total liabilities" value={usd(balance.liabilities)} red />
             <Line label="Equity" value={usdSigned(balance.equity)} blue bold />
             <Line label="Debt/Assets" value={`${balance.debtToAssets}%`} />
-            <Line label="D/E ratio" value={`${balance.deRatio}x`} />
+            <Line label="D/E ratio" value={`${balance.deRatio.toFixed(2)}x`} />
           </dl>
         </Card>
         <Card title="Assets vs liabilities">

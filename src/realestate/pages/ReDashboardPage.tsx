@@ -126,7 +126,9 @@ export function ReDashboardPage() {
           <dl className="space-y-3 text-sm">
             <Line label="Revenue" value={usd(pnl.revenue)} />
             <Line label="Operating expenses" value={usd(pnl.opex)} />
-            <Line label="Net" value={usd(pnl.net)} red bold />
+            <Line label="NOI" value={usd(pnl.noi)} red />
+            <Line label="Interest expense" value={usd(pnl.interest)} />
+            <Line label="Net income" value={usd(pnl.net)} red bold />
           </dl>
         </Card>
         <Card title="Cash flow">

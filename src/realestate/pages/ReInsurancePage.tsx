@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Trash2 } from "lucide-react";
 import { Card, Kpi, Progress, RePage, StatusPill } from "@/realestate/ui";
-import { coverageGaps, insurance, policies, usd } from "@/realestate/data";
+import { coverageGaps, insurance, policies, totalCoverageGap, usd } from "@/realestate/data";
 
 export function ReInsurancePage() {
   const [rows, setRows] = useState(policies);
@@ -15,7 +15,7 @@ export function ReInsurancePage() {
         </Kpi>
         <article className="rounded-2xl border border-navy/10 bg-white p-4 shadow-card">
           <p className="text-[11px] uppercase tracking-[0.14em] text-navy/50">Coverage position</p>
-          <p className="mt-2 font-serif text-3xl text-red-700">{usd(insurance.position)}</p>
+          <p className="mt-2 font-serif text-3xl text-red-700">{usd(-totalCoverageGap)}</p>
           <div className="mt-3 flex flex-wrap gap-6 text-sm">
             <span>Total coverage <b className="tabular-nums">{usd(insurance.totalCoverage)}</b></span>
             <span>Next renewal <b>{insurance.nextRenewalDays} days</b></span>
@@ -37,8 +37,12 @@ export function ReInsurancePage() {
       </section>
 
       <Card title="Coverage-gap analysis" right={<span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-navy">NEW</span>}>
+        <p role="alert" className="mb-4 rounded-xl border border-amber-300 bg-amber-100 px-4 py-3 text-sm leading-relaxed text-navy">
+          ⚠ <b>Austin Blvd Commercial Lot is critically underinsured — $38M exposure gap.</b> Recommended action:
+          increase coverage to minimum $20M or obtain separate land policy.
+        </p>
         <div className="overflow-x-auto">
-          <table className="data-table min-w-[920px]">
+          <table className="data-table min-w-[760px] [&_td]:px-3 [&_th]:px-3">
             <thead>
               <tr>
                 <th>Property</th>
@@ -50,27 +54,28 @@ export function ReInsurancePage() {
               </tr>
             </thead>
             <tbody>
-              {coverageGaps.map((row) => (
-                <tr key={row.property}>
-                  <td className="font-medium">{row.property}</td>
-                  <td className="text-right tabular-nums">{row.insurable === null ? "—" : usd(row.insurable)}</td>
-                  <td className="text-right tabular-nums">{usd(row.insured)}</td>
-                  <td className="text-right tabular-nums">{row.gap}</td>
-                  <td>
-                    {row.ratio === null ? "—" : (
+              {coverageGaps.map((row) => {
+                const covered = row.status === "Fully Covered";
+                return (
+                  <tr key={row.property}>
+                    <td className="font-medium">{row.property}</td>
+                    <td className="text-right tabular-nums">{usd(row.insurable)}</td>
+                    <td className="text-right tabular-nums">{usd(row.insured)}</td>
+                    <td className={`text-right tabular-nums ${covered ? "" : "font-semibold text-red-700"}`}>{usd(row.gap)}</td>
+                    <td>
                       <div className="flex items-center gap-2">
-                        <div className="h-2 w-24 overflow-hidden rounded-full bg-navy/10">
-                          <div className="h-full bg-red-600" style={{ width: `${row.ratio}%` }} />
+                        <div className="h-2 w-16 overflow-hidden rounded-full bg-navy/10">
+                          <div className={`h-full ${covered ? "bg-emerald-600" : "bg-red-600"}`} style={{ width: `${Math.min(row.ratio, 100)}%` }} />
                         </div>
                         <span className="text-xs tabular-nums">{row.ratio}%</span>
                       </div>
-                    )}
-                  </td>
-                  <td>
-                    <StatusPill text={row.status} tone={row.status === "Critically underinsured" ? "red" : "amber"} />
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td className="whitespace-nowrap">
+                      <StatusPill text={row.status} tone={covered ? "green" : "red"} />
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

@@ -33,7 +33,7 @@
   }
 
   .data-table td {
-    @apply px-4 py-3 align-middle text-navy;
+    @apply px-4 py-3 align-middle;
   }
 
   .data-table tbody tr {

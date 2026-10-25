@@ -223,13 +223,19 @@ export const capitalCalls = [
   { id: "CC-2026-003", date: "Sep 1, 2026", amount: 72_000, purpose: "Working capital reserve", status: "Pending" as const, funded: 0 },
 ];
 
+const revenue = 109_200;
+const opex = 213_832;
+const interestExpense = 109_150;
+const noi = revenue - opex;
+const netIncome = noi - interestExpense;
+
 export const pnl = {
-  revenue: 109_200,
-  opex: 213_832,
-  noi: -104_632,
-  interest: 109_150,
-  net: -104_632,
-  margin: -95.8,
+  revenue,
+  opex,
+  noi,
+  interest: interestExpense,
+  net: netIncome,
+  margin: Math.round((netIncome / revenue) * 1000) / 10,
 };
 
 export const cashFlow = {
@@ -248,7 +254,6 @@ export const allocation = [
 export const insurance = {
   premium: 16_350,
   activePolicies: 4,
-  position: -27_575_000,
   totalCoverage: 13_275_000,
   nextRenewalDays: 99,
   nextRenewalProperty: "Property — 12800 King Plaza Bldg 4, Dallas TX",
@@ -272,8 +277,32 @@ export const policies: Policy[] = [
   { id: "p4", type: "Property", insurer: "Hartford Insurance", number: "MH-HART-2026-01", location: "12800 King Plaza Bldg 4, Dallas TX", coverage: 2_000_000, premium: 5_500, expiry: "Feb 1, 2027" },
 ];
 
-export const coverageGaps = [
-  { property: "1790 Meridian Blvd", insurable: 661_167, insured: 0, gap: "+$661,167", ratio: 0, status: "Critically underinsured" as const },
-  { property: "AUSTIN BLVD", insurable: 20_303_644, insured: 0, gap: "+$20,303,644", ratio: 0, status: "Critically underinsured" as const },
-  { property: "248 Howard Ranch Hs, Valley View TX", insurable: null, insured: 1_200_000, gap: "Cannot calculate", ratio: null, status: "Valuation review recommended" as const },
+export interface CoverageGap {
+  property: string;
+  insurable: number;
+  insured: number;
+  gap: number;
+  ratio: number;
+  status: "Fully Covered" | "Critically Underinsured";
+}
+
+function gapRow(property: string, insurable: number, insured: number): CoverageGap {
+  const ratio = Math.round((insured / insurable) * 100);
+  return {
+    property,
+    insurable,
+    insured,
+    gap: Math.max(insurable - insured, 0),
+    ratio,
+    status: ratio >= 100 ? "Fully Covered" : "Critically Underinsured",
+  };
+}
+
+export const coverageGaps: CoverageGap[] = [
+  gapRow("1790 Meridian Blvd", 850_000, 1_200_000),
+  gapRow("Austin Blvd Commercial Lot", 40_000_000, 2_000_000),
+  gapRow("Vehicle Fleet", 75_000, 75_000),
+  gapRow("Umbrella Liability", 10_000_000, 10_000_000),
 ];
+
+export const totalCoverageGap = coverageGaps.reduce((sum, row) => sum + row.gap, 0);
