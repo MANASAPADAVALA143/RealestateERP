@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import { Trash2 } from "lucide-react";
+import { ImportedInsurance } from "@/integrations/ui/connected";
 import { Card, Kpi, Progress, RePage, StatusPill } from "@/realestate/ui";
 import { coverageGaps, insurance, policies, totalCoverageGap, usd } from "@/realestate/data";
 
@@ -9,6 +10,7 @@ export function ReInsurancePage() {
 
   return (
     <RePage page="Insurance" title="Insurance">
+      <ImportedInsurance />
       <section className="grid gap-3 lg:grid-cols-2">
         <Kpi label="Annual premium" value={usd(insurance.premium)} hint="4 active policies">
           <Progress pct={100} />

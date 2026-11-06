@@ -1,5 +1,6 @@
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useSort } from "@/components/drill";
+import { ImportedProperties } from "@/integrations/ui/connected";
 import { Card, DemoButton, DonutChart, Kpi, Progress, RePage } from "@/realestate/ui";
 import { company, debt, portfolio, properties, usd, usdSigned } from "@/realestate/data";
 
@@ -27,6 +28,7 @@ export function RePropertiesPage() {
         </>
       }
     >
+      <ImportedProperties />
       <section className="grid gap-3 lg:grid-cols-2">
         <Kpi label="Property-linked debt" value={usd(debt.propertyAllocated)} hint={`${debt.propertyRepaidPct}% repaid · $26,888 of $800,000`}>
           <Progress pct={debt.propertyRepaidPct} />

@@ -49,7 +49,18 @@ import { ReLoansPage } from "@/realestate/pages/ReLoansPage";
 import { ReOwnershipPage } from "@/realestate/pages/ReOwnershipPage";
 import { RePropertiesPage } from "@/realestate/pages/RePropertiesPage";
 import { ReSnapshotPage } from "@/realestate/pages/ReSnapshotPage";
-import { ReIntegrationsPage, ReStubPage } from "@/realestate/pages/ReStubPage";
+import { ReAccountsPayablePage, ReAccountsReceivablePage, ReStatementsPage, ReTreasuryPage } from "@/realestate/pages/ReImportedPages";
+import { AnalystPage } from "@/integrations/pages/AnalystPage";
+import { ErpConnectorsPage } from "@/integrations/pages/ErpConnectorsPage";
+import { ExcelImportPage } from "@/integrations/pages/ExcelImportPage";
+import { SyncMonitoringPage } from "@/integrations/pages/SyncMonitoringPage";
+import { FieldMappingPage } from "@/integrations/pages/FieldMappingPage";
+import { ImportHistoryPage, ImportJobPage } from "@/integrations/pages/ImportHistoryPage";
+import { IntegrationDashboardPage } from "@/integrations/pages/IntegrationDashboardPage";
+import { IntegrationSettingsPage } from "@/integrations/pages/IntegrationSettingsPage";
+import { ReconciliationPage } from "@/integrations/pages/ReconciliationPage";
+import { ValidationPage } from "@/integrations/pages/ValidationPage";
+import { YardiPage } from "@/integrations/pages/YardiPage";
 
 export default function App() {
   return (
@@ -105,11 +116,23 @@ export default function App() {
           <Route path="/gnanova/realestate/ownership" element={<ReOwnershipPage />} />
           <Route path="/gnanova/realestate/capital-calls" element={<ReCapitalCallsPage />} />
           <Route path="/gnanova/realestate/financial-snapshot" element={<ReSnapshotPage />} />
-          <Route path="/gnanova/realestate/accounts-payable" element={<ReStubPage title="Accounts Payable" />} />
-          <Route path="/gnanova/realestate/accounts-receivable" element={<ReStubPage title="Accounts Receivable" />} />
-          <Route path="/gnanova/realestate/treasury" element={<ReStubPage title="Treasury" />} />
-          <Route path="/gnanova/realestate/statements" element={<ReStubPage title="Statements" />} />
-          <Route path="/gnanova/integrations" element={<ReIntegrationsPage />} />
+          <Route path="/gnanova/realestate/accounts-payable" element={<ReAccountsPayablePage />} />
+          <Route path="/gnanova/realestate/accounts-receivable" element={<ReAccountsReceivablePage />} />
+          <Route path="/gnanova/realestate/treasury" element={<ReTreasuryPage />} />
+          <Route path="/gnanova/realestate/statements" element={<ReStatementsPage />} />
+          <Route path="/gnanova/integrations" element={<Navigate to="/data-integrations" replace />} />
+          <Route path="/data-integrations" element={<IntegrationDashboardPage />} />
+          <Route path="/data-integrations/erp" element={<ErpConnectorsPage />} />
+          <Route path="/data-integrations/yardi" element={<YardiPage />} />
+          <Route path="/data-integrations/sync" element={<SyncMonitoringPage />} />
+          <Route path="/data-integrations/import" element={<ExcelImportPage />} />
+          <Route path="/data-integrations/mapping" element={<FieldMappingPage />} />
+          <Route path="/data-integrations/validation" element={<ValidationPage />} />
+          <Route path="/data-integrations/reconciliation" element={<ReconciliationPage />} />
+          <Route path="/data-integrations/history" element={<ImportHistoryPage />} />
+          <Route path="/data-integrations/history/:jobId" element={<ImportJobPage />} />
+          <Route path="/data-integrations/settings" element={<IntegrationSettingsPage />} />
+          <Route path="/ai-analyst" element={<AnalystPage />} />
         </Route>
         <Route path="/estate" element={<EstateLandingPage />} />
         <Route path="/estate/login" element={<EstateLoginPage />} />

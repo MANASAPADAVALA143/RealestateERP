@@ -1,0 +1,4 @@
+Loan Number,Lender,Entity,Property,Original Principal,Principal Balance,Rate,Payment,Interest YTD,Principal YTD,Maturity,Collateral Value
+OSB-2947,Oakwood Savings Bank,MHLP,MER-1790,800000,773112,6.5%,5764,37689,14187,04/25/2046,850000
+SFG-0920,Summit Financial Group,MHLP,AUS-BLVD,850000,820059,7.7%,7696,47358,21906,11/23/2041,40000000
+FTB-1102,First Texas Bank,BRL,P001,1200000,1104000,6.9%,9200,57400,25800,06/01/2039,

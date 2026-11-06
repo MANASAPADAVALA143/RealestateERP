@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { ImportedLoans } from "@/integrations/ui/connected";
 import { Card, Kpi, Progress, RePage, StatusPill } from "@/realestate/ui";
 import { balance, loanBook, loans, usd, type RealLoan } from "@/realestate/data";
 
@@ -8,6 +9,7 @@ export function ReLoansPage() {
 
   return (
     <RePage page="Loans & Notes" title="Loans & Notes">
+      <ImportedLoans />
       <section className="grid gap-3 lg:grid-cols-2">
         <Kpi label="Outstanding" value={usd(loanBook.outstanding)} hint={`Figures as of ${loanBook.asOf} · ${loanBook.repaidPct}% repaid · $56,829 of $1,650,000`}>
           <Progress pct={loanBook.repaidPct} />

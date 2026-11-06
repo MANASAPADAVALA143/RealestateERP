@@ -1,6 +1,17 @@
 import { useEffect, useState, useSyncExternalStore, type ComponentType } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
+  BrainCircuit,
+  Building,
+  Cable,
+  RefreshCw,
+  FileSpreadsheet,
+  History,
+  Scale,
+  Server,
+  Settings,
+  ShieldCheck,
+  Shuffle,
   ArrowDown,
   ArrowUp,
   Briefcase,
@@ -106,12 +117,30 @@ const groups: { label: string; items: { to: string; label: string; icon: Compone
     ],
   },
   {
+    label: "Data Integrations",
+    items: [
+      { to: "/data-integrations", label: "Integration Overview", icon: Cable },
+      { to: "/data-integrations/erp", label: "ERP Connectors", icon: Building },
+      { to: "/data-integrations/yardi", label: "Yardi Voyager", icon: Server },
+      { to: "/data-integrations/import", label: "Excel / CSV", icon: FileSpreadsheet },
+      { to: "/data-integrations/mapping", label: "Field Mapping", icon: Shuffle },
+      { to: "/data-integrations/validation", label: "Data Validation", icon: ShieldCheck },
+      { to: "/data-integrations/reconciliation", label: "Reconciliation", icon: Scale },
+      { to: "/data-integrations/sync", label: "Sync Monitoring", icon: RefreshCw },
+      { to: "/data-integrations/history", label: "Import History", icon: History },
+      { to: "/data-integrations/settings", label: "Integration Settings", icon: Settings },
+    ],
+  },
+  {
     label: "System",
     items: [{ to: "/alerts", label: "Alerts", icon: Bell }],
   },
   {
     label: "AI Advisor",
-    items: [{ to: "/decision-simulator", label: "Decision Simulator", icon: Sparkles, tag: "gold" }],
+    items: [
+      { to: "/decision-simulator", label: "Decision Simulator", icon: Sparkles, tag: "gold" },
+      { to: "/ai-analyst", label: "AI Financial Analyst", icon: BrainCircuit },
+    ],
   },
 ];
 
@@ -190,7 +219,21 @@ function resolveChrome(pathname: string): { title: string; section: string } {
   if (portfolioMatch && portfolioTitles[portfolioMatch[1]]) {
     return { title: portfolioTitles[portfolioMatch[1]], section: "Real Estate Portfolio" };
   }
-  if (pathname === "/gnanova/integrations") return { title: "Integrations", section: "Real Estate Portfolio" };
+  const integrationTitles: Record<string, string> = {
+    "/data-integrations": "Integration Overview",
+    "/data-integrations/erp": "ERP Connectors",
+    "/data-integrations/yardi": "Yardi Voyager",
+    "/data-integrations/import": "Excel / CSV",
+    "/data-integrations/sync": "Sync Monitoring",
+    "/data-integrations/mapping": "Field Mapping",
+    "/data-integrations/validation": "Data Validation",
+    "/data-integrations/reconciliation": "Reconciliation",
+    "/data-integrations/history": "Import History",
+    "/data-integrations/settings": "Integration Settings",
+  };
+  if (integrationTitles[pathname]) return { title: integrationTitles[pathname], section: "Data Integrations" };
+  if (pathname.startsWith("/data-integrations/history/")) return { title: "Import detail", section: "Data Integrations" };
+  if (pathname === "/ai-analyst") return { title: "AI Financial Analyst", section: "AI Advisor" };
   if (pathname === "/rentals") return { title: "Rentals", section: "Command Center" };
   if (pathname.startsWith("/rentals/")) return { title: "Unit register", section: "Command Center" };
   const loanParts = pathname.split("/").filter(Boolean);
@@ -302,7 +345,7 @@ export function AppShell() {
                   <NavLink
                     key={item.to}
                     to={item.to}
-                    end={item.to === "/" || item.to === "/estate"}
+                    end={item.to === "/" || item.to === "/estate" || item.to === "/data-integrations"}
                     title={item.label}
                     className={({ isActive }) =>
                       `relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium outline-none transition focus-visible:ring-2 focus-visible:ring-gold ${
@@ -373,8 +416,10 @@ export function AppShell() {
           <div className="mx-auto max-w-[1440px] space-y-6">
             <Outlet />
             <p className="pt-2 text-center text-[11px] tracking-wide text-navy/40">
-              {location.pathname.startsWith("/gnanova/")
-                ? "Illustrative demo data · US dollars · Meridian Holdings LP, Meridian Ventures Group"
+              {location.pathname.startsWith("/data-integrations") || location.pathname === "/ai-analyst"
+                ? "Figures are shown exactly as imported from source files · stored in this browser until a server database is configured"
+                : location.pathname.startsWith("/gnanova/")
+                ? "Demonstration data · US dollars · Meridian Holdings LP. Panels marked “Imported data” come from validated imports."
                 : location.pathname.startsWith("/estate/")
                   ? "Illustrative demo data · AED · Dubai Holdings real estate book"
                   : "Unaudited management accounts in ₹ Crore · Demonstration data for Agarwal Group, Hyderabad"}

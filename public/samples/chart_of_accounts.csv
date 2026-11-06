@@ -1,0 +1,14 @@
+GL Account,Account Description,Account Type,Sub Type,Normal Balance
+1010,Operating Cash,Asset,Cash,Debit
+1200,Tenant Receivables,Asset,Receivable,Debit
+1500,Buildings,Asset,Fixed Asset,Debit
+2010,Accounts Payable,Liability,Payable,Credit
+2500,Mortgage Notes,Liability,Debt,Credit
+3000,Partners Capital,Equity,Equity,Credit
+4010,Base Rent,Revenue,Rental Revenue,Credit
+4100,CAM Recoveries,Revenue,Other Revenue,Credit
+6110,Repairs & Maintenance,Expense,Operating Expense,Debit
+6200,Utilities,Expense,Operating Expense,Debit
+6300,Property Management Fees,Expense,Operating Expense,Debit
+6400,Property Taxes,Expense,Operating Expense,Debit
+7100,Mortgage Interest,Expense,Interest Expense,Debit

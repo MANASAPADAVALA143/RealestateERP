@@ -1,0 +1,7 @@
+Entity,Period,Line Item,Section,Amount
+MHLP,2026-09,Operating cash,Asset,14100
+MHLP,2026-09,Tenant receivables,Asset,22500
+MHLP,2026-09,Real estate,Asset,4755500
+MHLP,2026-09,Mortgage loans,Liability,1593171
+MHLP,2026-09,Accounts payable,Liability,0
+MHLP,2026-09,Partners equity,Equity,3198929

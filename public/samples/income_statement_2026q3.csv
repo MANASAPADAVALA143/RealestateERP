@@ -1,0 +1,6 @@
+Entity,Period,Line Item,Classification,Amount
+MHLP,2026-Q3,Rental income,Revenue,349500
+MHLP,2026-Q3,Other property income,Revenue,0
+MHLP,2026-Q3,Operating expenses,Operating Expense,184090.66
+MHLP,2026-Q3,Mortgage interest,Non-operating Expense,16200
+MHLP,2026-Q3,Net income,Revenue,149209.34

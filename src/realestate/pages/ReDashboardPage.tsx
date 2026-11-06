@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ImportedDashboardKpis } from "@/integrations/ui/connected";
 import {
   AllocationCard,
   BalanceTrend,
@@ -46,6 +47,7 @@ export function ReDashboardPage() {
       }
     >
       <CompanySelect />
+      <ImportedDashboardKpis />
 
       <section className="grid gap-3 lg:grid-cols-3">
         <Kpi label="Total assets" value={usd(balance.assets)} hint="2 properties" />

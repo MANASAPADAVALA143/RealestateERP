@@ -1,0 +1,5 @@
+Company Code,Journal Entry,G/L Account,Posting Date,Profit Center,Amount in Company Code Currency,Debit/Credit Ind.,Item Text
+MHLP,100000101,6110,10/02/2026,P004,"1,480.00",S,Elevator service
+MHLP,100000101,2010,10/02/2026,P004,"1,480.00",H,Elevator service
+BRL,100000102,1200,10/01/2026,P001,"48,500.00",S,October base rent
+BRL,100000102,4010,10/01/2026,P001,"48,500.00",H,October base rent
