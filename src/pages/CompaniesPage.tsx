@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { AiInsights } from "@/components/AiInsights";
+import { ArEntityTable } from "@/ar/ui/embeds";
 import { Lede, Panel, StatusBadge } from "@/components/ui";
 import { deLabel, ebitdaMargin, entities, group, inrCr, insights, pct } from "@/lib/demoData";
 
@@ -98,6 +99,8 @@ export function CompaniesPage() {
           </table>
         </div>
       </Panel>
+
+      <ArEntityTable />
 
       <AiInsights page="Companies" insights={insights.Companies} />
     </div>

@@ -12,10 +12,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          xlsx: ["xlsx"],
-          charts: ["recharts"],
-          react: ["react", "react-dom", "react-router-dom"],
+        manualChunks(id) {
+          if (id.includes("node_modules/xlsx")) return "xlsx";
+          if (id.includes("node_modules/recharts") || id.includes("node_modules/d3-") || id.includes("node_modules/victory-")) return "charts";
+          if (/node_modules\/(react|react-dom|react-router|react-router-dom|scheduler)\//.test(id)) return "react";
+          if (id.includes("/src/ar/")) return "receivables";
+          if (id.includes("/src/integrations/")) return "integrations";
+          return undefined;
         },
       },
     },

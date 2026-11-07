@@ -5,6 +5,7 @@ import { ask, supportedQuestions, type AnalystAnswer } from "@/integrations/engi
 import { categoryById } from "@/integrations/engine/categories";
 import type { Dataset, Scope } from "@/integrations/engine/metrics";
 import { Crumb } from "@/components/drill";
+import { ArAnalystPanel } from "@/ar/ui/embeds";
 import { Button, Empty, Notice, Pill, Section, inputClass } from "@/integrations/ui/components";
 import { integrationService, useAsync, useWorkspace } from "@/integrations/ui/hooks";
 
@@ -35,6 +36,8 @@ export function AnalystPage() {
         <p className="mt-1 max-w-3xl text-sm text-navy/60">Answers come from validated, published import records. Every figure is calculated deterministically and cites its entity, property, period, and source import.</p>
       </div>
       <Notice tone="sky">A language model is not connected. Questions are matched to supported analyses; anything else is declined rather than guessed. Nothing leaves this browser.</Notice>
+
+      <ArAnalystPanel />
 
       {published.length === 0 ? (
         <Empty>

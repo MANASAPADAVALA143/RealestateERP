@@ -1,0 +1,4 @@
+Lease Code,Tenant Code,Property,Charge Code,Description,Amount,Frequency,Start Date,End Date,Escalation %
+L-140,T-140,MER-1790,RNT,Base rent,5200,Monthly,03/15/2026,03/14/2029,3
+L-140,T-140,MER-1790,CAM,Common area maintenance,410,Monthly,03/15/2026,03/14/2029,0
+L-140,T-140,MER-1790,PRK,Parking,75,Monthly,03/15/2026,03/14/2029,0

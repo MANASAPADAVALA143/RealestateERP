@@ -1,4 +1,5 @@
 import { AiInsights } from "@/components/AiInsights";
+import { ArCashPanel } from "@/ar/ui/embeds";
 import { KpiCard, Lede, Panel } from "@/components/ui";
 import {
   entityById,
@@ -41,6 +42,8 @@ export function CashPage() {
           hint={`${inrCr(group.cash)} of cash against ${inrCr(group.debt)} of debt`}
         />
       </section>
+
+      <ArCashPanel />
 
       <Panel title="Cash by entity" subtitle="Horizontal share of group cash. ARL holds the operating reserve.">
         <ul className="space-y-4">

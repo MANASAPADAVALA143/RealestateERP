@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ArRentRoll } from "@/ar/ui/embeds";
 import { Attention } from "@/components/drill";
 import { useSort } from "@/components/drill";
 import { KpiCard, Lede, Panel } from "@/components/ui";
@@ -23,6 +24,7 @@ export function RentalsPage() {
         <KpiCard label="Occupancy rate" value={`${rentalKpis.occupancy.toFixed(1)}%`} hint="261 of 284 units" accent="gold" />
         <KpiCard label="Monthly rent roll" value={inrLakh(rentalKpis.rentRoll)} hint={`Collected ${inrLakh(rentalKpis.collected)} · ${rentalKpis.collection.toFixed(1)}%`} accent="alert" />
       </section>
+      <ArRentRoll />
       <Panel title="Needs attention">
         <Attention
           items={[

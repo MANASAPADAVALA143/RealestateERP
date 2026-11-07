@@ -1,0 +1,4 @@
+Tenant Code,Tenant Name,Property,Entity,Unit,Contact,Email,Payment Terms,Status
+T-130,Carrollton Dental,MER-1790,MHLP,130B,Dr. A. Patel,ap@carrolltondental.example,5,Current
+T-140,Northstar Insurance Agency,MER-1790,MHLP,140,L. Brooks,billing@northstar.example,10,Current
+T-210,Plaza Coffee,P001,BRL,K-2,M. Silva,owner@plazacoffee.example,5,Current

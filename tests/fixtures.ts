@@ -251,6 +251,50 @@ export function accountsReceivable(): ArrayBuffer {
   ]);
 }
 
+export function yardiTenants(): ArrayBuffer {
+  return csv(["Tenant Code", "Tenant Name", "Property", "Entity", "Unit", "Contact", "Email", "Payment Terms", "Status"], [
+    { "Tenant Code": "T-130", "Tenant Name": "Carrollton Dental", Property: "MER-1790", Entity: "MHLP", Unit: "130B", Contact: "Dr. A. Patel", Email: "ap@carrolltondental.example", "Payment Terms": 5, Status: "Current" },
+    { "Tenant Code": "T-140", "Tenant Name": "Northstar Insurance Agency", Property: "MER-1790", Entity: "MHLP", Unit: "140", Contact: "L. Brooks", Email: "billing@northstar.example", "Payment Terms": 10, Status: "Current" },
+    { "Tenant Code": "T-210", "Tenant Name": "Plaza Coffee", Property: "P001", Entity: "BRL", Unit: "K-2", Contact: "M. Silva", Email: "owner@plazacoffee.example", "Payment Terms": 5, Status: "Current" },
+  ]);
+}
+
+export function yardiLeases(): ArrayBuffer {
+  return csv(["Lease Code", "Property", "Entity", "Tenant Code", "Tenant", "Unit", "Lease From", "Lease To", "Base Rent", "Frequency", "Escalation", "Security Deposit", "Lease Type"], [
+    { "Lease Code": "L-130", Property: "MER-1790", Entity: "MHLP", "Tenant Code": "T-130", Tenant: "Carrollton Dental", Unit: "130B", "Lease From": "01/01/2025", "Lease To": "12/31/2027", "Base Rent": 4550, Frequency: "Monthly", Escalation: "3% annually", "Security Deposit": 9100, "Lease Type": "Lessor" },
+    { "Lease Code": "L-140", Property: "MER-1790", Entity: "MHLP", "Tenant Code": "T-140", Tenant: "Northstar Insurance Agency", Unit: "140", "Lease From": "03/15/2026", "Lease To": "03/14/2029", "Base Rent": 5200, Frequency: "Monthly", Escalation: "", "Security Deposit": 10400, "Lease Type": "Lessor" },
+    { "Lease Code": "HQ-OFFICE", Property: "MER-1790", Entity: "MHLP", "Tenant Code": "LL-01", Tenant: "Landlord of head office", Unit: "", "Lease From": "01/01/2024", "Lease To": "12/31/2030", "Base Rent": 3000, Frequency: "Monthly", Escalation: "", "Security Deposit": 0, "Lease Type": "Lessee" },
+  ]);
+}
+
+export function yardiRentCharges(): ArrayBuffer {
+  return csv(["Lease Code", "Tenant Code", "Property", "Charge Code", "Description", "Amount", "Frequency", "Start Date", "End Date", "Escalation %"], [
+    { "Lease Code": "L-140", "Tenant Code": "T-140", Property: "MER-1790", "Charge Code": "RNT", Description: "Base rent", Amount: 5200, Frequency: "Monthly", "Start Date": "03/15/2026", "End Date": "03/14/2029", "Escalation %": 3 },
+    { "Lease Code": "L-140", "Tenant Code": "T-140", Property: "MER-1790", "Charge Code": "CAM", Description: "Common area maintenance", Amount: 410, Frequency: "Monthly", "Start Date": "03/15/2026", "End Date": "03/14/2029", "Escalation %": 0 },
+    { "Lease Code": "L-140", "Tenant Code": "T-140", Property: "MER-1790", "Charge Code": "PRK", Description: "Parking", Amount: 75, Frequency: "Monthly", "Start Date": "03/15/2026", "End Date": "03/14/2029", "Escalation %": 0 },
+  ]);
+}
+
+export function yardiReceipts(): ArrayBuffer {
+  return csv(["Receipt", "Tenant Code", "Tenant", "Entity", "Property", "Receipt Date", "Amount", "Applied To", "Bank Account", "Reference"], [
+    { Receipt: "R-5001", "Tenant Code": "T-130", Tenant: "Carrollton Dental", Entity: "MHLP", Property: "MER-1790", "Receipt Date": "10/03/2026", Amount: 2550, "Applied To": "AR-9001", "Bank Account": "Operating", Reference: "ACH 88231" },
+    { Receipt: "R-5002", "Tenant Code": "T-210", Tenant: "Plaza Coffee", Entity: "BRL", Property: "P001", "Receipt Date": "10/05/2026", Amount: 2000, "Applied To": "", "Bank Account": "Operating", Reference: "Check 1201" },
+  ]);
+}
+
+export function yardiCreditNotes(): ArrayBuffer {
+  return csv(["Credit Note", "Applied To", "Tenant Code", "Credit Date", "Amount", "Reason"], [
+    { "Credit Note": "CN-301", "Applied To": "AR-9001", "Tenant Code": "T-130", "Credit Date": "09/20/2026", Amount: 150, Reason: "Utility recovery adjustment" },
+  ]);
+}
+
+export function yardiAgeing(): ArrayBuffer {
+  return csv(["Tenant Code", "Tenant", "Property", "As Of", "Current", "1-30", "31-60", "61-90", "Over 90", "Total Owed"], [
+    { "Tenant Code": "T-130", Tenant: "Carrollton Dental", Property: "MER-1790", "As Of": "10/31/2026", Current: 0, "1-30": 0, "31-60": 4550, "61-90": 0, "Over 90": 0, "Total Owed": 4550 },
+    { "Tenant Code": "T-210", Tenant: "Plaza Coffee", Property: "P001", "As Of": "10/31/2026", Current: 0, "1-30": 0, "31-60": 0, "61-90": 0, "Over 90": 2000, "Total Owed": 2000 },
+  ]);
+}
+
 export function sapGlExport(): ArrayBuffer {
   return csv(["Company Code", "Journal Entry", "G/L Account", "Posting Date", "Profit Center", "Amount in Company Code Currency", "Debit/Credit Ind.", "Item Text"], [
     { "Company Code": "MHLP", "Journal Entry": "100000101", "G/L Account": "6110", "Posting Date": "10/02/2026", "Profit Center": "P004", "Amount in Company Code Currency": "1,480.00", "Debit/Credit Ind.": "S", "Item Text": "Elevator service" },

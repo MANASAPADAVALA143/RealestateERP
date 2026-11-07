@@ -1,0 +1,4 @@
+Lease Code,Property,Entity,Tenant Code,Tenant,Unit,Lease From,Lease To,Base Rent,Frequency,Escalation,Security Deposit,Lease Type
+L-130,MER-1790,MHLP,T-130,Carrollton Dental,130B,01/01/2025,12/31/2027,4550,Monthly,3% annually,9100,Lessor
+L-140,MER-1790,MHLP,T-140,Northstar Insurance Agency,140,03/15/2026,03/14/2029,5200,Monthly,,10400,Lessor
+HQ-OFFICE,MER-1790,MHLP,LL-01,Landlord of head office,,01/01/2024,12/31/2030,3000,Monthly,,0,Lessee

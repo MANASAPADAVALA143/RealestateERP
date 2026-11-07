@@ -1,4 +1,5 @@
 import { AiInsights } from "@/components/AiInsights";
+import { ArGroupSummary } from "@/ar/ui/embeds";
 import { CommandCenter } from "@/components/CommandCenter";
 import { KpiCard, Lede, Panel, StatusBadge } from "@/components/ui";
 import {
@@ -48,6 +49,8 @@ export function DashboardPage() {
           hint={`Cash to debt ${pct((group.cash / group.debt) * 100)}`}
         />
       </section>
+
+      <ArGroupSummary title="Group rental receivables and collection risk" />
 
       <div className="grid gap-6 xl:grid-cols-5">
         <Panel

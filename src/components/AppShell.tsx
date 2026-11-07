@@ -2,6 +2,13 @@ import { useEffect, useState, useSyncExternalStore, type ComponentType } from "r
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
   BrainCircuit,
+  CalendarClock,
+  HandCoins,
+  Hourglass,
+  KeyRound,
+  MessageSquareWarning,
+  PhoneCall,
+  UserRound,
   Building,
   Cable,
   RefreshCw,
@@ -97,6 +104,22 @@ const groups: { label: string; items: { to: string; label: string; icon: Compone
       { to: "/estate/fund-management", label: "Fund Management", icon: Landmark },
       { to: "/estate/ifrs", label: "IFRS 15 & 16 Hub", icon: ClipboardCheck },
       { to: "/estate", label: "EstateCFO Home & Login", icon: House },
+    ],
+  },
+  {
+    label: "Real Estate ERP · Receivables",
+    items: [
+      { to: "/estate/ar", label: "AR Dashboard", icon: LayoutDashboard },
+      { to: "/estate/ar/tenants", label: "Tenant Register", icon: UserRound },
+      { to: "/estate/ar/leases", label: "Lease Receivables", icon: KeyRound },
+      { to: "/estate/ar/billing", label: "Rental Billing", icon: CalendarClock },
+      { to: "/estate/ar/invoices", label: "Invoice Register", icon: FileText },
+      { to: "/estate/ar/payments", label: "Payment Allocation", icon: HandCoins },
+      { to: "/estate/ar/ageing", label: "AR Ageing", icon: Hourglass },
+      { to: "/estate/ar/collections", label: "Collections", icon: PhoneCall },
+      { to: "/estate/ar/disputes", label: "Disputes", icon: MessageSquareWarning },
+      { to: "/estate/ar/reports", label: "AR Reports", icon: ChartColumn },
+      { to: "/estate/ar/settings", label: "AR Settings", icon: Settings },
     ],
   },
   {
@@ -201,6 +224,22 @@ function resolveChrome(pathname: string): { title: string; section: string } {
     "/estate/ifrs": "IFRS 15 & 16 Hub",
   };
   if (estate[pathname]) return { title: estate[pathname], section: "Real Estate ERP" };
+  const receivables: Record<string, string> = {
+    "/estate/ar": "AR Dashboard",
+    "/estate/ar/tenants": "Tenant Register",
+    "/estate/ar/leases": "Lease Receivables",
+    "/estate/ar/billing": "Rental Billing",
+    "/estate/ar/invoices": "Invoice Register",
+    "/estate/ar/payments": "Payment Allocation",
+    "/estate/ar/ageing": "AR Ageing",
+    "/estate/ar/collections": "Collections",
+    "/estate/ar/disputes": "Disputes",
+    "/estate/ar/reports": "AR Reports",
+    "/estate/ar/settings": "AR Settings",
+  };
+  if (receivables[pathname]) return { title: receivables[pathname], section: "Real Estate Receivables" };
+  if (pathname.startsWith("/estate/ar/tenants/")) return { title: "Tenant account", section: "Real Estate Receivables" };
+  if (pathname.startsWith("/estate/ar/invoices/")) return { title: "Invoice detail", section: "Real Estate Receivables" };
   const portfolioTitles: Record<string, string> = {
     dashboard: "Company Dashboard",
     properties: "Properties",
@@ -345,7 +384,7 @@ export function AppShell() {
                   <NavLink
                     key={item.to}
                     to={item.to}
-                    end={item.to === "/" || item.to === "/estate" || item.to === "/data-integrations"}
+                    end={item.to === "/" || item.to === "/estate" || item.to === "/data-integrations" || item.to === "/estate/ar"}
                     title={item.label}
                     className={({ isActive }) =>
                       `relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium outline-none transition focus-visible:ring-2 focus-visible:ring-gold ${

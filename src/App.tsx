@@ -61,6 +61,16 @@ import { IntegrationSettingsPage } from "@/integrations/pages/IntegrationSetting
 import { ReconciliationPage } from "@/integrations/pages/ReconciliationPage";
 import { ValidationPage } from "@/integrations/pages/ValidationPage";
 import { YardiPage } from "@/integrations/pages/YardiPage";
+import { ArDashboardPage } from "@/ar/pages/ArDashboardPage";
+import { TenantDetailPage, TenantRegisterPage } from "@/ar/pages/TenantPages";
+import { LeaseReceivablesPage } from "@/ar/pages/LeasePage";
+import { RentalBillingPage } from "@/ar/pages/BillingPage";
+import { InvoiceDetailPage, InvoiceRegisterPage } from "@/ar/pages/InvoicePages";
+import { PaymentAllocationPage } from "@/ar/pages/PaymentsPage";
+import { ArAgeingPage } from "@/ar/pages/AgeingPage";
+import { CollectionsPage, DisputesPage } from "@/ar/pages/CollectionsPages";
+import { ArReportsPage } from "@/ar/pages/ReportsPage";
+import { ArSettingsPage } from "@/ar/pages/SettingsPage";
 
 export default function App() {
   return (
@@ -107,6 +117,19 @@ export default function App() {
           <Route path="/estate/construction" element={<ConstructionControlTowerPage />} />
           <Route path="/estate/fund-management" element={<FundManagementPage />} />
           <Route path="/estate/ifrs" element={<IfrsHubPage />} />
+          <Route path="/estate/ar" element={<ArDashboardPage />} />
+          <Route path="/estate/ar/tenants" element={<TenantRegisterPage />} />
+          <Route path="/estate/ar/tenants/:tenantId" element={<TenantDetailPage />} />
+          <Route path="/estate/ar/leases" element={<LeaseReceivablesPage />} />
+          <Route path="/estate/ar/billing" element={<RentalBillingPage />} />
+          <Route path="/estate/ar/invoices" element={<InvoiceRegisterPage />} />
+          <Route path="/estate/ar/invoices/:invoiceId" element={<InvoiceDetailPage />} />
+          <Route path="/estate/ar/payments" element={<PaymentAllocationPage />} />
+          <Route path="/estate/ar/ageing" element={<ArAgeingPage />} />
+          <Route path="/estate/ar/collections" element={<CollectionsPage />} />
+          <Route path="/estate/ar/disputes" element={<DisputesPage />} />
+          <Route path="/estate/ar/reports" element={<ArReportsPage />} />
+          <Route path="/estate/ar/settings" element={<ArSettingsPage />} />
           <Route path="/gnanova/realestate" element={<Navigate to="/gnanova/realestate/dashboard" replace />} />
           <Route path="/gnanova/realestate/dashboard" element={<ReDashboardPage />} />
           <Route path="/gnanova/realestate/properties" element={<RePropertiesPage />} />

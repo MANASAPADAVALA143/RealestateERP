@@ -359,6 +359,325 @@ create table if not exists estatecfo.audit_log (
 );
 create index if not exists audit_log_recent on estatecfo.audit_log (workspace_id, at desc);
 
+-- ---------------------------------------------------------------------------
+-- Real Estate Accounts Receivable (subledger). Amounts carry transaction,
+-- functional, and group currency with the rates used.
+-- ---------------------------------------------------------------------------
+
+create table if not exists estatecfo.ar_settings (
+  workspace_id      text primary key references estatecfo.workspaces(id),
+  group_currency    char(3) not null default 'USD',
+  default_terms     integer not null default 5,
+  late_fee          jsonb not null default '{}',
+  allowance         jsonb not null default '{}',
+  accounts          jsonb not null default '{}',
+  approvals         jsonb not null default '{"invoices": true, "creditNotes": true, "reversals": true}',
+  updated_at        timestamptz not null default now()
+);
+
+create table if not exists estatecfo.ar_entity_currencies (
+  workspace_id        text not null references estatecfo.workspaces(id),
+  entity_id           text not null,
+  functional_currency char(3) not null,
+  primary key (workspace_id, entity_id)
+);
+
+create table if not exists estatecfo.ar_fx_rates (
+  workspace_id  text not null references estatecfo.workspaces(id),
+  currency      char(3) not null,
+  period        char(7) not null,
+  rate_to_group numeric(18, 8) not null check (rate_to_group > 0),
+  primary key (workspace_id, currency, period)
+);
+
+create table if not exists estatecfo.ar_bank_accounts (
+  workspace_id  text not null references estatecfo.workspaces(id),
+  name          text not null,
+  gl_code       text not null,
+  currency      char(3) not null,
+  primary key (workspace_id, name)
+);
+
+create table if not exists estatecfo.ar_tenants (
+  id                 text primary key,
+  workspace_id       text not null references estatecfo.workspaces(id),
+  code               text not null,
+  name               text not null,
+  entity_id          text not null,
+  property_id        text not null,
+  building           text,
+  unit               text,
+  contact_name       text,
+  email              text,
+  phone              text,
+  billing_frequency  text not null check (billing_frequency in ('monthly', 'quarterly', 'annual')),
+  payment_terms_days integer not null check (payment_terms_days >= 0),
+  currency           char(3) not null,
+  collection_owner   text,
+  status             text not null check (status in ('Active', 'Inactive')),
+  source_system      text not null,
+  source_record_id   text,
+  source_batch_id    text,
+  source_connection  text,
+  created_at         timestamptz not null default now(),
+  updated_at         timestamptz not null default now()
+);
+create unique index if not exists ar_tenants_code on estatecfo.ar_tenants (workspace_id, upper(code));
+
+create table if not exists estatecfo.ar_leases (
+  id                text primary key,
+  workspace_id      text not null references estatecfo.workspaces(id),
+  code              text not null,
+  tenant_id         text not null references estatecfo.ar_tenants(id),
+  entity_id         text not null,
+  property_id       text not null,
+  unit              text,
+  starts_on         date not null,
+  ends_on           date not null check (ends_on >= starts_on),
+  currency          char(3) not null,
+  deposit_required  numeric(18, 2) not null default 0,
+  status            text not null check (status in ('Active', 'Ended')),
+  ifrs16_lease_id   text,                                   -- reference only; IFRS 16 accounting stays in the IFRS 16 application
+  source_system     text not null,
+  source_record_id  text,
+  source_batch_id   text,
+  created_at        timestamptz not null default now(),
+  updated_at        timestamptz not null default now()
+);
+create unique index if not exists ar_leases_code on estatecfo.ar_leases (workspace_id, upper(code));
+
+create table if not exists estatecfo.ar_lease_charges (
+  workspace_id    text not null references estatecfo.workspaces(id),
+  lease_id        text not null references estatecfo.ar_leases(id),
+  charge_id       text not null,
+  charge_type     text not null check (charge_type in ('base_rent', 'cam', 'utilities', 'maintenance', 'parking', 'other')),
+  description     text,
+  amount          numeric(18, 2) not null check (amount > 0),
+  frequency       text not null check (frequency in ('monthly', 'quarterly', 'annual')),
+  starts_on       date,
+  ends_on         date,
+  escalation_pct  numeric(7, 4) not null default 0 check (escalation_pct >= 0),
+  primary key (lease_id, charge_id)
+);
+
+create table if not exists estatecfo.ar_journals (
+  id                   text primary key,
+  workspace_id         text not null references estatecfo.workspaces(id),
+  number               text not null,
+  posted_on            date not null,
+  period               char(7) not null,
+  entity_id            text not null,
+  property_id          text,
+  description          text not null,
+  source_type          text not null,
+  source_id            text not null,
+  currency             char(3) not null,
+  functional_currency  char(3) not null,
+  group_currency       char(3) not null,
+  functional_to_group  numeric(18, 8) not null,
+  reverses             text references estatecfo.ar_journals(id),
+  reversed_by          text references estatecfo.ar_journals(id),
+  created_by           text not null,
+  created_at           timestamptz not null default now(),
+  unique (workspace_id, number)
+);
+
+create table if not exists estatecfo.ar_journal_lines (
+  workspace_id  text not null references estatecfo.workspaces(id),
+  journal_id    text not null references estatecfo.ar_journals(id),
+  line_no       integer not null,
+  account       text not null,
+  account_name  text not null,
+  debit         numeric(18, 2) not null default 0 check (debit >= 0),
+  credit        numeric(18, 2) not null default 0 check (credit >= 0),
+  txn_amount    numeric(18, 2) not null,
+  tenant_id     text,
+  invoice_id    text,
+  primary key (journal_id, line_no)
+);
+
+create table if not exists estatecfo.ar_invoices (
+  id               text primary key,
+  workspace_id     text not null references estatecfo.workspaces(id),
+  number           text not null,
+  kind             text not null check (kind in ('rent', 'late_fee', 'manual', 'imported')),
+  tenant_id        text not null references estatecfo.ar_tenants(id),
+  lease_id         text references estatecfo.ar_leases(id),
+  entity_id        text not null,
+  property_id      text not null,
+  unit             text,
+  invoice_date     date not null,
+  due_date         date not null,
+  period_start     date not null,
+  period_end       date not null,
+  billing_period   char(7) not null,
+  currency         char(3) not null,
+  functional_currency char(3),
+  group_currency   char(3),
+  rate_to_functional numeric(18, 8),
+  rate_to_group    numeric(18, 8),
+  total            numeric(18, 2) not null,
+  prior_collected  numeric(18, 2) not null default 0,
+  status           text not null check (status in ('Draft', 'Approved', 'Posted', 'Reversal requested', 'Reversed')),
+  posting_date     date,
+  journal_id       text references estatecfo.ar_journals(id),
+  approved_by      text,
+  approved_at      timestamptz,
+  source_system    text not null,
+  source_record_id text,
+  source_batch_id  text,
+  created_by       text not null,
+  created_at       timestamptz not null default now()
+);
+
+create table if not exists estatecfo.ar_invoice_lines (
+  workspace_id  text not null references estatecfo.workspaces(id),
+  invoice_id    text not null references estatecfo.ar_invoices(id),
+  line_no       integer not null,
+  charge_id     text,
+  charge_type   text not null,
+  description   text not null,
+  amount        numeric(18, 2) not null,
+  period_start  date not null,
+  period_end    date not null,
+  note          text,
+  primary key (invoice_id, line_no)
+);
+
+-- Duplicate billing prevention: one invoice per lease, charge, and billing period.
+create table if not exists estatecfo.ar_billing_keys (
+  workspace_id  text not null references estatecfo.workspaces(id),
+  billing_key   text not null,
+  invoice_id    text not null references estatecfo.ar_invoices(id),
+  primary key (workspace_id, billing_key)
+);
+
+create table if not exists estatecfo.ar_payments (
+  id               text primary key,
+  workspace_id     text not null references estatecfo.workspaces(id),
+  number           text not null,
+  tenant_id        text not null references estatecfo.ar_tenants(id),
+  entity_id        text not null,
+  received_on      date not null,
+  amount           numeric(18, 2) not null check (amount > 0),
+  currency         char(3) not null,
+  functional_currency char(3) not null,
+  group_currency   char(3) not null,
+  rate_to_functional numeric(18, 8) not null,
+  rate_to_group    numeric(18, 8) not null,
+  bank_account     text not null,
+  method           text,
+  reference        text,
+  status           text not null check (status in ('Posted', 'Reversal requested', 'Reversed')),
+  bank_line_ref    text,
+  reversal_reason  text,
+  reversal_requested_by text,
+  reversal_approved_by  text,
+  source_system    text not null,
+  created_by       text not null,
+  created_at       timestamptz not null default now(),
+  unique (workspace_id, number)
+);
+create unique index if not exists ar_payments_bank_line on estatecfo.ar_payments (workspace_id, bank_line_ref) where bank_line_ref is not null and status <> 'Reversed';
+
+create table if not exists estatecfo.ar_allocations (
+  id            text primary key,
+  workspace_id  text not null references estatecfo.workspaces(id),
+  payment_id    text not null references estatecfo.ar_payments(id),
+  invoice_id    text not null references estatecfo.ar_invoices(id),
+  amount        numeric(18, 2) not null check (amount > 0),
+  allocated_on  date not null,
+  journal_id    text not null references estatecfo.ar_journals(id)
+);
+
+create table if not exists estatecfo.ar_credit_notes (
+  id            text primary key,
+  workspace_id  text not null references estatecfo.workspaces(id),
+  number        text not null,
+  type          text not null check (type in ('credit', 'write_off')),
+  invoice_id    text not null references estatecfo.ar_invoices(id),
+  tenant_id     text not null references estatecfo.ar_tenants(id),
+  entity_id     text not null,
+  credit_date   date not null,
+  amount        numeric(18, 2) not null check (amount > 0),
+  charge_type   text not null,
+  reason        text not null,
+  status        text not null check (status in ('Draft', 'Posted', 'Rejected')),
+  dispute_id    text,
+  journal_id    text references estatecfo.ar_journals(id),
+  requested_by  text not null,
+  approved_by   text,
+  source_system text not null,
+  source_record_id text
+);
+
+create table if not exists estatecfo.ar_deposits (
+  id            text primary key,
+  workspace_id  text not null references estatecfo.workspaces(id),
+  tenant_id     text not null references estatecfo.ar_tenants(id),
+  lease_id      text references estatecfo.ar_leases(id),
+  entity_id     text not null,
+  property_id   text,
+  amount        numeric(18, 2) not null check (amount > 0),
+  currency      char(3) not null,
+  rate_to_functional numeric(18, 8) not null,
+  rate_to_group numeric(18, 8) not null,
+  received_on   date not null,
+  bank_account  text not null,
+  status        text not null check (status in ('Held', 'Refunded', 'Applied')),
+  settled_on    date,
+  applied_invoice_id text references estatecfo.ar_invoices(id),
+  created_by    text not null
+);
+
+create table if not exists estatecfo.ar_followups (
+  id             text primary key,
+  workspace_id   text not null references estatecfo.workspaces(id),
+  tenant_id      text not null references estatecfo.ar_tenants(id),
+  invoice_id     text references estatecfo.ar_invoices(id),
+  followed_up_on date not null,
+  type           text not null,
+  note           text not null,
+  by_user        text not null,
+  promise_date   date,
+  promise_amount numeric(18, 2),
+  next_follow_up date,
+  reminder_status text check (reminder_status in ('Draft', 'Approved')),
+  approved_by    text
+);
+
+create table if not exists estatecfo.ar_disputes (
+  id             text primary key,
+  workspace_id   text not null references estatecfo.workspaces(id),
+  tenant_id      text not null references estatecfo.ar_tenants(id),
+  invoice_id     text not null references estatecfo.ar_invoices(id),
+  amount         numeric(18, 2) not null check (amount > 0),
+  reason         text not null,
+  status         text not null,
+  owner          text,
+  notes          jsonb not null default '[]',
+  opened_by      text not null,
+  opened_at      timestamptz not null default now(),
+  resolved_at    timestamptz,
+  resolution     text,
+  credit_note_id text references estatecfo.ar_credit_notes(id)
+);
+
+-- Posted journals are immutable: only the reversal link may be set, once.
+create or replace function estatecfo.forbid_journal_change() returns trigger language plpgsql as $$
+begin
+  if tg_op = 'UPDATE' and tg_table_name = 'ar_journals'
+     and old.reversed_by is null and new.reversed_by is not null
+     and (to_jsonb(new) - 'reversed_by') = (to_jsonb(old) - 'reversed_by') then
+    return new;
+  end if;
+  raise exception 'Posted AR journals cannot be changed or deleted; post a reversal instead';
+end $$;
+drop trigger if exists ar_journals_immutable on estatecfo.ar_journals;
+create trigger ar_journals_immutable before update or delete on estatecfo.ar_journals for each row execute function estatecfo.forbid_journal_change();
+drop trigger if exists ar_journal_lines_immutable on estatecfo.ar_journal_lines;
+create trigger ar_journal_lines_immutable before update or delete on estatecfo.ar_journal_lines for each row execute function estatecfo.forbid_journal_change();
+
 -- Audit entries are append-only.
 create or replace function estatecfo.forbid_audit_change() returns trigger language plpgsql as $$
 begin
@@ -376,7 +695,10 @@ begin
     'cdm_properties', 'cdm_legal_entities', 'cdm_accounts', 'cdm_gl_lines', 'cdm_trial_balance', 'cdm_statement_lines',
     'cdm_payables', 'cdm_receivables', 'cdm_vendors', 'cdm_tenants', 'cdm_leases', 'cdm_loans', 'cdm_fixed_assets',
     'cdm_budgets', 'cdm_capex', 'master_data_links', 'governance_policies', 'period_locks', 'publications',
-    'source_conflicts', 'validation_results', 'reconciliation_runs', 'audit_log'
+    'source_conflicts', 'validation_results', 'reconciliation_runs', 'audit_log',
+    'ar_settings', 'ar_entity_currencies', 'ar_fx_rates', 'ar_bank_accounts', 'ar_tenants', 'ar_leases', 'ar_lease_charges',
+    'ar_journals', 'ar_journal_lines', 'ar_invoices', 'ar_invoice_lines', 'ar_billing_keys', 'ar_payments', 'ar_allocations',
+    'ar_credit_notes', 'ar_deposits', 'ar_followups', 'ar_disputes'
   ] loop
     execute format('alter table estatecfo.%I enable row level security', t);
     execute format('drop policy if exists workspace_isolation on estatecfo.%I', t);

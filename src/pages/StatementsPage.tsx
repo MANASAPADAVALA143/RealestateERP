@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AiInsights } from "@/components/AiInsights";
+import { ArStatementsPanel } from "@/ar/ui/embeds";
 import { BookYearSelect } from "@/components/BookYearSelect";
 import { StatementTable } from "@/components/StatementTable";
 import { Lede, Panel } from "@/components/ui";
@@ -64,6 +65,8 @@ export function StatementsPage() {
       <Panel title={active.title} subtitle="₹ Cr" bleed>
         <StatementTable rows={active.rows} />
       </Panel>
+
+      <ArStatementsPanel />
 
       <AiInsights page="Financial Statements" insights={insights} />
     </div>

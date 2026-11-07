@@ -118,6 +118,12 @@ export const connectors: ConnectorDefinition[] = [
       accounts_receivable: { customer_id: ["Resident", "Tenant Code", "Person"] },
       accounts_payable: { vendor_id: ["Vendor", "Payee"] },
       rent_roll: { unit_id: ["Unit"], tenant_name: ["Resident", "Name"] },
+      tenant_master: { tenant_id: ["Tenant Code", "Resident Code", "tCode"], tenant_name: ["Resident", "Name"], unit_id: ["Unit"] },
+      lease_register: { lease_id: ["Lease Code", "Lease"], tenant_id: ["Tenant Code", "Resident"], unit_id: ["Unit"] },
+      rent_charges: { lease_id: ["Lease Code", "Lease"], tenant_id: ["Tenant Code", "Resident"], charge_code: ["Charge Code", "Chg Code"] },
+      ar_payments: { receipt_id: ["Receipt", "Control", "Receipt Ctrl"], tenant_id: ["Tenant Code", "Resident", "Person"], receipt_date: ["Receipt Date", "Date"], invoice_id: ["Charge Ctrl", "Applied To"] },
+      credit_notes: { credit_note_id: ["Credit Ctrl", "Control"], invoice_id: ["Charge Ctrl", "Applied To"], tenant_id: ["Tenant Code", "Resident"] },
+      ar_ageing: { tenant_id: ["Tenant Code", "Resident", "Person"], d1_30: ["0-30 Owed", "30 Owed"], d31_60: ["31-60 Owed", "60 Owed"], d61_90: ["61-90 Owed", "90 Owed"], d90_plus: ["Over 90 Owed"], total: ["Total Owed", "Amount Owed"] },
     },
   },
   {

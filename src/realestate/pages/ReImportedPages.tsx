@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
+import { Link } from "react-router-dom";
+import { ArStatementsPanel, EntityReceivables } from "@/ar/ui/embeds";
+import { useArBook } from "@/ar/ui/hooks";
+import { company } from "@/realestate/data";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ageing, balanceSheet, cashFlowStatement, cashSummary, incomeStatement, trialBalance, type Scope } from "@/integrations/engine/metrics";
 import { Empty, fmtMoney, inputClass } from "@/integrations/ui/components";
 import { ImportedPanel, NotPublished, sourcesLine, usePublished } from "@/integrations/ui/connected";
 import { RePage } from "@/realestate/ui";
+
+const MERIDIAN_ENTITY = "MHLP";
 
 function today(): string {
   return new Date().toISOString().slice(0, 10);
@@ -23,7 +29,7 @@ function ScopePicker({ values, value, onChange, label }: { values: string[]; val
 
 export function ReStatementsPage() {
   const { dataset, loading } = usePublished();
-  const [tab, setTab] = useState<"Income Statement" | "Balance Sheet" | "Cash Flow" | "Trial Balance">("Income Statement");
+  const [tab, setTab] = useState<"Income Statement" | "Balance Sheet" | "Cash Flow" | "Trial Balance" | "Receivables Ledger">("Income Statement");
   const [scope, setScope] = useState<Scope>({});
   if (loading) return null;
   const entities = [...new Set(["income_statement", "balance_sheet", "trial_balance", "cash_transactions", "cash_flow"].flatMap((category) => (dataset[category as "income_statement"] ?? []).map((record) => record.entityId)).filter((value): value is string => Boolean(value)))].sort();
@@ -36,7 +42,7 @@ export function ReStatementsPage() {
   return (
     <RePage page="Statements" title="Statements" subtitle="Income statement, balance sheet, cash flow, and trial balance from validated imports." right={<ScopePicker label="Entities" values={entities} value={scope.entity} onChange={(entity) => setScope({ ...scope, entity })} />}>
       <div className="flex flex-wrap gap-2">
-        {(["Income Statement", "Balance Sheet", "Cash Flow", "Trial Balance"] as const).map((item) => (
+        {(["Income Statement", "Balance Sheet", "Cash Flow", "Trial Balance", "Receivables Ledger"] as const).map((item) => (
           <button key={item} type="button" onClick={() => setTab(item)} className={`rounded-full px-4 py-1.5 text-xs font-semibold ${tab === item ? "bg-navy text-ivory" : "bg-white ring-1 ring-inset ring-navy/10"}`}>{item}</button>
         ))}
       </div>
@@ -133,6 +139,8 @@ export function ReStatementsPage() {
         )
       ) : null}
 
+      {tab === "Receivables Ledger" ? <ArStatementsPanel entityId={scope.entity ?? MERIDIAN_ENTITY} /> : null}
+
       {tab === "Trial Balance" ? (
         tb ? (
           <ImportedPanel title={`Trial balance · ${tb.period}`} subtitle={sourcesLine(dataset.trial_balance ?? [])}>
@@ -168,7 +176,7 @@ export function ReStatementsPage() {
   );
 }
 
-function AgeingPage({ kind }: { kind: "accounts_payable" | "accounts_receivable" }) {
+function AgeingPage({ kind, lead }: { kind: "accounts_payable" | "accounts_receivable"; lead?: ReactNode }) {
   const { dataset, loading } = usePublished();
   const [asOf, setAsOf] = useState(today());
   const isAp = kind === "accounts_payable";
@@ -200,10 +208,12 @@ function AgeingPage({ kind }: { kind: "accounts_payable" | "accounts_receivable"
         </label>
       }
     >
+      {lead}
       {!result ? (
-        <NotPublished what={isAp ? "accounts payable" : "accounts receivable"} category={kind} />
+        lead ? null : <NotPublished what={isAp ? "accounts payable" : "accounts receivable"} category={kind} />
       ) : (
         <>
+          {lead ? <p className="text-xs text-navy/60">Below: the published source-system receivables file as imported. <Link to="/estate/ar/settings" className="font-semibold underline">Bring open items into the AR ledger</Link> to bill, collect, and age them in EstateCFO.</p> : null}
           <ImportedPanel title={`Ageing · ${fmtMoney(result.total)} outstanding`} subtitle={sourcesLine(dataset[kind] ?? [])}>
             <div className="grid gap-4 lg:grid-cols-2">
               <div className="h-56">
@@ -279,7 +289,21 @@ export function ReAccountsPayablePage() {
 }
 
 export function ReAccountsReceivablePage() {
-  return <AgeingPage kind="accounts_receivable" />;
+  return <AgeingPage kind="accounts_receivable" lead={<MeridianLedger />} />;
+}
+
+function MeridianLedger() {
+  const { book } = useArBook();
+  if (!book) return null;
+  if (!book.invoices.some((invoice) => invoice.entityId === MERIDIAN_ENTITY)) {
+    return (
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-dashed border-emerald-700/30 bg-emerald-50/30 px-5 py-4 text-sm text-navy/70">
+        <span><b className="text-navy">No Meridian Holdings LP invoices in the Real Estate AR ledger yet.</b> Tenants, leases, billing, and receipts for entity {MERIDIAN_ENTITY} are managed in Receivables.</span>
+        <Link to="/estate/ar" className="rounded-full bg-navy px-4 py-2 text-xs font-semibold text-ivory">Open Receivables</Link>
+      </div>
+    );
+  }
+  return <EntityReceivables entityId={MERIDIAN_ENTITY} entityName={company} />;
 }
 
 export function ReTreasuryPage() {

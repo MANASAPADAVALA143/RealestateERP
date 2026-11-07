@@ -172,7 +172,9 @@ function text(value: unknown): string {
   return typeof value === "string" ? value : "";
 }
 
-const SOURCE_ID_FIELDS = ["transaction_id", "invoice_id", "lease_id", "loan_id", "policy_number", "project_id", "property_id", "entity_id", "account_code", "tenant_id", "vendor_id", "unit_id"];
+const PERIOD_DATE_FIELDS = ["transaction_date", "receipt_date", "credit_date", "as_of_date"];
+
+const SOURCE_ID_FIELDS = ["transaction_id", "receipt_id", "credit_note_id", "invoice_id", "lease_id", "loan_id", "policy_number", "project_id", "property_id", "entity_id", "account_code", "tenant_id", "vendor_id", "unit_id"];
 
 export class IntegrationService {
   private listeners = new Set<() => void>();
@@ -197,6 +199,11 @@ export class IntegrationService {
   private changed(): void {
     this.version += 1;
     this.listeners.forEach((listener) => listener());
+  }
+
+  /** Lets modules that share this storage (Real Estate AR) refresh subscribed screens. */
+  notify(): void {
+    this.changed();
   }
 
   async app(): Promise<AppSettings> {
@@ -497,7 +504,7 @@ export class IntegrationService {
       sourceRecordId: sourceField ? `${sourceField}=${row.values[sourceField]}` : `${job.fileName}#row${row.row}`,
       entityId: entity ? ids.entities.get(normalizeId(entity)) ?? entity : null,
       propertyId: property ? ids.properties.get(normalizeId(property)) ?? property : null,
-      period: text(row.values.period) || (text(row.values.transaction_date) ? text(row.values.transaction_date).slice(0, 7) : null),
+      period: text(row.values.period) || (PERIOD_DATE_FIELDS.map((field) => text(row.values[field])).find(Boolean)?.slice(0, 7) ?? null),
       values: row.values,
       raw: row.raw,
       issues: row.issues,
