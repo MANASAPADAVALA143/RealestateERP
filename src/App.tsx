@@ -61,6 +61,21 @@ import { IntegrationSettingsPage } from "@/integrations/pages/IntegrationSetting
 import { ReconciliationPage } from "@/integrations/pages/ReconciliationPage";
 import { ValidationPage } from "@/integrations/pages/ValidationPage";
 import { YardiPage } from "@/integrations/pages/YardiPage";
+import { RentalOsShell } from "@/rental-os/RentalOsShell";
+import { CommandCentrePage } from "@/rental-os/pages/CommandCentrePage";
+import { PropertiesPage } from "@/rental-os/pages/PropertiesPage";
+import { UnitsPage } from "@/rental-os/pages/UnitsPage";
+import { TenantsPage } from "@/rental-os/pages/TenantsPage";
+import { LeasesPage } from "@/rental-os/pages/LeasesPage";
+import { MaintenancePage } from "@/rental-os/pages/MaintenancePage";
+import { BillingDashboardPage } from "@/rental-os/pages/BillingDashboardPage";
+import { CollectionsSummaryPage } from "@/rental-os/pages/CollectionsSummaryPage";
+import { PaymentDashboardPage } from "@/rental-os/pages/PaymentDashboardPage";
+import { CreateReceiptPage } from "@/rental-os/pages/CreateReceiptPage";
+import { BankImportPage } from "@/rental-os/pages/BankImportPage";
+import { BankReconciliationPage } from "@/rental-os/pages/BankReconciliationPage";
+import { DepositRegisterPage } from "@/rental-os/pages/DepositRegisterPage";
+import { TenantSettlementPage } from "@/rental-os/pages/TenantSettlementPage";
 import { ArDashboardPage } from "@/ar/pages/ArDashboardPage";
 import { TenantDetailPage, TenantRegisterPage } from "@/ar/pages/TenantPages";
 import { LeaseReceivablesPage } from "@/ar/pages/LeasePage";
@@ -156,6 +171,32 @@ export default function App() {
           <Route path="/data-integrations/history/:jobId" element={<ImportJobPage />} />
           <Route path="/data-integrations/settings" element={<IntegrationSettingsPage />} />
           <Route path="/ai-analyst" element={<AnalystPage />} />
+        </Route>
+        {/* Rental OS — separate shell */}
+        <Route path="/rental-os" element={<RentalOsShell />}>
+          <Route index element={<Navigate to="/rental-os/command-centre" replace />} />
+          <Route path="command-centre" element={<CommandCentrePage />} />
+          <Route path="properties" element={<PropertiesPage />} />
+          <Route path="properties/:id" element={<PropertiesPage />} />
+          <Route path="units" element={<UnitsPage />} />
+          <Route path="tenants" element={<TenantsPage />} />
+          <Route path="tenants/:id" element={<TenantsPage />} />
+          <Route path="leases" element={<LeasesPage />} />
+          <Route path="leases/:id" element={<LeasesPage />} />
+          <Route path="maintenance" element={<MaintenancePage />} />
+          <Route path="maintenance/:id" element={<MaintenancePage />} />
+          {/* Phase 3 — Billing & Collections (live AR integration) */}
+          <Route path="billing" element={<BillingDashboardPage />} />
+          <Route path="collections" element={<CollectionsSummaryPage />} />
+          {/* Phase 4 — Payment Operations, Bank Reconciliation & Security Deposits */}
+          <Route path="payments" element={<PaymentDashboardPage />} />
+          <Route path="payments/create" element={<CreateReceiptPage />} />
+          <Route path="bank" element={<BankImportPage />} />
+          <Route path="reconciliation" element={<BankReconciliationPage />} />
+          <Route path="deposits" element={<DepositRegisterPage />} />
+          <Route path="deposits/refunds" element={<DepositRegisterPage />} />
+          <Route path="settlement" element={<TenantSettlementPage />} />
+          <Route path="occupancy" element={<Navigate to="/rental-os/units" replace />} />
         </Route>
         <Route path="/estate" element={<EstateLandingPage />} />
         <Route path="/estate/login" element={<EstateLoginPage />} />
