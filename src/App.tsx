@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useParams } from "react-router-dom";
 import { AppShell } from "@/components/AppShell";
 import { AlertsPage } from "@/pages/AlertsPage";
 import { ApprovalsPage } from "@/pages/ApprovalsPage";
@@ -63,11 +63,29 @@ import { ValidationPage } from "@/integrations/pages/ValidationPage";
 import { YardiPage } from "@/integrations/pages/YardiPage";
 import { RentalOsShell } from "@/rental-os/RentalOsShell";
 import { CommandCentrePage } from "@/rental-os/pages/CommandCentrePage";
+import { MaintenanceDashboard } from "@/ops/ui/MaintenanceDashboard";
+import { MaintenanceRequestsPage, NewMaintenanceRequestPage } from "@/ops/ui/MaintenanceRequestsPage";
+import { WorkOrdersPage, NewWorkOrderPage } from "@/ops/ui/WorkOrdersPage";
+import { PreventiveMaintenancePage } from "@/ops/ui/PreventiveMaintenancePage";
+import { AssetRegisterPage } from "@/ops/ui/AssetRegisterPage";
+import { VendorsPage, NewVendorPage } from "@/ops/ui/VendorsPage";
+import { ContractsPage } from "@/ops/ui/ContractsPage";
+import { RequisitionsPage, NewRequisitionPage, PurchaseOrdersPage, GoodsReceiptsPage } from "@/ops/ui/ProcurementPages";
+import { OpsReportsPage } from "@/ops/ui/OpsReportsPage";
+// Phase 6 — Finance & Accounting OS
+import { FinDashboard } from "@/fin/ui/FinDashboard";
+import { VendorInvoicesPage, NewVendorInvoicePage, VendorInvoiceDetailPage } from "@/fin/ui/VendorInvoicesPage";
+import { APPaymentsPage, NewAPPaymentPage } from "@/fin/ui/APPaymentsPage";
+import { JournalsPage, NewJournalPage, JournalDetailPage } from "@/fin/ui/JournalsPage";
+import { ChartOfAccountsPage } from "@/fin/ui/ChartOfAccountsPage";
+import { PeriodClosingPage } from "@/fin/ui/PeriodClosingPage";
+import { BankReconPage } from "@/fin/ui/BankReconPage";
+import { TrialBalancePage, PnLPage, BalanceSheetPage } from "@/fin/ui/GLReportsPage";
 import { PropertiesPage } from "@/rental-os/pages/PropertiesPage";
 import { UnitsPage } from "@/rental-os/pages/UnitsPage";
 import { TenantsPage } from "@/rental-os/pages/TenantsPage";
 import { LeasesPage } from "@/rental-os/pages/LeasesPage";
-import { MaintenancePage } from "@/rental-os/pages/MaintenancePage";
+// MaintenancePage replaced by Phase 5 MaintenanceDashboard
 import { BillingDashboardPage } from "@/rental-os/pages/BillingDashboardPage";
 import { CollectionsSummaryPage } from "@/rental-os/pages/CollectionsSummaryPage";
 import { PaymentDashboardPage } from "@/rental-os/pages/PaymentDashboardPage";
@@ -86,6 +104,16 @@ import { ArAgeingPage } from "@/ar/pages/AgeingPage";
 import { CollectionsPage, DisputesPage } from "@/ar/pages/CollectionsPages";
 import { ArReportsPage } from "@/ar/pages/ReportsPage";
 import { ArSettingsPage } from "@/ar/pages/SettingsPage";
+
+function InvoiceDetailRoute() {
+  const { id } = useParams<{ id: string }>();
+  return <VendorInvoiceDetailPage id={id!} />;
+}
+
+function JournalDetailRoute() {
+  const { id } = useParams<{ id: string }>();
+  return <JournalDetailPage id={id!} />;
+}
 
 export default function App() {
   return (
@@ -183,8 +211,53 @@ export default function App() {
           <Route path="tenants/:id" element={<TenantsPage />} />
           <Route path="leases" element={<LeasesPage />} />
           <Route path="leases/:id" element={<LeasesPage />} />
-          <Route path="maintenance" element={<MaintenancePage />} />
-          <Route path="maintenance/:id" element={<MaintenancePage />} />
+          {/* Phase 5 — Maintenance */}
+          <Route path="maintenance" element={<MaintenanceDashboard />} />
+          <Route path="maintenance/requests" element={<MaintenanceRequestsPage />} />
+          <Route path="maintenance/requests/new" element={<NewMaintenanceRequestPage />} />
+          <Route path="maintenance/requests/:id" element={<MaintenanceRequestsPage />} />
+          <Route path="maintenance/work-orders" element={<WorkOrdersPage />} />
+          <Route path="maintenance/work-orders/new" element={<NewWorkOrderPage />} />
+          <Route path="maintenance/work-orders/:id" element={<WorkOrdersPage />} />
+          <Route path="maintenance/preventive" element={<PreventiveMaintenancePage />} />
+          {/* Phase 5 — Facilities */}
+          <Route path="facilities/assets" element={<AssetRegisterPage />} />
+          <Route path="facilities/assets/new" element={<AssetRegisterPage />} />
+          <Route path="facilities/assets/:id" element={<AssetRegisterPage />} />
+          {/* Phase 5 — Vendors */}
+          <Route path="vendors" element={<VendorsPage />} />
+          <Route path="vendors/new" element={<NewVendorPage />} />
+          <Route path="vendors/:id" element={<VendorsPage />} />
+          <Route path="vendors/contracts" element={<ContractsPage />} />
+          <Route path="vendors/contracts/new" element={<ContractsPage />} />
+          <Route path="vendors/contracts/:id" element={<ContractsPage />} />
+          {/* Phase 5 — Procurement */}
+          <Route path="procurement/requisitions" element={<RequisitionsPage />} />
+          <Route path="procurement/requisitions/new" element={<NewRequisitionPage />} />
+          <Route path="procurement/requisitions/:id" element={<RequisitionsPage />} />
+          <Route path="procurement/purchase-orders" element={<PurchaseOrdersPage />} />
+          <Route path="procurement/purchase-orders/new" element={<PurchaseOrdersPage />} />
+          <Route path="procurement/purchase-orders/:id" element={<PurchaseOrdersPage />} />
+          <Route path="procurement/grn" element={<GoodsReceiptsPage />} />
+          <Route path="procurement/grn/:id" element={<GoodsReceiptsPage />} />
+          {/* Phase 5 — Reports */}
+          <Route path="ops-reports" element={<OpsReportsPage />} />
+          {/* Phase 6 — Finance & Accounting OS */}
+          <Route path="finance" element={<FinDashboard />} />
+          <Route path="finance/invoices" element={<VendorInvoicesPage />} />
+          <Route path="finance/invoices/new" element={<NewVendorInvoicePage />} />
+          <Route path="finance/invoices/:id" element={<InvoiceDetailRoute />} />
+          <Route path="finance/payments" element={<APPaymentsPage />} />
+          <Route path="finance/payments/new" element={<NewAPPaymentPage />} />
+          <Route path="finance/journals" element={<JournalsPage />} />
+          <Route path="finance/journals/new" element={<NewJournalPage />} />
+          <Route path="finance/journals/:id" element={<JournalDetailRoute />} />
+          <Route path="finance/accounts" element={<ChartOfAccountsPage />} />
+          <Route path="finance/periods" element={<PeriodClosingPage />} />
+          <Route path="finance/bank-recon" element={<BankReconPage />} />
+          <Route path="finance/reports/trial-balance" element={<TrialBalancePage />} />
+          <Route path="finance/reports/pnl" element={<PnLPage />} />
+          <Route path="finance/reports/balance-sheet" element={<BalanceSheetPage />} />
           {/* Phase 3 — Billing & Collections (live AR integration) */}
           <Route path="billing" element={<BillingDashboardPage />} />
           <Route path="collections" element={<CollectionsSummaryPage />} />

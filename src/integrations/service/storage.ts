@@ -1,10 +1,34 @@
 export type ArStoreName = "ar_tenants" | "ar_leases" | "ar_invoices" | "ar_payments" | "ar_credit_notes" | "ar_deposits" | "ar_journals" | "ar_followups" | "ar_disputes" | "ar_settings";
 
-export type StoreName = "jobs" | "files" | "records" | "templates" | "links" | "recon" | "audit" | "publications" | "settings" | "connections" | ArStoreName;
+export type OpsStoreName =
+  | "ops_requests" | "ops_work_orders" | "ops_pm_schedules" | "ops_pm_completions"
+  | "ops_assets" | "ops_vendors" | "ops_contracts"
+  | "ops_requisitions" | "ops_quotations" | "ops_purchase_orders" | "ops_grn"
+  | "ops_costs";
+
+export type FinStoreName =
+  | "fin_accounts" | "fin_periods" | "fin_journals"
+  | "fin_vendor_invoices" | "fin_ap_payments"
+  | "fin_bank_accounts" | "fin_bank_statements" | "fin_bank_reconciliations";
+
+export type StoreName = "jobs" | "files" | "records" | "templates" | "links" | "recon" | "audit" | "publications" | "settings" | "connections" | ArStoreName | OpsStoreName | FinStoreName;
 
 export type IndexName = "jobId" | "tenantId" | "workspaceId";
 
 export const AR_STORES: ArStoreName[] = ["ar_tenants", "ar_leases", "ar_invoices", "ar_payments", "ar_credit_notes", "ar_deposits", "ar_journals", "ar_followups", "ar_disputes", "ar_settings"];
+
+export const OPS_STORES: OpsStoreName[] = [
+  "ops_requests", "ops_work_orders", "ops_pm_schedules", "ops_pm_completions",
+  "ops_assets", "ops_vendors", "ops_contracts",
+  "ops_requisitions", "ops_quotations", "ops_purchase_orders", "ops_grn",
+  "ops_costs",
+];
+
+export const FIN_STORES: FinStoreName[] = [
+  "fin_accounts", "fin_periods", "fin_journals",
+  "fin_vendor_invoices", "fin_ap_payments",
+  "fin_bank_accounts", "fin_bank_statements", "fin_bank_reconciliations",
+];
 
 export interface StorageAdapter {
   readonly kind: "indexeddb" | "memory" | "server";
@@ -57,7 +81,7 @@ export class MemoryAdapter implements StorageAdapter {
   }
 }
 
-const STORES: StoreName[] = ["jobs", "files", "records", "templates", "links", "recon", "audit", "publications", "settings", "connections", ...AR_STORES];
+const STORES: StoreName[] = ["jobs", "files", "records", "templates", "links", "recon", "audit", "publications", "settings", "connections", ...AR_STORES, ...OPS_STORES, ...FIN_STORES];
 
 export class IndexedDbAdapter implements StorageAdapter {
   readonly kind = "indexeddb" as const;
@@ -66,13 +90,13 @@ export class IndexedDbAdapter implements StorageAdapter {
 
   constructor(name = "estatecfo-integrations") {
     this.db = new Promise((resolve, reject) => {
-      const request = indexedDB.open(name, 3);
+      const request = indexedDB.open(name, 5);
       request.onupgradeneeded = () => {
         const db = request.result;
         for (const store of STORES) {
           if (db.objectStoreNames.contains(store)) continue;
           const os = db.createObjectStore(store, { keyPath: "id" });
-          if ((AR_STORES as StoreName[]).includes(store)) {
+          if ((AR_STORES as StoreName[]).includes(store) || (OPS_STORES as StoreName[]).includes(store) || (FIN_STORES as StoreName[]).includes(store)) {
             os.createIndex("workspaceId", "workspaceId", { unique: false });
             continue;
           }
