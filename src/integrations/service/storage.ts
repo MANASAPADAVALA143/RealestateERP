@@ -11,7 +11,9 @@ export type FinStoreName =
   | "fin_vendor_invoices" | "fin_ap_payments"
   | "fin_bank_accounts" | "fin_bank_statements" | "fin_bank_reconciliations";
 
-export type StoreName = "jobs" | "files" | "records" | "templates" | "links" | "recon" | "audit" | "publications" | "settings" | "connections" | ArStoreName | OpsStoreName | FinStoreName;
+export type AlertStoreName = "alerts";
+
+export type StoreName = "jobs" | "files" | "records" | "templates" | "links" | "recon" | "audit" | "publications" | "settings" | "connections" | ArStoreName | OpsStoreName | FinStoreName | AlertStoreName;
 
 export type IndexName = "jobId" | "tenantId" | "workspaceId";
 
@@ -29,6 +31,8 @@ export const FIN_STORES: FinStoreName[] = [
   "fin_vendor_invoices", "fin_ap_payments",
   "fin_bank_accounts", "fin_bank_statements", "fin_bank_reconciliations",
 ];
+
+export const ALERT_STORES: AlertStoreName[] = ["alerts"];
 
 export interface StorageAdapter {
   readonly kind: "indexeddb" | "memory" | "server";
@@ -81,7 +85,7 @@ export class MemoryAdapter implements StorageAdapter {
   }
 }
 
-const STORES: StoreName[] = ["jobs", "files", "records", "templates", "links", "recon", "audit", "publications", "settings", "connections", ...AR_STORES, ...OPS_STORES, ...FIN_STORES];
+const STORES: StoreName[] = ["jobs", "files", "records", "templates", "links", "recon", "audit", "publications", "settings", "connections", ...AR_STORES, ...OPS_STORES, ...FIN_STORES, ...ALERT_STORES];
 
 export class IndexedDbAdapter implements StorageAdapter {
   readonly kind = "indexeddb" as const;
@@ -90,13 +94,13 @@ export class IndexedDbAdapter implements StorageAdapter {
 
   constructor(name = "estatecfo-integrations") {
     this.db = new Promise((resolve, reject) => {
-      const request = indexedDB.open(name, 5);
+      const request = indexedDB.open(name, 6);
       request.onupgradeneeded = () => {
         const db = request.result;
         for (const store of STORES) {
           if (db.objectStoreNames.contains(store)) continue;
           const os = db.createObjectStore(store, { keyPath: "id" });
-          if ((AR_STORES as StoreName[]).includes(store) || (OPS_STORES as StoreName[]).includes(store) || (FIN_STORES as StoreName[]).includes(store)) {
+          if ((AR_STORES as StoreName[]).includes(store) || (OPS_STORES as StoreName[]).includes(store) || (FIN_STORES as StoreName[]).includes(store) || (ALERT_STORES as StoreName[]).includes(store)) {
             os.createIndex("workspaceId", "workspaceId", { unique: false });
             continue;
           }
