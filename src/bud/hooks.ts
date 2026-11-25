@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { IndexedDbAdapter } from "../integrations/service/storage.ts";
 import { getBudService } from "./budService.ts";
+import { computeVariance, type VarianceSummary } from "./varianceEngine.ts";
 import type { LegalEntity, Budget, BudgetLine, Forecast, ForecastLine } from "./types.ts";
 
 const WS = "meridian-ventures";
@@ -69,5 +70,18 @@ export function useForecastLines(forecastId: string | undefined) {
   return useBudCollection<ForecastLine[]>(
     () => forecastId ? budService().listForecastLines(forecastId) : Promise.resolve([]),
     [forecastId],
+  );
+}
+
+const WS_CONST = "meridian-ventures";
+
+export function useVariance(entityId: string | undefined, fiscalYear: number, propertyIds: string[]) {
+  return useBudCollection<VarianceSummary | null>(
+    async () => {
+      if (!entityId) return null;
+      if (!_adapter) _adapter = new IndexedDbAdapter();
+      return computeVariance(_adapter, WS_CONST, entityId, fiscalYear, new Set(propertyIds));
+    },
+    [entityId, fiscalYear, propertyIds.join(",")],
   );
 }
