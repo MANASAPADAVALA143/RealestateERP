@@ -104,6 +104,11 @@ import { ArAgeingPage } from "@/ar/pages/AgeingPage";
 import { CollectionsPage, DisputesPage } from "@/ar/pages/CollectionsPages";
 import { ArReportsPage } from "@/ar/pages/ReportsPage";
 import { ArSettingsPage } from "@/ar/pages/SettingsPage";
+import { ExecutiveDashboard } from "@/analytics/ui/ExecutiveDashboard";
+import { ArAgingPage } from "@/analytics/ui/ArAgingPage";
+import { RevExpTrendPage } from "@/analytics/ui/RevExpTrendPage";
+import { OccupancyPage } from "@/analytics/ui/OccupancyPage";
+import { MaintCostPage } from "@/analytics/ui/MaintCostPage";
 
 function InvoiceDetailRoute() {
   const { id } = useParams<{ id: string }>();
@@ -242,6 +247,12 @@ export default function App() {
           <Route path="procurement/grn/:id" element={<GoodsReceiptsPage />} />
           {/* Phase 5 — Reports */}
           <Route path="ops-reports" element={<OpsReportsPage />} />
+          {/* Phase 7 — Analytics & Executive Dashboards */}
+          <Route path="analytics" element={<ExecutiveDashboard />} />
+          <Route path="analytics/ar-aging" element={<ArAgingPage />} />
+          <Route path="analytics/revenue-trend" element={<RevExpTrendPage />} />
+          <Route path="analytics/occupancy" element={<OccupancyPage />} />
+          <Route path="analytics/maint-cost" element={<MaintCostPage />} />
           {/* Phase 6 — Finance & Accounting OS */}
           <Route path="finance" element={<FinDashboard />} />
           <Route path="finance/invoices" element={<VendorInvoicesPage />} />
