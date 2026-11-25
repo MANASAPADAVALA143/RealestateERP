@@ -5,7 +5,7 @@ import {
   LayoutDashboard, Building2, Home, Users, FileText, Receipt, Wallet, Wrench,
   ShoppingCart, BookOpen, BarChart2, Bell, Settings, BrainCircuit, ClipboardCheck,
   Menu, X, ChevronDown, ChevronRight, Layers, Building, DollarSign, AlertCircle,
-  TrendingUp, Scale, PiggyBank, Truck, Zap, PlusCircle,
+  TrendingUp, Scale, PiggyBank, Truck, Zap, PlusCircle, Landmark, PieChart,
 } from "lucide-react";
 
 interface NavItem {
@@ -208,6 +208,15 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
+    label: "Budgeting",
+    icon: PieChart,
+    baseHref: "/rental-os/budgeting",
+    items: [
+      { to: "/rental-os/entities",             label: "Entity Registry",    icon: Landmark,  tag: "new" as const },
+      { to: "/rental-os/budgeting",            label: "Budgets",            icon: PieChart,  tag: "new" as const },
+    ],
+  },
+  {
     label: "Admin",
     icon: Settings,
     baseHref: "/rental-os/admin",
@@ -273,6 +282,9 @@ function resolveTitle(pathname: string): { title: string; section: string } {
     "/rental-os/analytics/occupancy": { title: "Occupancy Heatmap", section: "Analytics" },
     "/rental-os/analytics/maint-cost": { title: "Maintenance Cost Analysis", section: "Analytics" },
     "/rental-os/alerts": { title: "Alerts Centre", section: "Analytics" },
+    "/rental-os/entities": { title: "Entity Registry", section: "Budgeting" },
+    "/rental-os/budgeting": { title: "Budgets", section: "Budgeting" },
+    "/rental-os/budgeting/new": { title: "New Budget", section: "Budgeting" },
     "/rental-os/portfolio": { title: "Property Performance", section: "Portfolio Intelligence" },
     "/rental-os/portfolio/yield": { title: "Rental Yield Analysis", section: "Portfolio Intelligence" },
     "/rental-os/portfolio/cashflow": { title: "Cash Flow Forecast", section: "Portfolio Intelligence" },

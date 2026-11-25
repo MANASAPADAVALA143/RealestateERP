@@ -110,6 +110,8 @@ import { RevExpTrendPage } from "@/analytics/ui/RevExpTrendPage";
 import { OccupancyPage } from "@/analytics/ui/OccupancyPage";
 import { MaintCostPage } from "@/analytics/ui/MaintCostPage";
 import { AlertsCentrePage } from "@/alerts/ui/AlertsCentrePage";
+import { EntityRegistryPage } from "@/bud/ui/EntityRegistryPage";
+import { BudgetsListPage, NewBudgetPage, BudgetDetailPage } from "@/bud/ui/BudgetingPages";
 
 function InvoiceDetailRoute() {
   const { id } = useParams<{ id: string }>();
@@ -255,6 +257,10 @@ export default function App() {
           <Route path="analytics/occupancy" element={<OccupancyPage />} />
           <Route path="analytics/maint-cost" element={<MaintCostPage />} />
           <Route path="alerts" element={<AlertsCentrePage />} />
+          <Route path="entities" element={<EntityRegistryPage />} />
+          <Route path="budgeting" element={<BudgetsListPage />} />
+          <Route path="budgeting/new" element={<NewBudgetPage />} />
+          <Route path="budgeting/:id" element={<BudgetDetailPage />} />
           {/* Phase 6 — Finance & Accounting OS */}
           <Route path="finance" element={<FinDashboard />} />
           <Route path="finance/invoices" element={<VendorInvoicesPage />} />
