@@ -109,6 +109,7 @@ import { ArAgingPage } from "@/analytics/ui/ArAgingPage";
 import { RevExpTrendPage } from "@/analytics/ui/RevExpTrendPage";
 import { OccupancyPage } from "@/analytics/ui/OccupancyPage";
 import { MaintCostPage } from "@/analytics/ui/MaintCostPage";
+import { AlertsCentrePage } from "@/alerts/ui/AlertsCentrePage";
 
 function InvoiceDetailRoute() {
   const { id } = useParams<{ id: string }>();
@@ -253,6 +254,7 @@ export default function App() {
           <Route path="analytics/revenue-trend" element={<RevExpTrendPage />} />
           <Route path="analytics/occupancy" element={<OccupancyPage />} />
           <Route path="analytics/maint-cost" element={<MaintCostPage />} />
+          <Route path="alerts" element={<AlertsCentrePage />} />
           {/* Phase 6 — Finance & Accounting OS */}
           <Route path="finance" element={<FinDashboard />} />
           <Route path="finance/invoices" element={<VendorInvoicesPage />} />

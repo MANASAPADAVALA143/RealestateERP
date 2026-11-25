@@ -1,5 +1,6 @@
 import { useState, useEffect, type ComponentType } from "react";
 import { NavLink, Outlet, useLocation, Link } from "react-router-dom";
+import { NotificationBell } from "../alerts/ui/NotificationBell.tsx";
 import {
   LayoutDashboard, Building2, Home, Users, FileText, Receipt, Wallet, Wrench,
   ShoppingCart, BookOpen, BarChart2, Bell, Settings, BrainCircuit, ClipboardCheck,
@@ -203,6 +204,7 @@ const navGroups: NavGroup[] = [
       { to: "/rental-os/analytics/revenue-trend", label: "Revenue vs Expense Trend",  icon: TrendingUp },
       { to: "/rental-os/analytics/occupancy",   label: "Occupancy Heatmap",           icon: Building2 },
       { to: "/rental-os/analytics/maint-cost",  label: "Maintenance Cost Analysis",   icon: Wrench },
+      { to: "/rental-os/alerts",                label: "Alerts Centre",               icon: Bell,          tag: "new" as const },
     ],
   },
   {
@@ -270,6 +272,7 @@ function resolveTitle(pathname: string): { title: string; section: string } {
     "/rental-os/analytics/revenue-trend": { title: "Revenue vs Expense Trend", section: "Analytics" },
     "/rental-os/analytics/occupancy": { title: "Occupancy Heatmap", section: "Analytics" },
     "/rental-os/analytics/maint-cost": { title: "Maintenance Cost Analysis", section: "Analytics" },
+    "/rental-os/alerts": { title: "Alerts Centre", section: "Analytics" },
     "/rental-os/portfolio": { title: "Property Performance", section: "Portfolio Intelligence" },
     "/rental-os/portfolio/yield": { title: "Rental Yield Analysis", section: "Portfolio Intelligence" },
     "/rental-os/portfolio/cashflow": { title: "Cash Flow Forecast", section: "Portfolio Intelligence" },
@@ -484,10 +487,7 @@ export function RentalOsShell() {
             <span className="rounded-full border border-[#C79A2B]/30 bg-[#C79A2B]/5 px-3 py-1.5 text-xs font-medium text-navy">
               Gnanova Group · Hyderabad
             </span>
-            <Link to="/rental-os/admin/notifications" className="relative rounded-xl border border-navy/10 bg-white p-2 text-navy hover:border-[#C79A2B]/40">
-              <Bell className="h-4 w-4" />
-              <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-red-500" />
-            </Link>
+            <NotificationBell />
           </div>
         </header>
 
