@@ -214,7 +214,8 @@ const navGroups: NavGroup[] = [
     items: [
       { to: "/rental-os/entities",             label: "Entity Registry",    icon: Landmark,  tag: "new" as const },
       { to: "/rental-os/budgeting",            label: "Budgets",            icon: PieChart,  tag: "new" as const },
-      { to: "/rental-os/budgeting/variance",   label: "Actual vs Budget",   icon: TrendingUp, tag: "new" as const },
+      { to: "/rental-os/budgeting/variance",    label: "Actual vs Budget",   icon: TrendingUp, tag: "new" as const },
+      { to: "/rental-os/budgeting/forecasts",   label: "Forecasting",        icon: Zap,        tag: "new" as const },
     ],
   },
   {
@@ -286,7 +287,8 @@ function resolveTitle(pathname: string): { title: string; section: string } {
     "/rental-os/entities": { title: "Entity Registry", section: "Budgeting" },
     "/rental-os/budgeting": { title: "Budgets", section: "Budgeting" },
     "/rental-os/budgeting/new": { title: "New Budget", section: "Budgeting" },
-    "/rental-os/budgeting/variance": { title: "Actual vs Budget", section: "Budgeting" },
+    "/rental-os/budgeting/variance":   { title: "Actual vs Budget", section: "Budgeting" },
+    "/rental-os/budgeting/forecasts":  { title: "Forecasting",      section: "Budgeting" },
     "/rental-os/portfolio": { title: "Property Performance", section: "Portfolio Intelligence" },
     "/rental-os/portfolio/yield": { title: "Rental Yield Analysis", section: "Portfolio Intelligence" },
     "/rental-os/portfolio/cashflow": { title: "Cash Flow Forecast", section: "Portfolio Intelligence" },

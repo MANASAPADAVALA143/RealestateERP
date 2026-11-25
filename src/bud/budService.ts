@@ -323,6 +323,129 @@ export class BudService {
 
     return await this.getForecast(forecast.id) as Forecast;
   }
+
+  // ── Utility: generate OpEx forecast from historical vendor invoices ──────────
+
+  async generateOpExForecast(
+    entityId: string,
+    entityName: string,
+    fiscalYear: number,
+    invoices: Array<{ invoiceDate: string; totalAmount: number; status: string }>,
+  ): Promise<Forecast> {
+    const startDate = `${fiscalYear}-04-01`;
+    const endDate = `${fiscalYear + 1}-03-31`;
+
+    // Calculate 3-month rolling average of approved/paid invoices prior to FY start
+    const threeMonthsAgo = new Date(startDate);
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+    const histCutoff = threeMonthsAgo.toISOString().slice(0, 10);
+
+    const historicalInvoices = invoices.filter(
+      (inv) =>
+        inv.invoiceDate >= histCutoff &&
+        inv.invoiceDate < startDate &&
+        (inv.status === "Approved" || inv.status === "Paid" || inv.status === "Partially Paid"),
+    );
+
+    const totalHistorical = historicalInvoices.reduce((s, inv) => s + inv.totalAmount, 0);
+    const monthlyAverage = historicalInvoices.length > 0 ? totalHistorical / 3 : 0;
+
+    const forecast = await this.createForecast({
+      entityId,
+      entityName,
+      name: `FY${fiscalYear}-${String(fiscalYear + 1).slice(2)} Operating Expense Forecast`,
+      type: "OpEx",
+      fiscalYear,
+      startDate,
+      endDate,
+      basis: "Historical average",
+      notes: `Based on 3-month average (${historicalInvoices.length} invoices). Monthly avg: ₹${monthlyAverage.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`,
+    });
+
+    const months = Array.from({ length: 12 }, (_, i) => {
+      const d = new Date(startDate);
+      d.setMonth(d.getMonth() + i);
+      return d.toISOString().slice(0, 7) + "-01";
+    });
+
+    for (const month of months) {
+      await this.upsertForecastLine({
+        forecastId: forecast.id,
+        entityId,
+        month,
+        projected: monthlyAverage,
+        isManualOverride: false,
+        basisDetail: `3-month avg from ${histCutoff} to ${startDate}`,
+      });
+    }
+
+    return await this.getForecast(forecast.id) as Forecast;
+  }
+
+  // ── Utility: generate NOI forecast = RentalIncome forecast − OpEx forecast ───
+
+  async generateNoiForecast(
+    entityId: string,
+    entityName: string,
+    fiscalYear: number,
+    rentalForecastId: string,
+    opexForecastId: string,
+  ): Promise<Forecast> {
+    const startDate = `${fiscalYear}-04-01`;
+    const endDate = `${fiscalYear + 1}-03-31`;
+
+    const rentalLines = await this.listForecastLines(rentalForecastId);
+    const opexLines = await this.listForecastLines(opexForecastId);
+
+    const forecast = await this.createForecast({
+      entityId,
+      entityName,
+      name: `FY${fiscalYear}-${String(fiscalYear + 1).slice(2)} NOI Forecast`,
+      type: "NOI",
+      fiscalYear,
+      startDate,
+      endDate,
+      basis: "Lease-derived",
+      notes: "Rental Income forecast − Operating Expense forecast",
+    });
+
+    // Build month→amount maps
+    const rentalMap = new Map(rentalLines.map((l) => [l.month, l.projected]));
+    const opexMap = new Map(opexLines.map((l) => [l.month, l.projected]));
+
+    const months = Array.from({ length: 12 }, (_, i) => {
+      const d = new Date(startDate);
+      d.setMonth(d.getMonth() + i);
+      return d.toISOString().slice(0, 7) + "-01";
+    });
+
+    for (const month of months) {
+      const rental = rentalMap.get(month) ?? 0;
+      const opex = opexMap.get(month) ?? 0;
+      await this.upsertForecastLine({
+        forecastId: forecast.id,
+        entityId,
+        month,
+        projected: rental - opex,
+        isManualOverride: false,
+        basisDetail: `Rental ₹${rental.toLocaleString("en-IN", { maximumFractionDigits: 0 })} − OpEx ₹${opex.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`,
+      });
+    }
+
+    return await this.getForecast(forecast.id) as Forecast;
+  }
+
+  // ── Delete all forecasts for an entity+FY (used before regeneration) ─────────
+
+  async deleteForecastsForEntityFY(entityId: string, fiscalYear: number): Promise<void> {
+    const all = await this.listForecasts(entityId);
+    const toDelete = all.filter((f) => f.fiscalYear === fiscalYear);
+    for (const f of toDelete) {
+      const lines = await this.listForecastLines(f.id);
+      for (const l of lines) await this.adapter.delete("bud_forecast_lines", l.id);
+      await this.adapter.delete("bud_forecasts", f.id);
+    }
+  }
 }
 
 // ─── Singleton ────────────────────────────────────────────────────────────────

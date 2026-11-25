@@ -112,6 +112,7 @@ import { MaintCostPage } from "@/analytics/ui/MaintCostPage";
 import { AlertsCentrePage } from "@/alerts/ui/AlertsCentrePage";
 import { EntityRegistryPage } from "@/bud/ui/EntityRegistryPage";
 import { BudgetsListPage, NewBudgetPage, BudgetDetailPage } from "@/bud/ui/BudgetingPages";
+import { ForecastPage } from "@/bud/ui/ForecastPage";
 import { VariancePage } from "@/bud/ui/VariancePage";
 
 function InvoiceDetailRoute() {
@@ -261,8 +262,9 @@ export default function App() {
           <Route path="entities" element={<EntityRegistryPage />} />
           <Route path="budgeting" element={<BudgetsListPage />} />
           <Route path="budgeting/new" element={<NewBudgetPage />} />
-          <Route path="budgeting/variance" element={<VariancePage />} />
-          <Route path="budgeting/:id" element={<BudgetDetailPage />} />
+          <Route path="budgeting/variance"  element={<VariancePage />} />
+          <Route path="budgeting/forecasts" element={<ForecastPage />} />
+          <Route path="budgeting/:id"       element={<BudgetDetailPage />} />
           {/* Phase 6 — Finance & Accounting OS */}
           <Route path="finance" element={<FinDashboard />} />
           <Route path="finance/invoices" element={<VendorInvoicesPage />} />
