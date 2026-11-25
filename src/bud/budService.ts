@@ -33,10 +33,12 @@ async function nextSeq(
 // ─── Service ──────────────────────────────────────────────────────────────────
 
 export class BudService {
-  constructor(
-    private readonly adapter: StorageAdapter,
-    private readonly workspaceId: string,
-  ) {}
+  private readonly adapter: StorageAdapter;
+  private readonly workspaceId: string;
+  constructor(adapter: StorageAdapter, workspaceId: string) {
+    this.adapter = adapter;
+    this.workspaceId = workspaceId;
+  }
 
   private ws = () => this.workspaceId;
 
@@ -455,9 +457,16 @@ export class BudService {
     return all.sort((a, b) => b.date.localeCompare(a.date));
   }
 
-  async createICTransaction(input: Omit<ICTransaction, "id" | "workspaceId" | "icNumber" | "status" | "createdAt" | "updatedAt">): Promise<ICTransaction> {
+  async createICTransaction(input: Omit<ICTransaction, "id" | "workspaceId" | "icNumber" | "status" | "createdAt" | "updatedAt"> & { amount: number }): Promise<ICTransaction> {
+    if (!Number.isFinite(input.amount) || input.amount <= 0) {
+      throw new Error("IC transaction amount must be a positive finite number.");
+    }
     const all = await this.listICTransactions();
-    const seq = String(all.length + 1).padStart(4, "0");
+    const maxSeq = all.reduce((m, t) => {
+      const n = parseInt(t.icNumber.replace("IC-", ""), 10);
+      return isNaN(n) ? m : Math.max(m, n);
+    }, 0);
+    const seq = String(maxSeq + 1).padStart(4, "0");
     const tx: ICTransaction = {
       ...input,
       id: uid(),
@@ -494,6 +503,7 @@ export class BudService {
   }
 
   async eliminateTransaction(tx: ICTransaction, fiscalYear: number): Promise<ICElimination> {
+    if (tx.status === "Eliminated") throw new Error(`${tx.icNumber} is already eliminated.`);
     // Elimination: debit the IC Payable (to side) and credit the IC Receivable (from side)
     const elim: ICElimination = {
       id: uid(),

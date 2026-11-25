@@ -108,7 +108,7 @@ export async function computeConsolidation(
       }
 
       // Filter by entity if requested
-      if (entitySet.size > 0 && lineEntityId && !entitySet.has(lineEntityId)) continue;
+      if (entitySet.size > 0 && !entitySet.has(lineEntityId ?? "__unattributed__")) continue;
 
       const key = line.accountCode;
       if (!acc.has(key)) acc.set(key, { debit: 0, credit: 0, byEntity: {} });

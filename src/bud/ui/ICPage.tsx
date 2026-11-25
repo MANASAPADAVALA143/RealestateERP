@@ -7,6 +7,7 @@ import { useEntities, useICTransactions, useEliminations, budService } from "../
 import { computeConsolidation } from "../consolidationEngine.ts";
 import { IndexedDbAdapter } from "../../integrations/service/storage.ts";
 import type { ICTransaction, ICTransactionType } from "../types.ts";
+import type { Account } from "../../fin/types.ts";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -30,6 +31,14 @@ const STATUS_PILL: Record<ICTransaction["status"], string> = {
 };
 
 const IC_TYPES: ICTransactionType[] = ["Loan", "Management Fee", "Recharge", "Dividend", "Other"];
+
+function inferAccountType(code: string): Account["type"] {
+  if (code.startsWith("1")) return "Asset";
+  if (code.startsWith("2")) return "Liability";
+  if (code.startsWith("3")) return "Equity";
+  if (code.startsWith("4")) return "Revenue";
+  return "Expense";
+}
 
 const TH = "px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-navy/40";
 const TD = "px-4 py-2 text-sm";
@@ -67,6 +76,10 @@ function NewICForm({ onSaved, onCancel }: NewICFormProps) {
     }
     if (form.fromEntityId === form.toEntityId) {
       setErr("From and To entities must be different."); return;
+    }
+    const parsedAmount = parseFloat(form.amount);
+    if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+      setErr("Amount must be a positive number greater than zero."); return;
     }
     setSaving(true); setErr("");
     const fromEntity = (entities ?? []).find((e) => e.id === form.fromEntityId);
@@ -187,17 +200,33 @@ export function ICPage() {
       const endDate   = `${fiscalYear + 1}-03-31`;
       const { pl } = await computeConsolidation(adapter, WS, [], startDate, endDate);
 
-      const fyElims = (elims ?? []).filter((e) => e.fiscalYear === fiscalYear);
-      const elimItems = fyElims.map((e) => {
-        const amount = e.entries.reduce((s, entry) => s + entry.credit - entry.debit, 0);
-        return { description: e.description, amount };
-      });
-      const totalElim = elimItems.reduce((s, e) => s + e.amount, 0);
+      // Load CoA to classify elimination entries by account type
+      const accounts = await adapter.getByIndex<Account>("fin_accounts", "workspaceId", WS);
+      const accountTypeMap = new Map<string, Account["type"]>(accounts.map((a) => [a.code, a.type]));
 
+      const fyElims = (elims ?? []).filter((e) => e.fiscalYear === fiscalYear);
+      let revElim = 0;
+      let expElim = 0;
+      const elimItems: { description: string; amount: number }[] = [];
+
+      for (const e of fyElims) {
+        // net impact of this elimination on P&L (credit − debit per entry)
+        for (const entry of e.entries) {
+          const aType = accountTypeMap.get(entry.accountCode) ?? inferAccountType(entry.accountCode);
+          const net = entry.credit - entry.debit;
+          if (aType === "Revenue") revElim += net;
+          else if (aType === "Expense") expElim += net;
+        }
+        const amount = e.entries.reduce((s, entry) => s + entry.credit - entry.debit, 0);
+        elimItems.push({ description: e.description, amount });
+      }
+
+      const adjRevenue  = pl.totalRevenue  - revElim;
+      const adjExpenses = pl.totalExpenses - expElim;
       setAdjPL({
-        totalRevenue: pl.totalRevenue - Math.max(0, totalElim),
-        totalExpenses: pl.totalExpenses - Math.max(0, -totalElim),
-        netIncome: pl.netIncome - totalElim,
+        totalRevenue: adjRevenue,
+        totalExpenses: adjExpenses,
+        netIncome: adjRevenue - adjExpenses,
         eliminations: elimItems,
       });
     } catch (e) { setAdjError(String(e)); }
