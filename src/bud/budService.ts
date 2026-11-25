@@ -3,6 +3,7 @@
 import type { StorageAdapter } from "../integrations/service/storage.ts";
 import type {
   LegalEntity, Budget, BudgetLine, Forecast, ForecastLine,
+  ICTransaction, ICElimination,
   ISODateTime,
 } from "./types.ts";
 
@@ -445,6 +446,79 @@ export class BudService {
       for (const l of lines) await this.adapter.delete("bud_forecast_lines", l.id);
       await this.adapter.delete("bud_forecasts", f.id);
     }
+  }
+
+  // ─── Intercompany Transactions ───────────────────────────────────────────────
+
+  async listICTransactions(): Promise<ICTransaction[]> {
+    const all = await this.adapter.getByIndex<ICTransaction>("bud_ic_transactions", "workspaceId", this.workspaceId);
+    return all.sort((a, b) => b.date.localeCompare(a.date));
+  }
+
+  async createICTransaction(input: Omit<ICTransaction, "id" | "workspaceId" | "icNumber" | "status" | "createdAt" | "updatedAt">): Promise<ICTransaction> {
+    const all = await this.listICTransactions();
+    const seq = String(all.length + 1).padStart(4, "0");
+    const tx: ICTransaction = {
+      ...input,
+      id: uid(),
+      workspaceId: this.workspaceId,
+      icNumber: `IC-${seq}`,
+      status: "Open",
+      createdAt: now(),
+      updatedAt: now(),
+    };
+    await this.adapter.put("bud_ic_transactions", tx);
+    return tx;
+  }
+
+  async updateICTransactionStatus(id: string, status: ICTransaction["status"], eliminationId?: string): Promise<void> {
+    const all = await this.listICTransactions();
+    const tx = all.find((t) => t.id === id);
+    if (!tx) return;
+    await this.adapter.put("bud_ic_transactions", { ...tx, status, eliminationId, updatedAt: now() });
+  }
+
+  async deleteICTransaction(id: string): Promise<void> {
+    // also remove any elimination
+    const all = await this.adapter.getByIndex<ICElimination>("bud_ic_eliminations", "workspaceId", this.workspaceId);
+    for (const e of all.filter((e) => e.icTransactionId === id)) {
+      await this.adapter.delete("bud_ic_eliminations", e.id);
+    }
+    await this.adapter.delete("bud_ic_transactions", id);
+  }
+
+  // ─── Eliminations ────────────────────────────────────────────────────────────
+
+  async listEliminations(): Promise<ICElimination[]> {
+    return this.adapter.getByIndex<ICElimination>("bud_ic_eliminations", "workspaceId", this.workspaceId);
+  }
+
+  async eliminateTransaction(tx: ICTransaction, fiscalYear: number): Promise<ICElimination> {
+    // Elimination: debit the IC Payable (to side) and credit the IC Receivable (from side)
+    const elim: ICElimination = {
+      id: uid(),
+      workspaceId: this.workspaceId,
+      icTransactionId: tx.id,
+      fiscalYear,
+      eliminationDate: `${fiscalYear + 1}-03-31`,
+      description: `Elimination of ${tx.icNumber}: ${tx.description}`,
+      entries: [
+        { entityId: tx.fromEntityId, accountCode: tx.fromAccountCode, accountName: tx.fromAccountName, debit: 0, credit: tx.amount },
+        { entityId: tx.toEntityId,   accountCode: tx.toAccountCode,   accountName: tx.toAccountName,   debit: tx.amount, credit: 0 },
+      ],
+      createdAt: now(),
+    };
+    await this.adapter.put("bud_ic_eliminations", elim);
+    await this.updateICTransactionStatus(tx.id, "Eliminated", elim.id);
+    return elim;
+  }
+
+  async reverseElimination(eliminationId: string): Promise<void> {
+    const all = await this.listEliminations();
+    const elim = all.find((e) => e.id === eliminationId);
+    if (!elim) return;
+    await this.updateICTransactionStatus(elim.icTransactionId, "Open", undefined);
+    await this.adapter.delete("bud_ic_eliminations", eliminationId);
   }
 }
 

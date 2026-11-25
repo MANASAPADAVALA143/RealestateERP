@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { IndexedDbAdapter } from "../integrations/service/storage.ts";
 import { getBudService } from "./budService.ts";
 import { computeVariance, type VarianceSummary } from "./varianceEngine.ts";
-import type { LegalEntity, Budget, BudgetLine, Forecast, ForecastLine } from "./types.ts";
+import type { LegalEntity, Budget, BudgetLine, Forecast, ForecastLine, ICTransaction, ICElimination } from "./types.ts";
 
 const WS = "meridian-ventures";
 
@@ -71,6 +71,14 @@ export function useForecastLines(forecastId: string | undefined) {
     () => forecastId ? budService().listForecastLines(forecastId) : Promise.resolve([]),
     [forecastId],
   );
+}
+
+export function useICTransactions() {
+  return useBudCollection<ICTransaction[]>(() => budService().listICTransactions(), []);
+}
+
+export function useEliminations() {
+  return useBudCollection<ICElimination[]>(() => budService().listEliminations(), []);
 }
 
 const WS_CONST = "meridian-ventures";

@@ -114,6 +114,7 @@ import { EntityRegistryPage } from "@/bud/ui/EntityRegistryPage";
 import { BudgetsListPage, NewBudgetPage, BudgetDetailPage } from "@/bud/ui/BudgetingPages";
 import { ForecastPage } from "@/bud/ui/ForecastPage";
 import { ConsolPLPage, ConsolBSPage, ConsolTBPage } from "@/bud/ui/ConsolidationPages";
+import { ICPage } from "@/bud/ui/ICPage";
 import { VariancePage } from "@/bud/ui/VariancePage";
 
 function InvoiceDetailRoute() {
@@ -267,7 +268,8 @@ export default function App() {
           <Route path="budgeting/forecasts"     element={<ForecastPage />} />
           <Route path="budgeting/pl"            element={<ConsolPLPage />} />
           <Route path="budgeting/balance-sheet" element={<ConsolBSPage />} />
-          <Route path="budgeting/trial-balance" element={<ConsolTBPage />} />
+          <Route path="budgeting/trial-balance"  element={<ConsolTBPage />} />
+          <Route path="budgeting/intercompany"  element={<ICPage />} />
           <Route path="budgeting/:id"           element={<BudgetDetailPage />} />
           {/* Phase 6 — Finance & Accounting OS */}
           <Route path="finance" element={<FinDashboard />} />

@@ -107,6 +107,53 @@ export interface ForecastLine {
   isManualOverride: boolean;
 }
 
+// ─── Intercompany Transactions & Eliminations ─────────────────────────────────
+
+export type ICStatus = "Open" | "Matched" | "Eliminated";
+export type ICTransactionType = "Loan" | "Management Fee" | "Recharge" | "Dividend" | "Other";
+
+export interface ICTransaction {
+  id: string;
+  workspaceId: string;
+  icNumber: string;        // IC-NNNN
+  fromEntityId: string;
+  fromEntityName: string;
+  toEntityId: string;
+  toEntityName: string;
+  type: ICTransactionType;
+  description: string;
+  amount: number;
+  date: ISODate;
+  fromAccountCode: string; // e.g. "1310" (IC Receivable on from side)
+  fromAccountName: string;
+  toAccountCode: string;   // e.g. "2310" (IC Payable on to side)
+  toAccountName: string;
+  status: ICStatus;
+  eliminationId?: string;  // set once eliminated
+  reference?: string;
+  notes?: string;
+  createdAt: ISODateTime;
+  updatedAt: ISODateTime;
+}
+
+export interface ICElimination {
+  id: string;
+  workspaceId: string;
+  icTransactionId: string;
+  fiscalYear: number;
+  eliminationDate: ISODate;
+  description: string;
+  // elimination reverses both sides: debit IC Payable, credit IC Receivable
+  entries: Array<{
+    entityId: string;
+    accountCode: string;
+    accountName: string;
+    debit: number;
+    credit: number;
+  }>;
+  createdAt: ISODateTime;
+}
+
 // ─── Variance (computed, not stored) ─────────────────────────────────────────
 
 export interface VarianceRow {

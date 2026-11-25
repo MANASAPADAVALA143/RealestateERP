@@ -18,7 +18,9 @@ export type BudStoreName =
   | "bud_budgets"
   | "bud_budget_lines"
   | "bud_forecasts"
-  | "bud_forecast_lines";
+  | "bud_forecast_lines"
+  | "bud_ic_transactions"
+  | "bud_ic_eliminations";
 
 export type StoreName = "jobs" | "files" | "records" | "templates" | "links" | "recon" | "audit" | "publications" | "settings" | "connections" | ArStoreName | OpsStoreName | FinStoreName | AlertStoreName | BudStoreName;
 
@@ -47,6 +49,8 @@ export const BUD_STORES: BudStoreName[] = [
   "bud_budget_lines",
   "bud_forecasts",
   "bud_forecast_lines",
+  "bud_ic_transactions",
+  "bud_ic_eliminations",
 ];
 
 export interface StorageAdapter {
@@ -109,7 +113,7 @@ export class IndexedDbAdapter implements StorageAdapter {
 
   constructor(name = "estatecfo-integrations") {
     this.db = new Promise((resolve, reject) => {
-      const request = indexedDB.open(name, 7);
+      const request = indexedDB.open(name, 8);
       request.onupgradeneeded = () => {
         const db = request.result;
         for (const store of STORES) {
