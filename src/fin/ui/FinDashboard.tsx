@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FileText, AlertCircle, Banknote, BookOpen, Calendar } from "lucide-react";
 import { useFinDashboard, finService } from "../hooks.ts";
 import { StatCard, LoadingSpinner, inr } from "./shared.tsx";
+import { AlertBanner } from "../../alerts/ui/AlertBanner.tsx";
 
 export function FinDashboard() {
   const { data: summary, loading } = useFinDashboard();
@@ -17,6 +18,7 @@ export function FinDashboard() {
 
   return (
     <div className="space-y-6">
+      <AlertBanner module="Finance" />
       <div className="mb-6 flex items-center justify-between gap-4">
         <h2 className="font-serif text-2xl text-[#0A1628]">Finance Dashboard</h2>
         <div className="flex gap-2">

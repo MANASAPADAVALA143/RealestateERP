@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Wrench, ClipboardCheck, AlertTriangle, Clock, Calendar } from "lucide-react";
 import { useOpsDashboard } from "../hooks.ts";
 import { StatCard, StatusBadge, PriorityBadge, LoadingSpinner, inr } from "./shared.tsx";
+import { AlertBanner } from "../../alerts/ui/AlertBanner.tsx";
 
 export function MaintenanceDashboard() {
   const { summary, loading } = useOpsDashboard();
@@ -13,6 +14,8 @@ export function MaintenanceDashboard() {
 
   return (
     <div className="space-y-6">
+      <AlertBanner module="Ops" />
+      <AlertBanner module="Contracts" />
       {/* KPIs */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard label="Open Requests" value={openRequests.length} icon={Wrench} color="navy" />

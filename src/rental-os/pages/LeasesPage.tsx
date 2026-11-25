@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { FileText, ArrowLeft, ChevronRight, Calendar } from "lucide-react";
 import { leases } from "../data";
 import type { LeaseStatus } from "../types";
+import { AlertBanner } from "../../alerts/ui/AlertBanner.tsx";
 
 function daysLeft(endDate: string) {
   return Math.ceil((new Date(endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
@@ -105,6 +106,7 @@ export function LeasesPage() {
 
   return (
     <div className="space-y-6">
+      <AlertBanner module="Leasing" />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-serif text-2xl text-navy">{isRenewals ? "Lease Renewals" : "Lease Register"}</h1>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { AlertBanner } from "@/alerts/ui/AlertBanner";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { kpis, monthlyTrend, performance } from "@/ar/engine/analytics";
 import { collectionsIntelligence } from "@/ar/engine/intelligence";
@@ -33,6 +34,8 @@ export function ArDashboardPage() {
         </label>
       }
     >
+      <AlertBanner module="AR" />
+      <AlertBanner module="Leasing" />
       <Feedback error={action.error} message={action.message} />
       {empty ? (
         <Section title="Get started" subtitle="The AR ledger has no tenants yet.">
