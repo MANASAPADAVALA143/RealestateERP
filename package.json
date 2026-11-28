@@ -11,6 +11,7 @@
     "samples": "node scripts/generate-samples.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.119.2",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
